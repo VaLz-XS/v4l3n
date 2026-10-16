@@ -26,12 +26,9 @@
     color: var(--text);
     min-height: 100vh;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  /* ============ LOADING SCREEN ============ */
+  /* ============ LOADING SCREEN (VIDEO) ============ */
   #loader {
     position: fixed;
     inset: 0;
@@ -39,8 +36,6 @@
     background: var(--bg);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     transition: opacity 0.8s ease, visibility 0.8s;
   }
@@ -49,64 +44,82 @@
     visibility: hidden;
   }
 
-  /* Background gambar full */
-  .loader-bg {
+  /* Video background */
+  .loader-video {
     position: absolute;
     inset: 0;
-    background-image: url('assets/tenka-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 0;
     opacity: 0;
-    animation: fadeInBg 2s ease forwards;
+    animation: fadeInBg 1.5s ease forwards;
     animation-delay: 0.3s;
   }
   @keyframes fadeInBg {
     to { opacity: 1; }
   }
 
-  /* Overlay gradasi — gelap di kanan biar panel kebaca, terang di kiri biar Tenka keliatan */
+  /* Overlay gradasi — atas gelap tipis, bawah gelap tebal (biar panel kebaca) */
   .loader-overlay {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(105deg,
-      rgba(10, 10, 12, 0.15) 0%,
-      rgba(10, 10, 12, 0.35) 40%,
-      rgba(10, 10, 12, 0.85) 65%,
+    background: linear-gradient(180deg,
+      rgba(10, 10, 12, 0.20) 0%,
+      rgba(10, 10, 12, 0.30) 30%,
+      rgba(10, 10, 12, 0.75) 60%,
       rgba(10, 10, 12, 0.95) 100%);
     pointer-events: none;
   }
 
-  /* Vignette di tepi */
-  .loader-vignette {
+  /* ============ EFEK PARTIKEL NAIK ============ */
+  .particles {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    background: radial-gradient(ellipse at 30% 60%,
-      transparent 20%,
-      rgba(10, 10, 12, 0.6) 90%);
+    z-index: 2;
     pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, #ffd700, #ff9944);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 200, 50, 0.8);
+    opacity: 0;
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
+    }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% {
+      transform: translateY(-100vh) translateX(30px);
+      opacity: 0;
+    }
   }
 
-  /* Konten loader — di KANAN biar muka Tenka nggak ketutup */
+  /* Konten loader — panel di BAWAH */
   .loader-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
+    margin-top: auto;
     width: 100%;
-    max-width: 1200px;
     padding: 24px;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    min-height: 100vh;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 40px;
   }
 
   .loader-inner {
     width: 100%;
     max-width: 420px;
-    text-align: left;
     opacity: 0;
     animation: fadeInUp 1.2s ease forwards;
     animation-delay: 1.2s;
@@ -124,10 +137,10 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-transform: uppercase;
     font-weight: 700;
-    text-align: right;
+    text-align: center;
   }
 
   /* Panel sambutan */
@@ -138,7 +151,7 @@
     border: 1px solid rgba(255, 200, 150, 0.18);
     border-radius: 18px;
     padding: 26px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
@@ -184,23 +197,11 @@
     position: relative;
     overflow: hidden;
   }
-  .loader-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #ff6666, #ffbb66, #ffe44d);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .loader-btn span {
-    position: relative;
-    z-index: 1;
-  }
+  .loader-btn span { position: relative; z-index: 1; }
   .loader-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 45px rgba(255, 100, 50, 0.55);
   }
-  .loader-btn:hover::before { opacity: 1; }
   .loader-btn:active { transform: translateY(0); }
 
   /* Progress bar */
@@ -210,7 +211,7 @@
     background: rgba(255, 200, 150, 0.12);
     border-radius: 2px;
     overflow: hidden;
-    margin-top: 22px;
+    margin-top: 18px;
   }
   .loader-progress-fill {
     height: 100%;
@@ -225,10 +226,10 @@
     letter-spacing: 2px;
     color: var(--muted);
     margin-top: 10px;
-    text-align: right;
+    text-align: center;
   }
 
-  /* ============ DASHBOARD ============ */
+  /* ============ DASHBOARD (GAMBAR) ============ */
   #dashboard {
     position: fixed;
     inset: 0;
@@ -239,7 +240,7 @@
   }
   #dashboard.show { display: block; }
 
-  /* Background dashboard — SAMA gambar, beda treatment */
+  /* Background dashboard — gambar, blur dikurangi */
   .dash-bg {
     position: fixed;
     inset: 0;
@@ -248,8 +249,8 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: brightness(0.4) saturate(1.1) blur(2px);
-    transform: scale(1.05);
+    /* BLUR DIKURANGIN — sebelumnya blur(2px), sekarang blur(0.5px) */
+    filter: brightness(0.55) saturate(1.15) blur(0.5px);
   }
 
   /* Overlay dashboard */
@@ -258,9 +259,9 @@
     inset: 0;
     z-index: 1;
     background: linear-gradient(180deg,
-      rgba(10, 10, 12, 0.75) 0%,
+      rgba(10, 10, 12, 0.7) 0%,
       rgba(10, 10, 12, 0.5) 40%,
-      rgba(10, 10, 12, 0.85) 100%);
+      rgba(10, 10, 12, 0.8) 100%);
     pointer-events: none;
   }
 
@@ -290,6 +291,19 @@
       radial-gradient(circle at 15% 10%, rgba(255, 100, 100, 0.10), transparent 45%),
       radial-gradient(circle at 85% 85%, rgba(255, 200, 50, 0.08), transparent 45%);
     pointer-events: none;
+  }
+
+  /* Partikel di dashboard */
+  .dash-particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .dash-particles .particle {
+    width: 2px;
+    height: 2px;
   }
 
   .dash-wrap {
@@ -376,10 +390,7 @@
     background-clip: text;
     filter: drop-shadow(0 0 20px rgba(255, 150, 100, 0.3));
   }
-  .dash-hero p {
-    color: var(--muted);
-    font-size: 13px;
-  }
+  .dash-hero p { color: var(--muted); font-size: 13px; }
 
   /* Section title */
   .sec-title {
@@ -494,16 +505,8 @@
   }
   a.card:hover svg { transform: scale(1.1) rotate(-3deg); }
 
-  a.card .label {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.3;
-  }
-  a.card .desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.4;
-  }
+  a.card .label { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+  a.card .desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
   a.card .arrow {
     position: absolute;
     bottom: 20px; right: 20px;
@@ -538,34 +541,7 @@
     background-clip: text;
   }
 
-  /* ============ RESPONSIVE HP ============ */
-  @media (max-width: 700px) {
-    .loader-content {
-      justify-content: center;
-      align-items: flex-end;
-      padding: 24px 20px 40px;
-      min-height: 100vh;
-    }
-    .loader-inner {
-      max-width: 100%;
-      text-align: left;
-    }
-    .loader-title {
-      text-align: center;
-    }
-    /* Di HP, panel di bawah, Tenka keliatan di atas */
-    .loader-overlay {
-      background: linear-gradient(180deg,
-        rgba(10, 10, 12, 0.15) 0%,
-        rgba(10, 10, 12, 0.4) 35%,
-        rgba(10, 10, 12, 0.85) 60%,
-        rgba(10, 10, 12, 0.95) 100%);
-    }
-    .loader-vignette {
-      background: radial-gradient(ellipse at 30% 30%,
-        transparent 20%,
-        rgba(10, 10, 12, 0.6) 90%);
-    }
+  @media (max-width: 500px) {
     .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
     a.card { padding: 18px 16px; gap: 10px; }
     a.card svg { width: 30px; height: 30px; }
@@ -580,7 +556,7 @@
 </head>
 <body>
 
-<!-- SVG gradient definition (buat icon) -->
+<!-- SVG gradient untuk icon -->
 <svg width="0" height="0" style="position:absolute;">
   <defs>
     <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -591,12 +567,17 @@
   </defs>
 </svg>
 
-<!-- ============ LOADING SCREEN ============ -->
+<!-- ============ LOADING SCREEN (VIDEO) ============ -->
 <div id="loader">
 
-  <div class="loader-bg"></div>
+  <video class="loader-video" id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="assets/tenka-bg.mp4" type="video/mp4">
+  </video>
+
   <div class="loader-overlay"></div>
-  <div class="loader-vignette"></div>
+
+  <!-- Partikel naik -->
+  <div class="particles" id="loaderParticles"></div>
 
   <div class="loader-content">
     <div class="loader-inner">
@@ -624,13 +605,14 @@
   </div>
 </div>
 
-<!-- ============ DASHBOARD ============ -->
+<!-- ============ DASHBOARD (GAMBAR) ============ -->
 <div id="dashboard">
 
   <div class="dash-bg"></div>
   <div class="dash-overlay"></div>
   <div class="dash-grid-bg"></div>
   <div class="dash-glow"></div>
+  <div class="dash-particles" id="dashParticles"></div>
 
   <div class="dash-wrap">
 
@@ -745,6 +727,35 @@
 </div>
 
 <script>
+  // ============ GENERATE PARTIKEL ============
+  function createParticles(containerId, count) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '-10px';
+      p.style.animationDuration = (6 + Math.random() * 8) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      const size = 2 + Math.random() * 3;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      container.appendChild(p);
+    }
+  }
+
+  createParticles('loaderParticles', 20);
+  createParticles('dashParticles', 15);
+
+  // ============ VIDEO LOAD ============
+  const video = document.getElementById('bgVideo');
+  video.addEventListener('error', () => {
+    console.warn('Video gagal load, pakai background warna solid.');
+    video.style.display = 'none';
+  });
+
   // ============ PROGRESS BAR ============
   (function() {
     const fill = document.getElementById('loaderFill');
