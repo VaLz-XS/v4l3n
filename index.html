@@ -47,27 +47,46 @@
     visibility: hidden;
   }
 
-  /* ============ BACKGROUND VIDEO ============ */
+  /* Poster (muncul duluan sebelum video) */
+  .loader-poster {
+    position: absolute;
+    inset: 0;
+    background-image: url('assets/tenka-poster.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    opacity: 0;
+    animation: fadeInPoster 0.8s ease forwards;
+  }
+  @keyframes fadeInPoster {
+    to { opacity: 1; }
+  }
+  /* Kalau nggak ada poster, fallback warna */
+  .loader-poster.no-poster {
+    background-image: none;
+    background: linear-gradient(135deg, #1a1208, #0a0805);
+  }
+
+  /* Video background */
   .loader-video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 0;
+    z-index: 1;
     opacity: 0;
-    animation: fadeInVideo 2.5s ease forwards;
-    animation-delay: 0.3s;
+    transition: opacity 1.5s ease;
   }
-  @keyframes fadeInVideo {
-    to { opacity: 1; }
+  .loader-video.ready {
+    opacity: 1;
   }
 
-  /* Overlay gelap biar teks kebaca */
+  /* Overlay gelap */
   .loader-overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 2;
     background: linear-gradient(180deg,
       rgba(10, 8, 5, 0.75) 0%,
       rgba(10, 8, 5, 0.55) 40%,
@@ -75,11 +94,10 @@
     pointer-events: none;
   }
 
-  /* Vignette tambahan di tepi */
   .loader-vignette {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 2;
     background: radial-gradient(ellipse at center,
       transparent 30%,
       rgba(10, 8, 5, 0.7) 100%);
@@ -89,14 +107,14 @@
   /* Konten loader */
   .loader-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     max-width: 420px;
     padding: 0 24px;
     text-align: center;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
-    animation-delay: 1.2s;
+    animation-delay: 1s;
   }
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -113,7 +131,6 @@
     text-transform: uppercase;
   }
 
-  /* Panel sambutan */
   .welcome-panel {
     background: rgba(20, 15, 5, 0.85);
     backdrop-filter: blur(16px);
@@ -136,7 +153,6 @@
     text-shadow: 0 0 10px var(--gold-glow);
   }
 
-  /* Tombol */
   .loader-btn {
     display: block;
     width: 100%;
@@ -155,7 +171,7 @@
     transition: all 0.3s ease;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
-    animation-delay: 1.8s;
+    animation-delay: 1.6s;
   }
   .loader-btn:hover {
     transform: translateY(-3px);
@@ -164,7 +180,6 @@
   }
   .loader-btn:active { transform: translateY(0); }
 
-  /* Progress bar */
   .loader-progress {
     width: 100%;
     height: 3px;
@@ -174,14 +189,14 @@
     margin-top: 20px;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
-    animation-delay: 2s;
+    animation-delay: 1.8s;
   }
   .loader-progress-fill {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, var(--gold), #ffaa00);
     box-shadow: 0 0 12px var(--gold);
-    transition: width 0.1s linear;
+    transition: width 0.2s linear;
   }
   .loader-percent {
     font-family: var(--mono);
@@ -190,7 +205,7 @@
     margin-top: 10px;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
-    animation-delay: 2.2s;
+    animation-delay: 2s;
   }
 
   /* ============ DASHBOARD ============ */
@@ -250,15 +265,6 @@
     font-size: 12px;
     color: var(--muted);
   }
-
-  /* ============ FALLBACK (kalau video nggak load) ============ */
-  .video-fallback {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: linear-gradient(135deg, #1a1208, #0a0805);
-    display: none;
-  }
 </style>
 </head>
 <body>
@@ -266,18 +272,19 @@
 <!-- LOADING SCREEN -->
 <div id="loader">
 
-  <!-- BACKGROUND VIDEO -->
+  <!-- Poster (muncul duluan) -->
+  <div class="loader-poster" id="poster"></div>
+
+  <!-- Video background -->
   <video
     class="loader-video"
+    id="bgVideo"
     autoplay
     muted
     loop
     playsinline
-    preload="auto"
-    poster="assets/tenka-poster.jpg">
+    preload="auto">
     <source src="assets/tenka-bg.mp4" type="video/mp4">
-    <!-- Kalau video gagal load, fallback warna -->
-    <div class="video-fallback"></div>
   </video>
 
   <div class="loader-overlay"></div>
@@ -341,14 +348,38 @@
 </div>
 
 <script>
-  // ============ PROGRESS BAR ============
+  // ============ VIDEO LOAD ============
+  const video = document.getElementById('bgVideo');
+  const poster = document.getElementById('poster');
+
+  // Kalau video selesai load, fade-in video & hide poster
+  video.addEventListener('loadeddata', () => {
+    video.classList.add('ready');
+    setTimeout(() => {
+      poster.style.opacity = '0';
+      poster.style.transition = 'opacity 1s ease';
+    }, 1000);
+  });
+
+  // Kalau video error (file nggak ada / format salah), fallback
+  video.addEventListener('error', () => {
+    poster.classList.add('no-poster');
+    video.style.display = 'none';
+  });
+
+  // ============ PROGRESS BAR (simulasi loading) ============
   (function() {
     const fill = document.getElementById('loaderFill');
     const percent = document.getElementById('loaderPercent');
     let p = 0;
 
     const interval = setInterval(() => {
-      p += Math.random() * 12 + 3;
+      // Loading pelan dulu sampai 70%, baru cepet
+      let increment;
+      if (p < 70) increment = Math.random() * 5 + 2;
+      else increment = Math.random() * 15 + 5;
+
+      p += increment;
       if (p >= 100) {
         p = 100;
         fill.style.width = '100%';
@@ -358,7 +389,7 @@
         fill.style.width = p + '%';
         percent.textContent = Math.floor(p) + '%';
       }
-    }, 150);
+    }, 200);
   })();
 
   // ============ TOMBOL ============
@@ -369,17 +400,6 @@
     loader.classList.add('hide');
     dashboard.classList.add('show');
     window.scrollTo(0, 0);
-  }
-
-  // ============ VIDEO FALLBACK ============
-  // Kalau video gagal load, tampilin warna solid
-  const video = document.querySelector('.loader-video');
-  if (video) {
-    video.addEventListener('error', () => {
-      const fallback = document.querySelector('.video-fallback');
-      if (fallback) fallback.style.display = 'block';
-      video.style.display = 'none';
-    });
   }
 </script>
 
