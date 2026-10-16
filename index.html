@@ -740,6 +740,7 @@
 
   <div class="dash-wrap">
 
+    <!-- TOP BAR — sekarang cuma 1 tombol (menu), tombol panah dihapus, diganti mute musik -->
     <div class="top-bar">
       <div class="icon-btn">
         <svg viewBox="0 0 24 24">
@@ -748,9 +749,13 @@
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </div>
-      <div class="icon-btn">
-        <svg viewBox="0 0 24 24">
-          <polyline points="6 9 12 15 18 9"/>
+
+      <!-- TOMBOL MUTE MUSIK -->
+      <div class="icon-btn" id="muteBtn" onclick="toggleMusic()" title="Mute / Unmute musik">
+        <svg id="muteIcon" viewBox="0 0 24 24">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
         </svg>
       </div>
     </div>
@@ -838,7 +843,6 @@
       </div>
     </div>
 
-    <!-- ============ ACTION GRID ============ -->
     <!-- Masuk GB Chat → GRUP -->
     <div class="action-grid">
       <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
@@ -941,6 +945,11 @@
   </a>
 </div>
 
+<!-- ============ AUDIO MUSIK ============ -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
   function createParticles(containerId, count) {
     const c = document.getElementById(containerId);
@@ -978,13 +987,58 @@
     }, 200);
   })();
 
+  // ============ TOMBOL LANJUT + AUTO PLAY MUSIK ============
   function goToDashboard() {
     document.getElementById('loader').classList.add('hide');
     document.getElementById('dashboard').classList.add('show');
     window.scrollTo(0, 0);
     updateAll();
+
+    // AUTO PLAY MUSIK
+    const music = document.getElementById('bgMusic');
+    if (music) {
+      music.volume = 1.0; // Volume 100% (ngikutin volume HP user)
+      music.play().then(() => {
+        console.log('Musik jalan');
+      }).catch(err => {
+        console.warn('Autoplay diblokir:', err);
+        // Fallback: coba play pas user klik di mana aja
+        document.addEventListener('click', function playOnce() {
+          music.play().catch(() => {});
+          document.removeEventListener('click', playOnce);
+        }, { once: true });
+      });
+    }
   }
 
+  // ============ TOGGLE MUTE MUSIK ============
+  let musicMuted = false;
+
+  function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const icon = document.getElementById('muteIcon');
+    if (!music || !icon) return;
+
+    if (musicMuted) {
+      music.muted = false;
+      musicMuted = false;
+      icon.innerHTML = `
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+      `;
+    } else {
+      music.muted = true;
+      musicMuted = true;
+      icon.innerHTML = `
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+        <line x1="23" y1="9" x2="17" y2="15"/>
+        <line x1="17" y1="9" x2="23" y2="15"/>
+      `;
+    }
+  }
+
+  // ============ STATISTIK ============
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -1020,6 +1074,7 @@
     updateWeather();
   }
 
+  // ============ PAKSA LOOP VIDEO HERO ============
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.play().catch(() => {});
@@ -1044,8 +1099,8 @@
   }
 
   // ============ POPUP JOIN CHANNEL ============
-  const POPUP_FIRST_DELAY = 5000;
-  const POPUP_REPEAT_DELAY = 30000;
+  const POPUP_FIRST_DELAY = 2000;
+  const POPUP_REPEAT_DELAY = 50000;
 
   function showChannelPopup() {
     const popup = document.getElementById('channelPopup');
