@@ -1,123 +1,474 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard V4L3N</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v4l3n.web.id // dashboard</title>
+<style>
+  :root {
+    --bg: #050807;
+    --bg2: #0a0f0c;
+    --panel: rgba(13, 20, 16, 0.75);
+    --border: #1a2b22;
+    --green: #00ff88;
+    --green-dim: #00b35f;
+    --green-glow: rgba(0, 255, 136, 0.35);
+    --text: #c8ffd9;
+    --muted: #4d7a5f;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
 
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f1a;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-      background-image: radial-gradient(circle at 20% 20%, #1a1a2e 0%, #0f0f1a 60%);
-    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 8px;
-      background: linear-gradient(90deg, #7f5af0, #2cb67d);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+  html { scroll-behavior: smooth; }
 
-    p.subtitle {
-      color: #888;
-      margin-bottom: 50px;
-      font-size: 0.95rem;
-    }
+  body {
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      width: 100%;
-      max-width: 800px;
-    }
+  /* ================= BACKGROUND BERGERAK ================= */
 
-    a.card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 40px 20px;
-      background: #16161f;
-      border: 1px solid #26263a;
-      border-radius: 16px;
-      color: #fff;
-      text-decoration: none;
-      transition: all 0.25s ease;
-      text-align: center;
-    }
+  /* Canvas matrix rain */
+  #matrix {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.28;
+    pointer-events: none;
+  }
 
-    a.card:hover {
-      background: #1e1e2e;
-      border-color: #7f5af0;
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(127, 90, 240, 0.25);
-    }
+  /* Grid bergerak */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    from { background-position: 0 0; }
+    to   { background-position: 40px 40px; }
+  }
 
-    .icon {
-      font-size: 2.5rem;
-      line-height: 1;
-    }
+  /* Glow radial + scanline bergerak */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(0, 255, 136, 0.10), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(0, 255, 136, 0.08), transparent 45%),
+      linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.06) 50%, transparent 100%);
+    background-size: 100% 100%, 100% 100%, 100% 200%;
+    pointer-events: none;
+    z-index: 1;
+    animation: scanline 7s linear infinite;
+  }
+  @keyframes scanline {
+    from { background-position: 0 0, 0 0, 0 -100%; }
+    to   { background-position: 0 0, 0 0, 0 100%; }
+  }
 
-    .label {
-      font-size: 1.05rem;
-      font-weight: 600;
-    }
+  /* ================= LAYOUT ================= */
 
-    .desc {
-      font-size: 0.8rem;
-      color: #777;
-    }
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
 
-    footer {
-      margin-top: 60px;
-      font-size: 0.8rem;
-      color: #555;
-    }
-  </style>
+  /* HEADER */
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(13, 20, 16, 0.8);
+    backdrop-filter: blur(8px);
+    margin-bottom: 40px;
+    font-size: 13px;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.08);
+  }
+  .brand {
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px var(--green-glow);
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--green), 0 0 20px var(--green-glow);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  /* HERO */
+  .hero {
+    padding: 30px 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(0, 255, 136, 0.06), rgba(13,20,16,0.5));
+    backdrop-filter: blur(6px);
+    margin-bottom: 40px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.06);
+  }
+  .hero-prompt {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .hero-prompt .u {
+    color: var(--green);
+    text-shadow: 0 0 6px var(--green-glow);
+  }
+  .hero h1 {
+    font-size: clamp(1.4rem, 8vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.1;
+    color: var(--text);
+    text-shadow: 0 0 20px var(--green-glow);
+  }
+  .hero h1 .accent {
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green), 0 0 30px var(--green-glow);
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .blink {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--green);
+    vertical-align: text-bottom;
+    margin-left: 4px;
+    box-shadow: 0 0 10px var(--green);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* MARQUEE */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(10, 15, 12, 0.85);
+    padding: 10px 0;
+    margin-bottom: 40px;
+    white-space: nowrap;
+    box-shadow: inset 0 0 20px rgba(0, 255, 136, 0.06);
+  }
+  .marquee-track {
+    display: inline-block;
+    animation: scroll 22s linear infinite;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .marquee-track span {
+    margin: 0 20px;
+    color: var(--green);
+    text-shadow: 0 0 6px var(--green-glow);
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* SECTION TITLE */
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .sec-title .num {
+    color: var(--green);
+    font-weight: 700;
+    text-shadow: 0 0 8px var(--green-glow);
+  }
+  .sec-title .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* GRID MENU */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 50px;
+  }
+
+  a.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px 20px;
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s ease;
+    overflow: hidden;
+  }
+  a.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    transition: height 0.3s ease;
+  }
+  a.card:hover {
+    border-color: var(--green-dim);
+    transform: translateY(-4px);
+    background: rgba(16, 26, 20, 0.85);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+  a.card:hover::before { height: 100%; }
+
+  a.card .idx {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px var(--green-glow);
+  }
+  a.card svg {
+    width: 34px; height: 34px;
+    stroke: var(--green);
+    stroke-width: 1.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 6px var(--green-glow));
+  }
+  a.card .label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  a.card .desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  a.card .arrow {
+    position: absolute;
+    top: 20px; right: 20px;
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform 0.25s, color 0.25s;
+  }
+  a.card:hover .arrow {
+    transform: translate(4px, -4px);
+    color: var(--green);
+    text-shadow: 0 0 8px var(--green-glow);
+  }
+
+  /* FOOTER */
+  footer.bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer.bottom .accent {
+    color: var(--green);
+    text-shadow: 0 0 6px var(--green-glow);
+  }
+
+  #clock {
+    font-size: 11px;
+    color: var(--muted);
+  }
+</style>
 </head>
 <body>
-  <h1>Dashboard</h1>
-  <p class="subtitle">Pilih menu di bawah</p>
 
-  <div class="menu">
-    <a class="card" href="https://anime.domainlo.com" target="_blank">
-      <span class="icon">🎬</span>
-      <span class="label">Nonton Anime</span>
-      <span class="desc">Streaming & koleksi</span>
-    </a>
+<canvas id="matrix"></canvas>
 
-    <a class="card" href="https://tools.domainlo.com" target="_blank">
-      <span class="icon">🛠️</span>
-      <span class="label">Tools</span>
-      <span class="desc">Utility & helper</span>
-    </a>
+<div class="wrap">
 
-    <a class="card" href="https://blog.domainlo.com" target="_blank">
-      <span class="icon">📝</span>
-      <span class="label">Blog</span>
-      <span class="desc">Tulisan & catatan</span>
-    </a>
+  <header class="top">
+    <div class="brand">~v4l3n // dashboard</div>
+    <div class="status">
+      <span class="dot"></span>
+      <span id="clock">memuat...</span>
+    </div>
+  </header>
 
-    <a class="card" href="https://github.com/username" target="_blank">
-      <span class="icon">💻</span>
-      <span class="label">Portfolio</span>
-      <span class="desc">Proyek & karya</span>
-    </a>
+  <section class="hero">
+    <div class="hero-prompt">
+      PS C:\Users\guest\v4l3n&gt; <span class="u">jalankan dashboard</span>
+    </div>
+    <h1>V4L3N<span class="accent">.</span>DASHBOARD<span class="blink"></span></h1>
+    <p>Sistem aktif. Pilih modul di bawah untuk memulai.</p>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>◆</span> PANEL & BOT WA <span>◆</span> NONTON ANIME <span>◆</span> BACA MANGA <span>◆</span>
+      <span>◆</span> PANEL & BOT WA <span>◆</span> NONTON ANIME <span>◆</span> BACA MANGA <span>◆</span>
+    </div>
   </div>
 
-  <footer>© 2026 — By V4L3N</footer>
+  <div class="sec-title">
+    <span class="num">#01</span>
+    <span>MODUL TERSEDIA</span>
+    <span class="line"></span>
+  </div>
+
+  <div class="grid">
+
+    <!-- PANEL HOSTING & SC BOT WA -->
+    <a class="card" href="https://valz.my.id" target="_blank">
+      <span class="arrow">↗</span>
+      <span class="idx">#01</span>
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="6" rx="1.5"/>
+        <rect x="3" y="14" width="18" height="6" rx="1.5"/>
+        <circle cx="7" cy="7" r="0.8" fill="currentColor"/>
+        <circle cx="7" cy="17" r="0.8" fill="currentColor"/>
+      </svg>
+      <span class="label">Panel & Bot WA</span>
+      <span class="desc">Hosting panel + SC bot WhatsApp</span>
+    </a>
+
+    <!-- NONTON ANIME -->
+    <a class="card" href="https://valenanime.my.id" target="_blank">
+      <span class="arrow">↗</span>
+      <span class="idx">#02</span>
+      <svg viewBox="0 0 24 24">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="M10 9l5 3-5 3V9z"/>
+      </svg>
+      <span class="label">Nonton Anime</span>
+      <span class="desc">Streaming & koleksi anime</span>
+    </a>
+
+    <!-- BACA MANGA -->
+    <a class="card" href="https://valenmanga.my.id" target="_blank">
+      <span class="arrow">↗</span>
+      <span class="idx">#03</span>
+      <svg viewBox="0 0 24 24">
+        <path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/>
+        <path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>
+      </svg>
+      <span class="label">Baca Manga</span>
+      <span class="desc">Koleksi & chapter manga</span>
+    </a>
+
+  </div>
+
+  <footer class="bottom">
+    <div>© 2026 <span class="accent">v4l3n.web.id</span> — all rights reserved</div>
+    <div class="accent">// SYS_READY</div>
+  </footer>
+
+</div>
+
+<!-- ============ SCRIPT MATRIX RAIN ============ -->
+<script>
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEF';
+  const fontSize = 14;
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(5, 8, 7, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00ff88';
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  setInterval(drawMatrix, 50);
+
+  // Recalc columns kalau layar berubah ukuran
+  window.addEventListener('resize', () => {
+    columns = Math.floor(canvas.width / fontSize);
+    drops = Array(columns).fill(1);
+  });
+</script>
+
+<!-- ============ SCRIPT CLOCK ============ -->
+<script>
+  function updateClock() {
+    const now = new Date();
+    const el = document.getElementById('clock');
+    if (el) {
+      el.textContent =
+        now.toLocaleDateString('id-ID', { day:'2-digit', month:'short' }) +
+        ' · ' + now.toLocaleTimeString('id-ID');
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
 </body>
 </html>
