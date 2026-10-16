@@ -838,7 +838,8 @@
       </div>
     </div>
 
-    <!-- ============ ACTION GRID — LINK UDAH DIISI ============ -->
+    <!-- ============ ACTION GRID ============ -->
+    <!-- Masuk GB Chat → GRUP -->
     <div class="action-grid">
       <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
@@ -846,7 +847,9 @@
         </svg>
         <span>Masuk GB Chat</span>
       </a>
-      <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
+
+      <!-- Masuk SL → SALURAN -->
+      <a class="action-btn" href="https://whatsapp.com/channel/0029VbCtqnw7IUYPaC857e3Y" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
           <path d="M3 11l19-9-9 19-2-8-8-2z"/>
         </svg>
@@ -939,7 +942,6 @@
 </div>
 
 <script>
-  // ============ PARTIKEL ============
   function createParticles(containerId, count) {
     const c = document.getElementById(containerId);
     if (!c) return;
@@ -957,7 +959,6 @@
   createParticles('loaderParticles', 18);
   createParticles('dashParticles', 12);
 
-  // ============ PROGRESS BAR ============
   (function() {
     const fill = document.getElementById('loaderFill');
     const percent = document.getElementById('loaderPercent');
@@ -984,7 +985,6 @@
     updateAll();
   }
 
-  // ============ STATISTIK ============
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -1020,7 +1020,6 @@
     updateWeather();
   }
 
-  // ============ PAKSA LOOP VIDEO HERO ============
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.play().catch(() => {});
@@ -1045,9 +1044,8 @@
   }
 
   // ============ POPUP JOIN CHANNEL ============
-  // ⚙️ SETTING WAKTU (dalam milidetik)
-  const POPUP_FIRST_DELAY = 5000;    // 5 detik pertama kali muncul
-  const POPUP_REPEAT_DELAY = 30000;  // 30 detik buat muncul lagi (ganti kalau mau)
+  const POPUP_FIRST_DELAY = 5000;
+  const POPUP_REPEAT_DELAY = 30000;
 
   function showChannelPopup() {
     const popup = document.getElementById('channelPopup');
@@ -1060,10 +1058,7 @@
   }
 
   function startChannelPopup() {
-    // Muncul pertama kali setelah 5 detik
     setTimeout(showChannelPopup, POPUP_FIRST_DELAY);
-
-    // Muncul lagi tiap 30 detik kalau udah ditutup
     setInterval(() => {
       const popup = document.getElementById('channelPopup');
       if (popup && !popup.classList.contains('show')) {
