@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard V4L3N</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1a;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background-image: radial-gradient(circle at 20% 20%, #1a1a2e 0%, #0f0f1a 60%);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #7f5af0, #2cb67d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p.subtitle {
+      color: #888;
+      margin-bottom: 50px;
+      font-size: 0.95rem;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    a.card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 40px 20px;
+      background: #16161f;
+      border: 1px solid #26263a;
+      border-radius: 16px;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    a.card:hover {
+      background: #1e1e2e;
+      border-color: #7f5af0;
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(127, 90, 240, 0.25);
+    }
+
+    .icon {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .label {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .desc {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <p class="subtitle">Pilih menu di bawah</p>
+
+  <div class="menu">
+    <a class="card" href="https://anime.domainlo.com" target="_blank">
+      <span class="icon">🎬</span>
+      <span class="label">Nonton Anime</span>
+      <span class="desc">Streaming & koleksi</span>
+    </a>
+
+    <a class="card" href="https://tools.domainlo.com" target="_blank">
+      <span class="icon">🛠️</span>
+      <span class="label">Tools</span>
+      <span class="desc">Utility & helper</span>
+    </a>
+
+    <a class="card" href="https://blog.domainlo.com" target="_blank">
+      <span class="icon">📝</span>
+      <span class="label">Blog</span>
+      <span class="desc">Tulisan & catatan</span>
+    </a>
+
+    <a class="card" href="https://github.com/username" target="_blank">
+      <span class="icon">💻</span>
+      <span class="label">Portfolio</span>
+      <span class="desc">Proyek & karya</span>
+    </a>
+  </div>
+
+  <footer>© 2026 — By V4L3N</footer>
+</body>
+</html>
