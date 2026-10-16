@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev // v4l3n</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --panel: rgba(18, 15, 12, 0.75);
+    --panel-2: rgba(25, 20, 15, 0.85);
+    --border: rgba(255, 215, 0, 0.15);
+    --gold: #d4af37;
+    --gold-soft: #e8c87a;
+    --gold-dim: #8a7020;
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --text: #ece8e0;
+    --muted: #8a8070;
+    --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background */
+  .dash-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: url('assets/tenka-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .dash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg,
+      rgba(10, 8, 6, 0.65) 0%,
+      rgba(10, 8, 6, 0.5) 40%,
+      rgba(10, 8, 6, 0.85) 100%);
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px 16px 120px;
+  }
+
+  /* Header */
+  .dev-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .dev-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .back-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(25, 20, 15, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+  .back-btn:hover {
+    background: rgba(45, 38, 25, 0.8);
+    border-color: var(--gold-dim);
+  }
+  .back-btn svg {
+    width: 20px; height: 20px;
+    stroke: var(--text);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dev-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* Card umum */
+  .card {
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  /* Versi badge */
+  .version-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--gold-soft);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  /* Profile dev */
+  .dev-profile {
+    text-align: center;
+    padding: 10px 0 20px;
+  }
+  .dev-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37, #e8c87a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-weight: 800;
+    font-size: 36px;
+    color: #1a1408;
+    box-shadow: 0 0 40px var(--gold-glow);
+    border: 3px solid rgba(255, 215, 0, 0.3);
+  }
+  .dev-name {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .dev-role {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--gold-soft);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .dev-bio {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* Stats */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .stat-item {
+    background: rgba(30, 25, 18, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 8px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--gold-soft);
+    text-shadow: 0 0 15px var(--gold-glow);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  /* Section */
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .card p {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  /* Tech chips */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 8px 14px;
+    background: rgba(30, 25, 18, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 20px;
+    color: var(--gold-soft);
+    letter-spacing: 0.3px;
+  }
+
+  /* List game */
+  .game-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .game-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: rgba(25, 20, 15, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .game-item:hover {
+    background: rgba(40, 32, 22, 0.8);
+    border-color: var(--gold-dim);
+    transform: translateY(-2px);
+  }
+  .game-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px currentColor;
+  }
+  .game-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .game-name {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .game-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Prinsip desain */
+  .principle {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .principle:last-child { margin-bottom: 0; }
+  .principle-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #d4af37, #e8c87a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #1a1408;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px var(--gold-glow);
+  }
+  .principle-content h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .principle-content p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), rgba(212, 175, 55, 0.1));
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 18px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px var(--gold-glow);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: var(--gold-soft);
+  }
+  .timeline-item p {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Contact button */
+  .contact-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: rgba(30, 25, 18, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+    color: var(--gold-soft);
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all 0.25s ease;
+    margin-top: 12px;
+  }
+  .contact-btn:hover {
+    background: rgba(50, 40, 25, 0.8);
+    border-color: var(--gold);
+  }
+
+  /* Footer */
+  .dev-footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 24px;
+    line-height: 1.8;
+  }
+  .dev-footer .accent {
+    color: var(--gold-soft);
+    font-weight: 700;
+  }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 468px;
+    background: rgba(20, 17, 12, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    z-index: 100;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .nav-item svg {
+    width: 20px; height: 20px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nav-item:hover {
+    color: var(--text);
+    background: rgba(35, 30, 22, 0.5);
+  }
+  .nav-item.active {
+    color: var(--gold-soft);
+  }
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold-glow);
+  }
+</style>
+</head>
+<body>
+
+<div class="dash-bg"></div>
+<div class="dash-overlay"></div>
+
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="dev-header">
+    <h1>Dev</h1>
+    <a class="back-btn" href="/">
+      <svg viewBox="0 0 24 24">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+    </a>
+  </div>
+  <div class="dev-subtitle">Di balik layar v4l3n</div>
+
+  <!-- Versi -->
+  <span class="version-badge">v1.0</span>
+
+  <!-- Profile card -->
+  <div class="card">
+    <div class="dev-profile">
+      <div class="dev-avatar">V</div>
+      <div class="dev-name">V4L3N</div>
+      <span class="dev-role">Web Developer</span>
+      <p class="dev-bio">
+        Membangun game dan aplikasi web dari nol dengan HTML, CSS, dan JavaScript murni — 
+        tanpa framework, tanpa ribet. Semua yang kamu mainkan di sini dirancang supaya ringan, 
+        cepat, dan enak dipakai di HP.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" id="statGame">0</div>
+        <div class="stat-label">GAME</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statLevel">0</div>
+        <div class="stat-label">LEVEL</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">0</div>
+        <div class="stat-label">FRAMEWORK</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tentang Proyek -->
+  <div class="card">
+    <div class="section-title">Tentang Proyek</div>
+    <p>
+      v4l3n adalah kumpulan tools dan game web bergaya minimalis yang terus tumbuh. 
+      Setiap modul punya fungsi sendiri — dari dashboard, panel, bot WA, anime, manga, 
+      game, sampai tools — dan semuanya menyimpan progres langsung di perangkatmu, 
+      tanpa akun dan tanpa server.
+    </p>
+  </div>
+
+  <!-- Teknologi -->
+  <div class="card">
+    <div class="section-title">Teknologi</div>
+    <div class="chips">
+      <span class="chip">HTML5 Canvas</span>
+      <span class="chip">CSS3</span>
+      <span class="chip">JavaScript</span>
+      <span class="chip">Web Audio API</span>
+      <span class="chip">LocalStorage</span>
+      <span class="chip">Jikan API</span>
+    </div>
+  </div>
+
+  <!-- List Game — TAMBAH SENDIRI DI SINI -->
+  <div class="card">
+    <div class="section-title">Yang Sudah Dibuat</div>
+    <div class="game-list" id="gameList">
+
+      <a class="game-item" href="/game.html">
+        <span class="game-dot" style="background:#ff4466; color:#ff4466;"></span>
+        <div class="game-info">
+          <div class="game-name">Geometry Dash</div>
+          <div class="game-desc">40 level lompat, duri, dan blok dengan sistem kunci level</div>
+        </div>
+      </a>
+
+      <a class="game-item" href="/game.html">
+        <span class="game-dot" style="background:#00ff88; color:#00ff88;"></span>
+        <div class="game-info">
+          <div class="game-name">Snake Neon</div>
+          <div class="game-desc">Ular klasik dengan 5 jenis makanan dan efek kecepatan</div>
+        </div>
+      </a>
+
+      <a class="game-item" href="/game.html">
+        <span class="game-dot" style="background:#00ccff; color:#00ccff;"></span>
+        <div class="game-info">
+          <div class="game-name">Block Blast</div>
+          <div class="game-desc">Puzzle geser balok, skin bisa diganti pakai foto galeri</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Prinsip Desain -->
+  <div class="card">
+    <div class="section-title">Prinsip Desain</div>
+
+    <div class="principle">
+      <div class="principle-num">1</div>
+      <div class="principle-content">
+        <h4>Simpel & Kontras</h4>
+        <p>Warna lembut di atas latar gelap, biar tetap jelas dibaca di mana saja.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">2</div>
+      <div class="principle-content">
+        <h4>Mobile-first</h4>
+        <p>Semua kontrol dibuat untuk jari: ketuk, geser, dan tarik — bukan cuma keyboard.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">3</div>
+      <div class="principle-content">
+        <h4>Ringan & Cepat</h4>
+        <p>Tanpa framework, tanpa library berat. Semua jalan murni HTML, CSS, JS.</p>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="principle-num">4</div>
+      <div class="principle-content">
+        <h4>Datamu Milikmu</h4>
+        <p>Progres dan skor tersimpan di perangkat, tanpa login dan tanpa dilacak.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Perjalanan -->
+  <div class="card">
+    <div class="section-title">Perjalanan</div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <h4>Fondasi</h4>
+        <p>Dashboard v4l3n dengan navigasi modul.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Ekspansi</h4>
+        <p>Panel & bot WA, anime, manga bergabung ke koleksi.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Tancap Gas</h4>
+        <p>Game dan tools menyusul.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Sekarang</h4>
+        <p>Navigasi baru: Game, Komik, Dev, Tools.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Segera</h4>
+        <p>Tools bermanfaat dan game-game baru lainnya.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Kontak -->
+  <div class="card">
+    <div class="section-title">Punya Masukan?</div>
+    <p style="margin-bottom: 8px;">
+      Ada ide game, temuan bug, atau saran fitur? Kanal kontak langsung sedang disiapkan.
+    </p>
+    <a class="contact-btn" href="#">Kontak — Segera Hadir</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="dev-footer">
+    Dibuat dengan kopi, kode, dan banyak percobaan.<br>
+    © 2026 <span class="accent">v4l3n.web.id</span>
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <a class="nav-item" href="/">
+    <svg viewBox="0 0 24 24">
+      <line x1="6" y1="12" x2="10" y2="12"/>
+      <line x1="8" y1="10" x2="8" y2="14"/>
+      <line x1="15" y1="13" x2="15.01" y2="13"/>
+      <line x1="18" y1="11" x2="18.01" y2="11"/>
+      <rect x="2" y="6" width="20" height="12" rx="3"/>
+    </svg>
+    <span>Game</span>
+  </a>
+  <a class="nav-item" href="https://valenmanga.my.id" target="_blank">
+    <svg viewBox="0 0 24 24">
+      <path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/>
+      <path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>
+    </svg>
+    <span>Komik</span>
+  </a>
+  <a class="nav-item active" href="/dev.html">
+    <svg viewBox="0 0 24 24">
+      <polyline points="16 18 22 12 16 6"/>
+      <polyline points="8 6 2 12 8 18"/>
+    </svg>
+    <span>Dev</span>
+  </a>
+  <a class="nav-item" href="/tools.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-2.4 2.6-2.6z"/>
+    </svg>
+    <span>Tools</span>
+  </a>
+</nav>
+
+<script>
+  // ============ AUTO COUNT GAME & LEVEL ============
+  // Hitung jumlah game dari list
+  const gameList = document.getElementById('gameList');
+  if (gameList) {
+    const totalGame = gameList.querySelectorAll('.game-item').length;
+    document.getElementById('statGame').textContent = totalGame;
+
+    // Total level — total game × 40 (asumsi tiap game 40 level)
+    // Ganti angka 40 sesuai kebutuhan
+    document.getElementById('statLevel').textContent = totalGame * 40;
+  }
+</script>
+
+</body>
+</html>
