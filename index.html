@@ -740,7 +740,6 @@
 
   <div class="dash-wrap">
 
-    <!-- TOP BAR — sekarang cuma 1 tombol (menu), tombol panah dihapus, diganti mute musik -->
     <div class="top-bar">
       <div class="icon-btn">
         <svg viewBox="0 0 24 24">
@@ -750,7 +749,6 @@
         </svg>
       </div>
 
-      <!-- TOMBOL MUTE MUSIK -->
       <div class="icon-btn" id="muteBtn" onclick="toggleMusic()" title="Mute / Unmute musik">
         <svg id="muteIcon" viewBox="0 0 24 24">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -843,7 +841,6 @@
       </div>
     </div>
 
-    <!-- Masuk GB Chat → GRUP -->
     <div class="action-grid">
       <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
@@ -852,7 +849,6 @@
         <span>Masuk GB Chat</span>
       </a>
 
-      <!-- Masuk SL → SALURAN -->
       <a class="action-btn" href="https://whatsapp.com/channel/0029VbCtqnw7IUYPaC857e3Y" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
           <path d="M3 11l19-9-9 19-2-8-8-2z"/>
@@ -884,7 +880,7 @@
 
   <!-- Bottom nav -->
   <nav class="bottom-nav">
-    <a class="nav-item active" href="/">
+    <a class="nav-item" href="/game.html">
       <svg viewBox="0 0 24 24">
         <line x1="6" y1="12" x2="10" y2="12"/>
         <line x1="8" y1="10" x2="8" y2="14"/>
@@ -987,22 +983,16 @@
     }, 200);
   })();
 
-  // ============ TOMBOL LANJUT + AUTO PLAY MUSIK ============
   function goToDashboard() {
     document.getElementById('loader').classList.add('hide');
     document.getElementById('dashboard').classList.add('show');
     window.scrollTo(0, 0);
     updateAll();
 
-    // AUTO PLAY MUSIK
     const music = document.getElementById('bgMusic');
     if (music) {
-      music.volume = 1.0; // Volume 100% (ngikutin volume HP user)
-      music.play().then(() => {
-        console.log('Musik jalan');
-      }).catch(err => {
-        console.warn('Autoplay diblokir:', err);
-        // Fallback: coba play pas user klik di mana aja
+      music.volume = 1.0;
+      music.play().then(() => {}).catch(err => {
         document.addEventListener('click', function playOnce() {
           music.play().catch(() => {});
           document.removeEventListener('click', playOnce);
@@ -1011,7 +1001,6 @@
     }
   }
 
-  // ============ TOGGLE MUTE MUSIK ============
   let musicMuted = false;
 
   function toggleMusic() {
@@ -1038,7 +1027,6 @@
     }
   }
 
-  // ============ STATISTIK ============
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -1074,7 +1062,6 @@
     updateWeather();
   }
 
-  // ============ PAKSA LOOP VIDEO HERO ============
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.play().catch(() => {});
@@ -1098,9 +1085,8 @@
     });
   }
 
-  // ============ POPUP JOIN CHANNEL ============
-  const POPUP_FIRST_DELAY = 2000;
-  const POPUP_REPEAT_DELAY = 50000;
+  const POPUP_FIRST_DELAY = 5000;
+  const POPUP_REPEAT_DELAY = 30000;
 
   function showChannelPopup() {
     const popup = document.getElementById('channelPopup');
