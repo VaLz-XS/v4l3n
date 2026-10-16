@@ -6,12 +6,14 @@
 <title>v4l3n // Dashboard</title>
 <style>
   :root {
-    --bg: #0a0805;
+    --bg: #0a0a0c;
+    --panel: rgba(15, 12, 18, 0.75);
+    --border: rgba(255, 200, 150, 0.2);
+    --red: #ff4444;
+    --orange: #ff9944;
     --gold: #ffd700;
-    --gold-dim: #b8860b;
-    --gold-glow: rgba(255, 215, 0, 0.4);
-    --text: #fff8dc;
-    --muted: #8b7355;
+    --text: #f0e8e0;
+    --muted: #8a8078;
     --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   }
@@ -47,74 +49,67 @@
     visibility: hidden;
   }
 
-  /* Poster (muncul duluan sebelum video) */
-  .loader-poster {
+  /* Background gambar full */
+  .loader-bg {
     position: absolute;
     inset: 0;
-    background-image: url('assets/tenka-poster.jpg');
+    background-image: url('assets/tenka-bg.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     z-index: 0;
     opacity: 0;
-    animation: fadeInPoster 0.8s ease forwards;
+    animation: fadeInBg 2s ease forwards;
+    animation-delay: 0.3s;
   }
-  @keyframes fadeInPoster {
+  @keyframes fadeInBg {
     to { opacity: 1; }
   }
-  /* Kalau nggak ada poster, fallback warna */
-  .loader-poster.no-poster {
-    background-image: none;
-    background: linear-gradient(135deg, #1a1208, #0a0805);
-  }
 
-  /* Video background */
-  .loader-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-  }
-  .loader-video.ready {
-    opacity: 1;
-  }
-
-  /* Overlay gelap */
+  /* Overlay gradasi — gelap di kanan biar panel kebaca, terang di kiri biar Tenka keliatan */
   .loader-overlay {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    background: linear-gradient(180deg,
-      rgba(10, 8, 5, 0.75) 0%,
-      rgba(10, 8, 5, 0.55) 40%,
-      rgba(10, 8, 5, 0.9) 100%);
+    z-index: 1;
+    background: linear-gradient(105deg,
+      rgba(10, 10, 12, 0.15) 0%,
+      rgba(10, 10, 12, 0.35) 40%,
+      rgba(10, 10, 12, 0.85) 65%,
+      rgba(10, 10, 12, 0.95) 100%);
     pointer-events: none;
   }
 
+  /* Vignette di tepi */
   .loader-vignette {
     position: absolute;
     inset: 0;
-    z-index: 2;
-    background: radial-gradient(ellipse at center,
-      transparent 30%,
-      rgba(10, 8, 5, 0.7) 100%);
+    z-index: 1;
+    background: radial-gradient(ellipse at 30% 60%,
+      transparent 20%,
+      rgba(10, 10, 12, 0.6) 90%);
     pointer-events: none;
   }
 
-  /* Konten loader */
+  /* Konten loader — di KANAN biar muka Tenka nggak ketutup */
   .loader-content {
     position: relative;
-    z-index: 3;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    padding: 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .loader-inner {
     width: 100%;
     max-width: 420px;
-    padding: 0 24px;
-    text-align: center;
+    text-align: left;
     opacity: 0;
-    animation: fadeInUp 1s ease forwards;
-    animation-delay: 1s;
+    animation: fadeInUp 1.2s ease forwards;
+    animation-delay: 1.2s;
   }
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -123,89 +118,114 @@
 
   .loader-title {
     font-family: var(--mono);
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-shadow: 0 0 20px var(--gold-glow);
-    margin-bottom: 20px;
+    font-size: 12px;
+    letter-spacing: 5px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 24px;
     text-transform: uppercase;
+    font-weight: 700;
+    text-align: right;
   }
 
+  /* Panel sambutan */
   .welcome-panel {
-    background: rgba(20, 15, 5, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-    text-align: left;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+    background: rgba(15, 12, 18, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 200, 150, 0.18);
+    border-radius: 18px;
+    padding: 26px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--red), var(--gold));
+    box-shadow: 0 0 15px rgba(255, 100, 100, 0.4);
   }
   .welcome-panel p {
     color: var(--text);
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.75;
   }
   .welcome-panel .highlight {
-    color: var(--gold);
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     font-weight: 700;
-    text-shadow: 0 0 10px var(--gold-glow);
   }
 
+  /* Tombol */
   .loader-btn {
     display: block;
     width: 100%;
     padding: 16px 24px;
-    background: linear-gradient(135deg, #ffd700, #ffaa00);
-    color: #0a0805;
+    background: linear-gradient(135deg, #ff4444 0%, #ff9944 50%, #ffd700 100%);
+    color: #0a0a0c;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     font-family: var(--font);
     font-size: 15px;
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 6px 30px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 30px rgba(255, 100, 50, 0.35);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .loader-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #ff6666, #ffbb66, #ffe44d);
     opacity: 0;
-    animation: fadeInUp 1s ease forwards;
-    animation-delay: 1.6s;
+    transition: opacity 0.3s;
+  }
+  .loader-btn span {
+    position: relative;
+    z-index: 1;
   }
   .loader-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
-    background: linear-gradient(135deg, #ffe44d, #ffbb33);
+    box-shadow: 0 12px 45px rgba(255, 100, 50, 0.55);
   }
+  .loader-btn:hover::before { opacity: 1; }
   .loader-btn:active { transform: translateY(0); }
 
+  /* Progress bar */
   .loader-progress {
     width: 100%;
     height: 3px;
-    background: rgba(255, 215, 0, 0.15);
+    background: rgba(255, 200, 150, 0.12);
     border-radius: 2px;
     overflow: hidden;
-    margin-top: 20px;
-    opacity: 0;
-    animation: fadeInUp 1s ease forwards;
-    animation-delay: 1.8s;
+    margin-top: 22px;
   }
   .loader-progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, var(--gold), #ffaa00);
-    box-shadow: 0 0 12px var(--gold);
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--gold));
+    box-shadow: 0 0 15px rgba(255, 150, 50, 0.6);
     transition: width 0.2s linear;
   }
   .loader-percent {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 10px;
+    letter-spacing: 2px;
     color: var(--muted);
     margin-top: 10px;
-    opacity: 0;
-    animation: fadeInUp 1s ease forwards;
-    animation-delay: 2s;
+    text-align: right;
   }
 
   /* ============ DASHBOARD ============ */
@@ -214,171 +234,525 @@
     inset: 0;
     display: none;
     overflow-y: auto;
-    padding: 40px 20px;
+    overflow-x: hidden;
     z-index: 1;
   }
   #dashboard.show { display: block; }
 
+  /* Background dashboard — SAMA gambar, beda treatment */
+  .dash-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: url('assets/tenka-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(0.4) saturate(1.1) blur(2px);
+    transform: scale(1.05);
+  }
+
+  /* Overlay dashboard */
+  .dash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg,
+      rgba(10, 10, 12, 0.75) 0%,
+      rgba(10, 10, 12, 0.5) 40%,
+      rgba(10, 10, 12, 0.85) 100%);
+    pointer-events: none;
+  }
+
+  /* Pattern grid */
+  .dash-grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(255, 150, 100, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 150, 100, 0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+    animation: gridShift 30s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes gridShift {
+    from { background-position: 0 0; }
+    to   { background-position: 44px 44px; }
+  }
+
+  /* Glow radial */
+  .dash-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255, 100, 100, 0.10), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(255, 200, 50, 0.08), transparent 45%);
+    pointer-events: none;
+  }
+
   .dash-wrap {
-    max-width: 1200px;
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
     margin: 0 auto;
+    padding: 40px 20px 80px;
   }
-  .dash-title {
+
+  /* Header */
+  .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px;
+    border-radius: 14px;
+    background: rgba(15, 12, 18, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .dash-brand {
     font-family: var(--mono);
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--gold);
-    text-shadow: 0 0 20px var(--gold-glow);
-    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
   }
-  .dash-sub {
-    font-size: 14px;
+  .dash-clock {
+    font-family: var(--mono);
+    font-size: 12px;
     color: var(--muted);
-    margin-bottom: 40px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
   }
-  .dash-grid {
+  .dash-clock .time {
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+
+  /* Hero */
+  .dash-hero {
+    padding: 36px 28px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255, 100, 100, 0.06), rgba(15, 12, 18, 0.5));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+    box-shadow: 0 0 40px rgba(255, 100, 100, 0.06);
+  }
+  .dash-hero-prompt {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .dash-hero-prompt .u {
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dash-hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #ff6666, #ffaa44, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(255, 150, 100, 0.3));
+  }
+  .dash-hero p {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Section title */
+  .sec-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .sec-title .num {
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  .sec-title .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 100, 100, 0.2), transparent);
+  }
+
+  /* Grid menu */
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 16px;
+    margin-bottom: 50px;
   }
-  .dash-card {
-    padding: 24px 20px;
-    background: rgba(20, 15, 5, 0.7);
-    border: 1px solid rgba(255, 215, 0, 0.2);
+
+  a.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 22px;
+    background: rgba(15, 12, 18, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border);
     border-radius: 14px;
     text-decoration: none;
     color: var(--text);
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
+    overflow: hidden;
   }
-  .dash-card:hover {
-    border-color: var(--gold-dim);
-    transform: translateY(-4px);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
-    background: rgba(30, 22, 8, 0.9);
+  a.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: linear-gradient(180deg, var(--red), var(--gold));
+    box-shadow: 0 0 10px rgba(255, 100, 100, 0.5);
+    transition: height 0.3s ease;
   }
-  .dash-card .label {
-    font-size: 16px;
+  a.card:hover {
+    border-color: rgba(255, 150, 100, 0.4);
+    transform: translateY(-5px);
+    background: rgba(25, 18, 22, 0.9);
+    box-shadow: 0 0 30px rgba(255, 100, 100, 0.2);
+  }
+  a.card:hover::before { height: 100%; }
+
+  .card-badge {
+    position: absolute;
+    top: 14px; right: 14px;
+    font-family: var(--mono);
+    font-size: 9px;
     font-weight: 700;
-    margin-bottom: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
-  .dash-card .desc {
+  .badge-hot {
+    background: rgba(255, 80, 80, 0.18);
+    color: #ff6666;
+    border: 1px solid rgba(255, 80, 80, 0.4);
+  }
+  .badge-new {
+    background: rgba(0, 255, 200, 0.15);
+    color: #00ffcc;
+    border: 1px solid rgba(0, 255, 200, 0.35);
+  }
+  .badge-active {
+    background: rgba(255, 200, 50, 0.12);
+    color: var(--gold);
+    border: 1px solid rgba(255, 200, 50, 0.35);
+  }
+
+  a.card .idx {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  a.card svg {
+    width: 36px; height: 36px;
+    stroke: url(#iconGradient);
+    stroke-width: 1.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 6px rgba(255, 150, 100, 0.4));
+    transition: transform 0.3s ease;
+  }
+  a.card:hover svg { transform: scale(1.1) rotate(-3deg); }
+
+  a.card .label {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  a.card .desc {
     font-size: 12px;
     color: var(--muted);
+    line-height: 1.4;
+  }
+  a.card .arrow {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    color: var(--muted);
+    font-size: 14px;
+    transition: transform 0.25s, color 0.25s;
+  }
+  a.card:hover .arrow {
+    transform: translate(4px, -4px);
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Footer */
+  footer.bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  footer.bottom .accent {
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============ RESPONSIVE HP ============ */
+  @media (max-width: 700px) {
+    .loader-content {
+      justify-content: center;
+      align-items: flex-end;
+      padding: 24px 20px 40px;
+      min-height: 100vh;
+    }
+    .loader-inner {
+      max-width: 100%;
+      text-align: left;
+    }
+    .loader-title {
+      text-align: center;
+    }
+    /* Di HP, panel di bawah, Tenka keliatan di atas */
+    .loader-overlay {
+      background: linear-gradient(180deg,
+        rgba(10, 10, 12, 0.15) 0%,
+        rgba(10, 10, 12, 0.4) 35%,
+        rgba(10, 10, 12, 0.85) 60%,
+        rgba(10, 10, 12, 0.95) 100%);
+    }
+    .loader-vignette {
+      background: radial-gradient(ellipse at 30% 30%,
+        transparent 20%,
+        rgba(10, 10, 12, 0.6) 90%);
+    }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    a.card { padding: 18px 16px; gap: 10px; }
+    a.card svg { width: 30px; height: 30px; }
+    a.card .label { font-size: 0.92rem; }
+    a.card .desc { font-size: 11px; }
+    a.card .arrow { display: none; }
+    .dash-hero { padding: 28px 22px; }
+    .welcome-panel { padding: 22px 20px; }
+    .welcome-panel p { font-size: 13px; }
   }
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- SVG gradient definition (buat icon) -->
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6666"/>
+      <stop offset="50%" stop-color="#ffaa44"/>
+      <stop offset="100%" stop-color="#ffd700"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ LOADING SCREEN ============ -->
 <div id="loader">
 
-  <!-- Poster (muncul duluan) -->
-  <div class="loader-poster" id="poster"></div>
-
-  <!-- Video background -->
-  <video
-    class="loader-video"
-    id="bgVideo"
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto">
-    <source src="assets/tenka-bg.mp4" type="video/mp4">
-  </video>
-
+  <div class="loader-bg"></div>
   <div class="loader-overlay"></div>
   <div class="loader-vignette"></div>
 
   <div class="loader-content">
-    <div class="loader-title">V4L3N // DASHBOARD</div>
+    <div class="loader-inner">
 
-    <div class="welcome-panel">
-      <p>
-        Hai <span class="highlight">V!</span> Selamat datang kembali di <span class="highlight">V4L3N Dashboard</span>. 
-        Panel, bot WA, anime, manga, game, dan tools siap dipakai. 
-        Pencet tombol di bawah ya.
-      </p>
+      <div class="loader-title">V4L3N // DASHBOARD</div>
+
+      <div class="welcome-panel">
+        <p>
+          Hai <span class="highlight">V!</span> Selamat datang kembali di <span class="highlight">V4L3N Dashboard</span>. 
+          Panel, bot WA, anime, manga, game, dan tools siap dipakai. 
+          Pencet tombol di bawah ya.
+        </p>
+      </div>
+
+      <button class="loader-btn" onclick="goToDashboard()">
+        <span>Lanjut ke Hub Utama</span>
+      </button>
+
+      <div class="loader-progress">
+        <div class="loader-progress-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-percent" id="loaderPercent">0%</div>
+
     </div>
-
-    <button class="loader-btn" onclick="goToDashboard()">
-      Lanjut ke Hub Utama
-    </button>
-
-    <div class="loader-progress">
-      <div class="loader-progress-fill" id="loaderFill"></div>
-    </div>
-    <div class="loader-percent" id="loaderPercent">0%</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ============ DASHBOARD ============ -->
 <div id="dashboard">
-  <div class="dash-wrap">
-    <div class="dash-title">~V4L3N // HUB UTAMA</div>
-    <div class="dash-sub">Pilih modul di bawah untuk memulai.</div>
 
-    <div class="dash-grid">
-      <a class="dash-card" href="https://valz.my.id" target="_blank">
-        <div class="label">Panel & Bot WA</div>
-        <div class="desc">Hosting panel + SC bot WhatsApp</div>
-      </a>
-      <a class="dash-card" href="https://valenanime.my.id" target="_blank">
-        <div class="label">Anime</div>
-        <div class="desc">Streaming & koleksi anime</div>
-      </a>
-      <a class="dash-card" href="https://valenmanga.my.id" target="_blank">
-        <div class="label">Manga</div>
-        <div class="desc">Koleksi & chapter manga</div>
-      </a>
-      <a class="dash-card" href="/game.html">
-        <div class="label">Game</div>
-        <div class="desc">Mini games seru</div>
-      </a>
-      <a class="dash-card" href="/tools.html">
-        <div class="label">Tools</div>
-        <div class="desc">Utility & helper</div>
-      </a>
-      <a class="dash-card" href="/dev.html">
-        <div class="label">Dev</div>
-        <div class="desc">Tentang pembuat</div>
-      </a>
+  <div class="dash-bg"></div>
+  <div class="dash-overlay"></div>
+  <div class="dash-grid-bg"></div>
+  <div class="dash-glow"></div>
+
+  <div class="dash-wrap">
+
+    <header class="dash-header">
+      <div class="dash-brand">~V4L3N // HUB UTAMA</div>
+      <div class="dash-clock">
+        <span id="dashDate">-</span>
+        <span class="time" id="dashTime">--:--:--</span>
+      </div>
+    </header>
+
+    <section class="dash-hero">
+      <div class="dash-hero-prompt">
+        PS C:\Users\guest\v4l3n&gt; <span class="u">buka hub utama</span>
+      </div>
+      <h1>SELAMAT DATANG.</h1>
+      <p>Pilih modul di bawah untuk memulai.</p>
+    </section>
+
+    <div class="sec-title">
+      <span class="num">#01</span>
+      <span>MODUL TERSEDIA</span>
+      <span class="line"></span>
     </div>
+
+    <div class="grid">
+
+      <a class="card" href="https://valz.my.id" target="_blank">
+        <span class="card-badge badge-hot">HOT</span>
+        <span class="idx">#01</span>
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="6" rx="1.5"/>
+          <rect x="3" y="14" width="18" height="6" rx="1.5"/>
+          <circle cx="7" cy="7" r="0.8" fill="currentColor"/>
+          <circle cx="7" cy="17" r="0.8" fill="currentColor"/>
+        </svg>
+        <span class="label">Panel & Bot WA</span>
+        <span class="desc">Hosting panel + SC bot WhatsApp</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="card" href="https://valenanime.my.id" target="_blank">
+        <span class="card-badge badge-new">NEW</span>
+        <span class="idx">#02</span>
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="M10 9l5 3-5 3V9z"/>
+        </svg>
+        <span class="label">Anime</span>
+        <span class="desc">Streaming & koleksi anime</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="card" href="https://valenmanga.my.id" target="_blank">
+        <span class="card-badge badge-new">NEW</span>
+        <span class="idx">#03</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/>
+          <path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>
+        </svg>
+        <span class="label">Manga</span>
+        <span class="desc">Koleksi & chapter manga</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="card" href="/game.html">
+        <span class="card-badge badge-active">AKTIF</span>
+        <span class="idx">#04</span>
+        <svg viewBox="0 0 24 24">
+          <line x1="6" y1="12" x2="10" y2="12"/>
+          <line x1="8" y1="10" x2="8" y2="14"/>
+          <line x1="15" y1="13" x2="15.01" y2="13"/>
+          <line x1="18" y1="11" x2="18.01" y2="11"/>
+          <rect x="2" y="6" width="20" height="12" rx="3"/>
+        </svg>
+        <span class="label">Game</span>
+        <span class="desc">Mini games seru</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="card" href="/tools.html">
+        <span class="card-badge badge-active">AKTIF</span>
+        <span class="idx">#05</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-2.4 2.6-2.6z"/>
+        </svg>
+        <span class="label">Tools</span>
+        <span class="desc">Utility & helper</span>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a class="card" href="/dev.html">
+        <span class="idx">#06</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M16 18a4 4 0 0 0-8 0"/>
+          <circle cx="12" cy="11" r="3"/>
+          <path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>
+        </svg>
+        <span class="label">Dev</span>
+        <span class="desc">Tentang pembuat</span>
+        <span class="arrow">↗</span>
+      </a>
+
+    </div>
+
+    <footer class="bottom">
+      <div>© 2026 <span class="accent">v4l3n.web.id</span> — all rights reserved</div>
+      <div class="accent">// SYS_READY</div>
+    </footer>
+
   </div>
 </div>
 
 <script>
-  // ============ VIDEO LOAD ============
-  const video = document.getElementById('bgVideo');
-  const poster = document.getElementById('poster');
-
-  // Kalau video selesai load, fade-in video & hide poster
-  video.addEventListener('loadeddata', () => {
-    video.classList.add('ready');
-    setTimeout(() => {
-      poster.style.opacity = '0';
-      poster.style.transition = 'opacity 1s ease';
-    }, 1000);
-  });
-
-  // Kalau video error (file nggak ada / format salah), fallback
-  video.addEventListener('error', () => {
-    poster.classList.add('no-poster');
-    video.style.display = 'none';
-  });
-
-  // ============ PROGRESS BAR (simulasi loading) ============
+  // ============ PROGRESS BAR ============
   (function() {
     const fill = document.getElementById('loaderFill');
     const percent = document.getElementById('loaderPercent');
     let p = 0;
 
     const interval = setInterval(() => {
-      // Loading pelan dulu sampai 70%, baru cepet
-      let increment;
-      if (p < 70) increment = Math.random() * 5 + 2;
-      else increment = Math.random() * 15 + 5;
-
+      let increment = p < 70 ? Math.random() * 5 + 2 : Math.random() * 15 + 5;
       p += increment;
       if (p >= 100) {
         p = 100;
@@ -396,11 +770,22 @@
   function goToDashboard() {
     const loader = document.getElementById('loader');
     const dashboard = document.getElementById('dashboard');
-    
     loader.classList.add('hide');
     dashboard.classList.add('show');
     window.scrollTo(0, 0);
   }
+
+  // ============ JAM ============
+  function updateClock() {
+    const now = new Date();
+    const dateEl = document.getElementById('dashDate');
+    const timeEl = document.getElementById('dashTime');
+    if (!dateEl || !timeEl) return;
+    dateEl.textContent = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    timeEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
 </script>
 
 </body>
