@@ -838,14 +838,15 @@
       </div>
     </div>
 
+    <!-- ============ ACTION GRID — LINK UDAH DIISI ============ -->
     <div class="action-grid">
-      <a class="action-btn" href="#">
+      <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Masuk GB Chat</span>
       </a>
-      <a class="action-btn" href="#">
+      <a class="action-btn" href="https://chat.whatsapp.com/KBPQssTN6cI0TUJtjKBoML" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24">
           <path d="M3 11l19-9-9 19-2-8-8-2z"/>
         </svg>
@@ -976,7 +977,6 @@
     }, 200);
   })();
 
-  // ============ TOMBOL ============
   function goToDashboard() {
     document.getElementById('loader').classList.add('hide');
     document.getElementById('dashboard').classList.add('show');
@@ -1045,6 +1045,10 @@
   }
 
   // ============ POPUP JOIN CHANNEL ============
+  // ⚙️ SETTING WAKTU (dalam milidetik)
+  const POPUP_FIRST_DELAY = 5000;    // 5 detik pertama kali muncul
+  const POPUP_REPEAT_DELAY = 30000;  // 30 detik buat muncul lagi (ganti kalau mau)
+
   function showChannelPopup() {
     const popup = document.getElementById('channelPopup');
     if (popup) popup.classList.add('show');
@@ -1057,15 +1061,15 @@
 
   function startChannelPopup() {
     // Muncul pertama kali setelah 5 detik
-    setTimeout(showChannelPopup, 5000);
+    setTimeout(showChannelPopup, POPUP_FIRST_DELAY);
 
-    // Muncul lagi tiap 5 detik kalau udah ditutup
+    // Muncul lagi tiap 30 detik kalau udah ditutup
     setInterval(() => {
       const popup = document.getElementById('channelPopup');
       if (popup && !popup.classList.contains('show')) {
         showChannelPopup();
       }
-    }, 5000);
+    }, POPUP_REPEAT_DELAY);
   }
 
   startChannelPopup();
