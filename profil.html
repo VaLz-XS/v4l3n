@@ -58,7 +58,6 @@
     padding: 20px 16px 120px;
   }
 
-  /* Header */
   .profil-header {
     display: flex;
     justify-content: space-between;
@@ -102,7 +101,6 @@
     margin-bottom: 20px;
   }
 
-  /* Card umum */
   .card {
     background: var(--panel);
     backdrop-filter: blur(20px);
@@ -130,7 +128,7 @@
     stroke-linejoin: round;
   }
 
-  /* Profile card */
+  /* Profile main */
   .profile-main {
     display: flex;
     align-items: center;
@@ -145,19 +143,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
+    font-size: 36px;
+    font-weight: 800;
+    color: #1a1408;
     flex-shrink: 0;
     box-shadow: 0 0 30px var(--gold-glow);
     cursor: pointer;
     transition: all 0.25s ease;
     position: relative;
+    overflow: hidden;
   }
   .profile-avatar-lg:hover {
     transform: scale(1.05);
     box-shadow: 0 0 40px var(--gold-glow);
   }
-  .profile-avatar-lg::after {
-    content: '✎';
+  .profile-avatar-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .profile-avatar-lg .edit-badge {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -165,13 +171,19 @@
     height: 26px;
     border-radius: 50%;
     background: var(--gold);
-    color: #1a1408;
-    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid var(--bg);
-    font-weight: 700;
+    z-index: 2;
+  }
+  .profile-avatar-lg .edit-badge svg {
+    width: 12px; height: 12px;
+    stroke: #1a1408;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .profile-info-lg {
     flex: 1;
@@ -187,8 +199,15 @@
     gap: 6px;
   }
   .profile-name-lg .edit-icon {
-    font-size: 12px;
-    color: var(--muted);
+    display: inline-flex;
+  }
+  .profile-name-lg .edit-icon svg {
+    width: 14px; height: 14px;
+    stroke: var(--muted);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .profile-level-lg {
     display: inline-block;
@@ -247,9 +266,22 @@
     padding: 14px 8px;
     text-align: center;
   }
-  .stat-item .icon {
-    font-size: 22px;
-    margin-bottom: 6px;
+  .stat-item .icon-svg {
+    width: 26px;
+    height: 26px;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-item .icon-svg svg {
+    width: 26px; height: 26px;
+    stroke: var(--gold-soft);
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 6px var(--gold-glow));
   }
   .stat-item .val {
     font-family: var(--mono);
@@ -265,7 +297,7 @@
     letter-spacing: 1px;
   }
 
-  /* Daily reward */
+  /* Daily */
   .daily-btn {
     display: block;
     width: 100%;
@@ -282,6 +314,18 @@
     transition: all 0.25s ease;
     box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .daily-btn svg {
+    width: 18px; height: 18px;
+    stroke: #1a1408;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .daily-btn:hover:not(:disabled) {
     transform: translateY(-2px);
@@ -293,6 +337,7 @@
     box-shadow: none;
     cursor: not-allowed;
   }
+  .daily-btn:disabled svg { stroke: var(--muted); }
   .daily-info {
     text-align: center;
     font-size: 11px;
@@ -300,7 +345,7 @@
     font-family: var(--mono);
   }
 
-  /* Avatar picker modal */
+  /* Modal */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -330,6 +375,8 @@
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     animation: slideUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
   }
   @keyframes slideUp {
     from { transform: translateY(30px); opacity: 0; }
@@ -342,36 +389,8 @@
     text-align: center;
     color: var(--gold-soft);
   }
-  .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .avatar-option {
-    aspect-ratio: 1;
-    background: rgba(10, 8, 6, 0.6);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .avatar-option:hover {
-    background: rgba(212, 175, 55, 0.15);
-    border-color: var(--gold);
-    transform: scale(1.05);
-  }
-  .avatar-option.selected {
-    background: rgba(212, 175, 55, 0.2);
-    border-color: var(--gold);
-    box-shadow: 0 0 15px var(--gold-glow);
-  }
 
-  .modal input {
+  .modal input[type="text"] {
     width: 100%;
     padding: 12px 14px;
     background: rgba(10, 8, 6, 0.7);
@@ -383,7 +402,7 @@
     outline: none;
     margin-bottom: 14px;
   }
-  .modal input:focus {
+  .modal input[type="text"]:focus {
     border-color: var(--gold-dim);
   }
 
@@ -401,18 +420,96 @@
     cursor: pointer;
     transition: all 0.25s ease;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .modal-btn svg {
+    width: 16px; height: 16px;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .modal-btn.primary {
     background: linear-gradient(135deg, #d4af37, #e8c87a);
     color: #1a1408;
   }
+  .modal-btn.primary svg { stroke: #1a1408; }
   .modal-btn.secondary {
     background: rgba(25, 20, 15, 0.8);
     color: var(--text);
     border: 1px solid var(--border);
   }
+  .modal-btn.secondary svg { stroke: var(--text); }
   .modal-btn:hover {
     transform: translateY(-2px);
+  }
+
+  /* Upload area */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-bottom: 14px;
+  }
+  .upload-area:hover {
+    border-color: var(--gold-dim);
+    background: rgba(212, 175, 55, 0.05);
+  }
+  .upload-area svg {
+    width: 40px;
+    height: 40px;
+    stroke: var(--gold-soft);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    margin-bottom: 10px;
+  }
+  .upload-area p {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .upload-area span {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .upload-area input[type="file"] {
+    display: none;
+  }
+
+  /* Avatar preview */
+  .avatar-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    background: rgba(10, 8, 6, 0.6);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .avatar-preview svg {
+    width: 40px;
+    height: 40px;
+    stroke: var(--muted);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   /* Achievement */
@@ -431,9 +528,7 @@
     border-radius: 12px;
     transition: all 0.25s ease;
   }
-  .achievement-item.locked {
-    opacity: 0.4;
-  }
+  .achievement-item.locked { opacity: 0.4; }
   .achievement-item.unlocked {
     border-color: rgba(212, 175, 55, 0.4);
     background: rgba(212, 175, 55, 0.08);
@@ -446,8 +541,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
     flex-shrink: 0;
+  }
+  .achievement-icon svg {
+    width: 22px; height: 22px;
+    stroke: var(--gold-soft);
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .achievement-info {
     flex: 1;
@@ -464,22 +566,37 @@
     line-height: 1.4;
   }
   .achievement-status {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
   .achievement-status.done {
     background: rgba(100, 255, 150, 0.15);
-    color: #88ffaa;
-    border: 1px solid rgba(100, 255, 150, 0.3);
+    border: 1px solid rgba(100, 255, 150, 0.4);
+  }
+  .achievement-status.done svg {
+    width: 12px; height: 12px;
+    stroke: #88ffaa;
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .achievement-status.locked {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--muted);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .achievement-status.locked svg {
+    width: 10px; height: 10px;
+    stroke: var(--muted);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   /* Toast */
@@ -498,10 +615,23 @@
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 90%;
   }
   .toast.show {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
+  }
+  .toast svg {
+    width: 16px; height: 16px;
+    stroke: #88ffaa;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
   }
   .toast .toast-text {
     font-size: 13px;
@@ -591,10 +721,24 @@
   <!-- Profile Card -->
   <div class="card">
     <div class="profile-main">
-      <div class="profile-avatar-lg" id="avatarBtn" onclick="openAvatarModal()">🦊</div>
+      <div class="profile-avatar-lg" id="avatarBtn" onclick="openAvatarModal()">
+        <span id="avatarContent">V</span>
+        <div class="edit-badge">
+          <svg viewBox="0 0 24 24">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+      </div>
       <div class="profile-info-lg">
         <div class="profile-name-lg" id="nameDisplay" onclick="openNameModal()">
-          V4L3N User <span class="edit-icon">✎</span>
+          <span id="nameText">V4L3N User</span>
+          <span class="edit-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </span>
         </div>
         <span class="profile-level-lg" id="levelDisplay">LV 1</span>
       </div>
@@ -612,17 +756,35 @@
 
     <div class="stats-grid">
       <div class="stat-item">
-        <div class="icon">💰</div>
+        <div class="icon-svg">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
         <div class="val" id="statKoin">0</div>
         <div class="label">Koin</div>
       </div>
       <div class="stat-item">
-        <div class="icon">🎮</div>
+        <div class="icon-svg">
+          <svg viewBox="0 0 24 24">
+            <line x1="6" y1="12" x2="10" y2="12"/>
+            <line x1="8" y1="10" x2="8" y2="14"/>
+            <line x1="15" y1="13" x2="15.01" y2="13"/>
+            <line x1="18" y1="11" x2="18.01" y2="11"/>
+            <rect x="2" y="6" width="20" height="12" rx="3"/>
+          </svg>
+        </div>
         <div class="val" id="statGame">0</div>
         <div class="label">Main</div>
       </div>
       <div class="stat-item">
-        <div class="icon">🏆</div>
+        <div class="icon-svg">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="6"/>
+            <polyline points="8.21 13.89 7 22 12 19 17 22 15.79 13.88"/>
+          </svg>
+        </div>
         <div class="val" id="statAch">0</div>
         <div class="label">Achievement</div>
       </div>
@@ -641,7 +803,14 @@
       Daily Reward
     </h3>
     <button class="daily-btn" id="dailyBtn" onclick="claimDaily()">
-      🎁 Klaim Koin Harian
+      <svg viewBox="0 0 24 24">
+        <polyline points="20 12 20 22 4 22 4 12"/>
+        <rect x="2" y="7" width="20" height="5"/>
+        <line x1="12" y1="22" x2="12" y2="7"/>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+      </svg>
+      <span id="dailyBtnText">Klaim Koin Harian</span>
     </button>
     <div class="daily-info" id="dailyInfo">Klaim tiap hari, dapet 50 koin + 10 XP</div>
   </div>
@@ -663,10 +832,35 @@
 <!-- Modal Avatar -->
 <div class="modal-overlay" id="avatarModal">
   <div class="modal">
-    <h3>Pilih Avatar</h3>
-    <div class="avatar-grid" id="avatarGrid"></div>
+    <h3>Ganti Avatar</h3>
+
+    <div class="avatar-preview" id="avatarPreview">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+
+    <label class="upload-area" for="avatarUpload">
+      <svg viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Upload dari Galeri</p>
+      <span>PNG, JPG, atau WEBP (max 2 MB)</span>
+      <input type="file" id="avatarUpload" accept="image/*" onchange="handleAvatarUpload(event)" />
+    </label>
+
     <div class="modal-actions">
       <button class="modal-btn secondary" onclick="closeAvatarModal()">Tutup</button>
+      <button class="modal-btn primary" onclick="resetAvatar()">
+        <svg viewBox="0 0 24 24">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        Reset
+      </button>
     </div>
   </div>
 </div>
@@ -678,14 +872,22 @@
     <input type="text" id="nameInput" placeholder="Nama lo..." maxlength="20" />
     <div class="modal-actions">
       <button class="modal-btn secondary" onclick="closeNameModal()">Batal</button>
-      <button class="modal-btn primary" onclick="saveName()">Simpan</button>
+      <button class="modal-btn primary" onclick="saveName()">
+        <svg viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Simpan
+      </button>
     </div>
   </div>
 </div>
 
 <!-- Toast -->
 <div class="toast" id="toast">
-  <div class="toast-text" id="toastText">✓ Berhasil!</div>
+  <svg viewBox="0 0 24 24">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  <div class="toast-text" id="toastText">Berhasil!</div>
 </div>
 
 <!-- Bottom nav -->
@@ -730,12 +932,12 @@
 </nav>
 
 <script>
-  // ============ DATA MANAGEMENT ============
+  // ============ DATA ============
   const STORAGE_KEY = 'v4l3n_user_data';
 
   const defaultUser = {
     name: 'V4L3N User',
-    avatar: '🦊',
+    avatar: null, // null = pakai inisial, atau base64 string dari gambar
     level: 1,
     xp: 0,
     koin: 0,
@@ -756,61 +958,61 @@
   function saveUser(user) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    } catch(e) {}
+    } catch(e) {
+      showToast('⚠️ Gagal simpan data');
+    }
   }
 
   let user = loadUser();
 
-  // ============ ACHIEVEMENTS ============
+  // ============ ACHIEVEMENTS (pakai SVG) ============
   const ACHIEVEMENTS = [
-    { id: 'first_visit', icon: '👋', name: 'Selamat Datang', desc: 'Buka web V4L3N pertama kali' },
-    { id: 'daily_1', icon: '🎁', name: 'Klaim Pertama', desc: 'Klaim daily reward pertama' },
-    { id: 'daily_7', icon: '🔥', name: 'Streak 7 Hari', desc: 'Klaim daily 7 hari berturut-turut' },
-    { id: 'play_1', icon: '🎮', name: 'Gamer Pemula', desc: 'Main game pertama kali' },
-    { id: 'play_10', icon: '🕹️', name: 'Gamer Sejati', desc: 'Main game 10 kali' },
-    { id: 'koin_100', icon: '💰', name: 'Kolektor', desc: 'Kumpulin 100 koin' },
-    { id: 'koin_1000', icon: '💎', name: 'Sultan', desc: 'Kumpulin 1000 koin' },
-    { id: 'level_5', icon: '⭐', name: 'Naik Level', desc: 'Capai level 5' },
-    { id: 'level_10', icon: '🌟', name: 'Bintang', desc: 'Capai level 10' }
+    { id: 'first_visit', name: 'Selamat Datang', desc: 'Buka web V4L3N pertama kali',
+      svg: '<path d="M7 11V7a5 5 0 0 1 10 0v4"/><path d="M4 11h16v10H4z"/>' },
+    { id: 'daily_1', name: 'Klaim Pertama', desc: 'Klaim daily reward pertama',
+      svg: '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/>' },
+    { id: 'daily_7', name: 'Streak 7 Hari', desc: 'Klaim daily 7 hari berturut-turut',
+      svg: '<path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/>' },
+    { id: 'play_1', name: 'Gamer Pemula', desc: 'Main game pertama kali',
+      svg: '<rect x="2" y="6" width="20" height="12" rx="3"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/>' },
+    { id: 'play_10', name: 'Gamer Sejati', desc: 'Main game 10 kali',
+      svg: '<polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/>' },
+    { id: 'koin_100', name: 'Kolektor', desc: 'Kumpulin 100 koin',
+      svg: '<circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/>' },
+    { id: 'koin_1000', name: 'Sultan', desc: 'Kumpulin 1000 koin',
+      svg: '<polygon points="2 20 22 20 20 8 12 14 4 8 2 20"/><circle cx="12" cy="14" r="2"/>' },
+    { id: 'level_5', name: 'Naik Level', desc: 'Capai level 5',
+      svg: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>' },
+    { id: 'level_10', name: 'Bintang', desc: 'Capai level 10',
+      svg: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' }
   ];
 
-  // Unlock achievement pertama kali
   if (!user.achievements.includes('first_visit')) {
     user.achievements.push('first_visit');
     saveUser(user);
   }
 
-  // ============ FUNGSI LEVEL ============
+  // ============ LEVEL ============
   function xpForLevel(level) {
-    // Level 1→2: 100 XP, 2→3: 200 XP, dst
     return level * 100;
   }
 
-  function addXP(amount) {
-    user.xp += amount;
-    let leveledUp = false;
-    while (user.xp >= xpForLevel(user.level)) {
-      user.xp -= xpForLevel(user.level);
-      user.level++;
-      leveledUp = true;
-    }
-    if (leveledUp) {
-      showToast('🎉 Naik ke Level ' + user.level + '!');
-    }
-    saveUser(user);
-    renderProfile();
-  }
-
-  function addKoin(amount) {
-    user.koin += amount;
-    saveUser(user);
-    renderProfile();
-  }
-
-  // ============ RENDER PROFIL ============
+  // ============ RENDER ============
   function renderProfile() {
-    document.getElementById('avatarBtn').textContent = user.avatar;
-    document.getElementById('nameDisplay').innerHTML = escapeHtml(user.name) + ' <span class="edit-icon">✎</span>';
+    // Avatar
+    const avatarContent = document.getElementById('avatarContent');
+    if (user.avatar) {
+      avatarContent.outerHTML = `<img id="avatarContent" src="${user.avatar}" alt="Avatar" />`;
+    } else {
+      const existingImg = document.getElementById('avatarContent');
+      if (existingImg && existingImg.tagName === 'IMG') {
+        existingImg.outerHTML = `<span id="avatarContent">${(user.name || 'V')[0].toUpperCase()}</span>`;
+      } else {
+        avatarContent.textContent = (user.name || 'V')[0].toUpperCase();
+      }
+    }
+
+    document.getElementById('nameText').textContent = user.name;
     document.getElementById('levelDisplay').textContent = 'LV ' + user.level;
 
     const xpMax = xpForLevel(user.level);
@@ -834,12 +1036,19 @@
       const div = document.createElement('div');
       div.className = 'achievement-item ' + (unlocked ? 'unlocked' : 'locked');
       div.innerHTML = `
-        <div class="achievement-icon">${ach.icon}</div>
+        <div class="achievement-icon">
+          <svg viewBox="0 0 24 24">${ach.svg}</svg>
+        </div>
         <div class="achievement-info">
           <div class="achievement-name">${ach.name}</div>
           <div class="achievement-desc">${ach.desc}</div>
         </div>
-        <div class="achievement-status ${unlocked ? 'done' : 'locked'}">${unlocked ? '✓' : '🔒'}</div>
+        <div class="achievement-status ${unlocked ? 'done' : 'locked'}">
+          ${unlocked 
+            ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+            : '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+          }
+        </div>
       `;
       list.appendChild(div);
     });
@@ -848,10 +1057,11 @@
   function renderDaily() {
     const btn = document.getElementById('dailyBtn');
     const info = document.getElementById('dailyInfo');
+    const btnText = document.getElementById('dailyBtnText');
 
     if (!user.lastDaily) {
       btn.disabled = false;
-      btn.textContent = '🎁 Klaim Koin Harian';
+      btnText.textContent = 'Klaim Koin Harian';
       info.textContent = 'Klaim tiap hari, dapet 50 koin + 10 XP';
       return;
     }
@@ -866,16 +1076,16 @@
       const remaining = 24 - diffHours;
       const h = Math.floor(remaining);
       const m = Math.floor((remaining - h) * 60);
-      btn.textContent = `⏳ Tunggu ${h}j ${m}m lagi`;
-      info.textContent = `Streak: ${user.dailyStreak} hari 🔥`;
+      btnText.textContent = `Tunggu ${h}j ${m}m lagi`;
+      info.textContent = `Streak: ${user.dailyStreak} hari`;
     } else {
       btn.disabled = false;
-      btn.textContent = '🎁 Klaim Koin Harian';
-      info.textContent = `Streak: ${user.dailyStreak} hari 🔥`;
+      btnText.textContent = 'Klaim Koin Harian';
+      info.textContent = `Streak: ${user.dailyStreak} hari`;
     }
   }
 
-  // ============ DAILY REWARD ============
+  // ============ DAILY ============
   function claimDaily() {
     const now = new Date();
     const last = user.lastDaily ? new Date(user.lastDaily) : null;
@@ -883,18 +1093,13 @@
 
     if (last) {
       const diffHours = (now - last) / (1000 * 60 * 60);
-      if (diffHours < 48) {
-        streak++;
-      } else {
-        streak = 1;
-      }
+      if (diffHours < 48) streak++;
+      else streak = 1;
     } else {
       streak = 1;
     }
 
-    const baseReward = 50;
-    const bonus = Math.min(streak * 10, 100); // Maks bonus 100
-    const totalKoin = baseReward + bonus;
+    const totalKoin = 50 + Math.min(streak * 10, 100);
     const totalXP = 10 + streak * 2;
 
     user.koin += totalKoin;
@@ -902,13 +1107,11 @@
     user.dailyStreak = streak;
     user.lastDaily = now.toISOString();
 
-    // Cek level up
     while (user.xp >= xpForLevel(user.level)) {
       user.xp -= xpForLevel(user.level);
       user.level++;
     }
 
-    // Cek achievement
     if (!user.achievements.includes('daily_1')) user.achievements.push('daily_1');
     if (streak >= 7 && !user.achievements.includes('daily_7')) user.achievements.push('daily_7');
     if (user.koin >= 100 && !user.achievements.includes('koin_100')) user.achievements.push('koin_100');
@@ -918,35 +1121,96 @@
 
     saveUser(user);
     renderProfile();
-    showToast(`🎁 +${totalKoin} koin, +${totalXP} XP! Streak: ${streak} hari`);
+    showToast(`+${totalKoin} koin, +${totalXP} XP! Streak: ${streak} hari`);
   }
 
   // ============ AVATAR MODAL ============
-  const AVATARS = ['🦊', '🐱', '🐶', '🐼', '🐯', '🦁', '🐸', '🐵', '🦄', '🐲', '👾', '🤖', '👻', '🎃', '😎', '🤠', '🥷', '🧙', '👑', '💀'];
-
   function openAvatarModal() {
-    const grid = document.getElementById('avatarGrid');
-    grid.innerHTML = '';
-    AVATARS.forEach(av => {
-      const div = document.createElement('div');
-      div.className = 'avatar-option' + (av === user.avatar ? ' selected' : '');
-      div.textContent = av;
-      div.onclick = () => selectAvatar(av);
-      grid.appendChild(div);
-    });
+    // Update preview
+    const preview = document.getElementById('avatarPreview');
+    if (user.avatar) {
+      preview.innerHTML = `<img src="${user.avatar}" alt="Avatar" />`;
+    } else {
+      preview.innerHTML = `
+        <svg viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      `;
+    }
     document.getElementById('avatarModal').classList.add('show');
-  }
-
-  function selectAvatar(av) {
-    user.avatar = av;
-    saveUser(user);
-    renderProfile();
-    closeAvatarModal();
-    showToast('✓ Avatar diganti!');
   }
 
   function closeAvatarModal() {
     document.getElementById('avatarModal').classList.remove('show');
+    document.getElementById('avatarUpload').value = '';
+  }
+
+  function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Cek ukuran (max 2 MB)
+    if (file.size > 2 * 1024 * 1024) {
+      showToast('⚠️ File terlalu besar (max 2 MB)');
+      return;
+    }
+
+    // Cek tipe
+    if (!file.type.startsWith('image/')) {
+      showToast('⚠️ File harus gambar');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // Compress gambar dulu biar localStorage nggak penuh
+      compressImage(e.target.result, 400, 0.85, (compressed) => {
+        user.avatar = compressed;
+        saveUser(user);
+        renderProfile();
+
+        // Update preview
+        const preview = document.getElementById('avatarPreview');
+        preview.innerHTML = `<img src="${compressed}" alt="Avatar" />`;
+
+        showToast('Avatar diganti!');
+        setTimeout(closeAvatarModal, 800);
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Compress gambar biar muat di localStorage
+  function compressImage(dataUrl, maxSize, quality, callback) {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width;
+      let h = img.height;
+
+      if (w > h) {
+        if (w > maxSize) { h = (h * maxSize) / w; w = maxSize; }
+      } else {
+        if (h > maxSize) { w = (w * maxSize) / h; h = maxSize; }
+      }
+
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  }
+
+  function resetAvatar() {
+    user.avatar = null;
+    saveUser(user);
+    renderProfile();
+    openAvatarModal(); // Refresh preview
+    showToast('Avatar direset');
   }
 
   // ============ NAME MODAL ============
@@ -959,14 +1223,14 @@
   function saveName() {
     const newName = document.getElementById('nameInput').value.trim();
     if (!newName) {
-      showToast('⚠️ Nama nggak boleh kosong');
+      showToast('Nama nggak boleh kosong');
       return;
     }
     user.name = newName;
     saveUser(user);
     renderProfile();
     closeNameModal();
-    showToast('✓ Nama diganti!');
+    showToast('Nama diganti!');
   }
 
   function closeNameModal() {
@@ -994,18 +1258,9 @@
     }, 3000);
   }
 
-  // ============ UTILS ============
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  // ============ AUTO REFRESH DAILY ============
-  setInterval(renderDaily, 60000); // Update tiap menit
-
-  // Init
+  // ============ INIT ============
   renderProfile();
+  setInterval(renderDaily, 60000);
 </script>
 
 </body>
