@@ -360,9 +360,10 @@
   }
   .profile-progress-fill {
     height: 100%;
-    width: 35%;
+    width: 0%;
     background: linear-gradient(90deg, var(--gold), var(--gold-soft));
     box-shadow: 0 0 10px var(--gold-glow);
+    transition: width 0.5s ease;
   }
 
   .spotify-btn {
@@ -473,7 +474,7 @@
     flex-shrink: 0;
   }
 
-  /* Bottom nav */
+  /* Bottom nav — 5 kolom */
   .bottom-nav {
     position: fixed;
     bottom: 16px;
@@ -488,7 +489,7 @@
     border-radius: 24px;
     padding: 8px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 4px;
     z-index: 100;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
@@ -697,6 +698,7 @@
 
   @media (max-width: 380px) {
     .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .nav-item span { font-size: 9px; }
   }
 </style>
 </head>
@@ -768,10 +770,10 @@
 
     <div class="profile-card">
       <div class="profile-row">
-        <div class="profile-avatar">V</div>
+        <div class="profile-avatar" id="dashAvatar">V</div>
         <div class="profile-info">
-          <div class="profile-name">V4L3N</div>
-          <span class="profile-level">LV 3</span>
+          <div class="profile-name" id="dashName">V4L3N User</div>
+          <span class="profile-level" id="dashLevel">LV 1</span>
         </div>
         <div class="profile-actions">
           <div class="icon-btn">
@@ -790,7 +792,7 @@
         </div>
       </div>
       <div class="profile-progress">
-        <div class="profile-progress-fill"></div>
+        <div class="profile-progress-fill" id="dashXPBar"></div>
       </div>
     </div>
 
@@ -878,7 +880,7 @@
 
   </div>
 
-  <!-- Bottom nav -->
+  <!-- Bottom nav — 5 menu -->
   <nav class="bottom-nav">
     <a class="nav-item" href="/game.html">
       <svg viewBox="0 0 24 24">
@@ -896,6 +898,13 @@
         <path d="M20 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>
       </svg>
       <span>Komik</span>
+    </a>
+    <a class="nav-item" href="/profil.html">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
     </a>
     <a class="nav-item" href="/dev.html">
       <svg viewBox="0 0 24 24">
@@ -947,6 +956,7 @@
 </audio>
 
 <script>
+  // ============ PARTIKEL ============
   function createParticles(containerId, count) {
     const c = document.getElementById(containerId);
     if (!c) return;
@@ -964,6 +974,7 @@
   createParticles('loaderParticles', 18);
   createParticles('dashParticles', 12);
 
+  // ============ PROGRESS BAR ============
   (function() {
     const fill = document.getElementById('loaderFill');
     const percent = document.getElementById('loaderPercent');
@@ -983,11 +994,13 @@
     }, 200);
   })();
 
+  // ============ TOMBOL LANJUT + AUTO PLAY MUSIK ============
   function goToDashboard() {
     document.getElementById('loader').classList.add('hide');
     document.getElementById('dashboard').classList.add('show');
     window.scrollTo(0, 0);
     updateAll();
+    loadUserToDashboard();
 
     const music = document.getElementById('bgMusic');
     if (music) {
@@ -1001,6 +1014,7 @@
     }
   }
 
+  // ============ TOGGLE MUTE MUSIK ============
   let musicMuted = false;
 
   function toggleMusic() {
@@ -1027,20 +1041,43 @@
     }
   }
 
+  // ============ LOAD USER DATA KE DASHBOARD ============
+  function loadUserToDashboard() {
+    try {
+      const data = JSON.parse(localStorage.getItem('v4l3n_user_data') || '{}');
+      if (data.name) document.getElementById('dashName').textContent = data.name;
+      if (data.avatar) document.getElementById('dashAvatar').textContent = data.avatar;
+      if (data.level) document.getElementById('dashLevel').textContent = 'LV ' + data.level;
+
+      // XP bar
+      const level = data.level || 1;
+      const xp = data.xp || 0;
+      const xpMax = level * 100;
+      const pct = Math.min((xp / xpMax) * 100, 100);
+      const bar = document.getElementById('dashXPBar');
+      if (bar) bar.style.width = pct + '%';
+    } catch(e) {}
+  }
+
+  // ============ STATISTIK ============
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('statTime').textContent = t;
-    document.getElementById('statClock').textContent = t;
+    const el1 = document.getElementById('statTime');
+    const el2 = document.getElementById('statClock');
+    if (el1) el1.textContent = t;
+    if (el2) el2.textContent = t;
   }
 
   function updateBattery() {
     if (navigator.getBattery) {
       navigator.getBattery().then(b => {
-        document.getElementById('statBattery').textContent = Math.round(b.level * 100) + '%';
+        const el = document.getElementById('statBattery');
+        if (el) el.textContent = Math.round(b.level * 100) + '%';
       });
     } else {
-      document.getElementById('statBattery').textContent = '--%';
+      const el = document.getElementById('statBattery');
+      if (el) el.textContent = '--%';
     }
   }
 
@@ -1049,9 +1086,11 @@
       const url = `https://api.open-meteo.com/v1/forecast?latitude=-6.2088&longitude=106.8456&current=temperature_2m&timezone=Asia/Jakarta`;
       const res = await fetch(url);
       const data = await res.json();
-      document.getElementById('statWeather').textContent = Math.round(data.current.temperature_2m) + '°';
+      const el = document.getElementById('statWeather');
+      if (el) el.textContent = Math.round(data.current.temperature_2m) + '°';
     } catch {
-      document.getElementById('statWeather').textContent = '--°';
+      const el = document.getElementById('statWeather');
+      if (el) el.textContent = '--°';
     }
   }
 
@@ -1062,6 +1101,7 @@
     updateWeather();
   }
 
+  // ============ VIDEO LOOP ============
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.play().catch(() => {});
@@ -1085,6 +1125,7 @@
     });
   }
 
+  // ============ POPUP JOIN CHANNEL ============
   const POPUP_FIRST_DELAY = 5000;
   const POPUP_REPEAT_DELAY = 30000;
 
