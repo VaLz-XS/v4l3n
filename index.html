@@ -29,7 +29,6 @@
     overflow: hidden;
   }
 
-  /* ============ LOADING SCREEN ============ */
   #loader {
     position: fixed;
     inset: 0;
@@ -182,7 +181,6 @@
     text-align: center;
   }
 
-  /* ============ DASHBOARD ============ */
   #dashboard {
     position: fixed;
     inset: 0;
@@ -318,6 +316,7 @@
     color: #1a1408;
     flex-shrink: 0;
     box-shadow: 0 0 20px var(--gold-glow);
+    overflow: hidden;
   }
   .profile-info {
     flex: 1;
@@ -474,7 +473,6 @@
     flex-shrink: 0;
   }
 
-  /* Bottom nav — 5 kolom */
   .bottom-nav {
     position: fixed;
     bottom: 16px;
@@ -534,7 +532,6 @@
     box-shadow: 0 0 8px var(--gold-glow);
   }
 
-  /* Partikel */
   .particles {
     position: fixed;
     inset: 0;
@@ -559,7 +556,6 @@
     100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
   }
 
-  /* ============ POPUP JOIN CHANNEL ============ */
   .channel-popup {
     position: fixed;
     bottom: 90px;
@@ -704,7 +700,6 @@
 </head>
 <body>
 
-<!-- ============ LOADING SCREEN ============ -->
 <div id="loader">
   <video class="loader-video" autoplay muted loop playsinline preload="auto">
     <source src="assets/tenka-bg.mp4" type="video/mp4">
@@ -733,7 +728,6 @@
   </div>
 </div>
 
-<!-- ============ DASHBOARD ============ -->
 <div id="dashboard">
 
   <div class="dash-bg"></div>
@@ -880,7 +874,6 @@
 
   </div>
 
-  <!-- Bottom nav — 5 menu -->
   <nav class="bottom-nav">
     <a class="nav-item" href="/game.html">
       <svg viewBox="0 0 24 24">
@@ -923,7 +916,6 @@
 
 </div>
 
-<!-- ============ POPUP JOIN CHANNEL ============ -->
 <div class="channel-popup" id="channelPopup">
   <div class="channel-popup-header">
     <div class="channel-popup-icon">
@@ -950,13 +942,11 @@
   </a>
 </div>
 
-<!-- ============ AUDIO MUSIK ============ -->
 <audio id="bgMusic" loop preload="auto">
   <source src="assets/music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  // ============ PARTIKEL ============
   function createParticles(containerId, count) {
     const c = document.getElementById(containerId);
     if (!c) return;
@@ -974,7 +964,6 @@
   createParticles('loaderParticles', 18);
   createParticles('dashParticles', 12);
 
-  // ============ PROGRESS BAR ============
   (function() {
     const fill = document.getElementById('loaderFill');
     const percent = document.getElementById('loaderPercent');
@@ -994,7 +983,6 @@
     }, 200);
   })();
 
-  // ============ TOMBOL LANJUT + AUTO PLAY MUSIK ============
   function goToDashboard() {
     document.getElementById('loader').classList.add('hide');
     document.getElementById('dashboard').classList.add('show');
@@ -1014,7 +1002,6 @@
     }
   }
 
-  // ============ TOGGLE MUTE MUSIK ============
   let musicMuted = false;
 
   function toggleMusic() {
@@ -1041,13 +1028,37 @@
     }
   }
 
-  // ============ LOAD USER DATA KE DASHBOARD ============
+  // ============ LOAD USER DATA KE DASHBOARD (FIXED) ============
   function loadUserToDashboard() {
     try {
       const data = JSON.parse(localStorage.getItem('v4l3n_user_data') || '{}');
-      if (data.name) document.getElementById('dashName').textContent = data.name;
-      if (data.avatar) document.getElementById('dashAvatar').textContent = data.avatar;
-      if (data.level) document.getElementById('dashLevel').textContent = 'LV ' + data.level;
+
+      // Nama
+      if (data.name) {
+        document.getElementById('dashName').textContent = data.name;
+      }
+
+      // Level
+      if (data.level) {
+        document.getElementById('dashLevel').textContent = 'LV ' + data.level;
+      }
+
+      // Avatar — handle gambar (base64) atau inisial
+      const avatarEl = document.getElementById('dashAvatar');
+      if (avatarEl) {
+        if (data.avatar && data.avatar.startsWith('data:image')) {
+          // Avatar dari upload galeri
+          avatarEl.innerHTML = `<img src="${data.avatar}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+          avatarEl.style.padding = '0';
+          avatarEl.style.overflow = 'hidden';
+        } else if (data.avatar) {
+          avatarEl.textContent = data.avatar;
+        } else if (data.name) {
+          avatarEl.textContent = data.name[0].toUpperCase();
+        } else {
+          avatarEl.textContent = 'V';
+        }
+      }
 
       // XP bar
       const level = data.level || 1;
@@ -1056,10 +1067,11 @@
       const pct = Math.min((xp / xpMax) * 100, 100);
       const bar = document.getElementById('dashXPBar');
       if (bar) bar.style.width = pct + '%';
-    } catch(e) {}
+    } catch(e) {
+      console.error('Gagal load user:', e);
+    }
   }
 
-  // ============ STATISTIK ============
   function updateClock() {
     const now = new Date();
     const t = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -1101,7 +1113,6 @@
     updateWeather();
   }
 
-  // ============ VIDEO LOOP ============
   const heroVideo = document.getElementById('heroVideo');
   if (heroVideo) {
     heroVideo.play().catch(() => {});
@@ -1125,7 +1136,6 @@
     });
   }
 
-  // ============ POPUP JOIN CHANNEL ============
   const POPUP_FIRST_DELAY = 5000;
   const POPUP_REPEAT_DELAY = 30000;
 
