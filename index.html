@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>VaLen🤭</title>
-
-<!-- === LOGO TAB (FAVICON) === -->
 <link rel="icon" type="image/png" href="logo.png">
-
+<link rel="shortcut icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -100,46 +98,17 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .musik{display:grid;gap:14px}
 .musik h2{font-size:1.6rem}
 .musik-sub{margin:0;opacity:.75;font-size:14px}
-
-/* Pencarian & Grid Lagu */
 .musik-header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
-.search-box {
-  flex: 1; min-width: 200px; padding: 8px 12px;
-  font: 400 14px "IBM Plex Mono", monospace;
-  background: var(--screen); color: var(--screen-text);
-  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
-  outline: none;
-}
+.search-box { flex: 1; min-width: 200px; padding: 8px 12px; font: 400 14px "IBM Plex Mono", monospace; background: var(--screen); color: var(--screen-text); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); outline: none; }
 .search-box:focus { border-color: var(--star); }
-.song-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 10px;
-}
-.song-card {
-  cursor: pointer; background: var(--screen); padding: 8px;
-  border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
-  display: flex; flex-direction: column; gap: 8px;
-  transition: transform 0.1s;
-}
+.song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 10px; }
+.song-card { cursor: pointer; background: var(--screen); padding: 8px; border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi); display: flex; flex-direction: column; gap: 8px; transition: transform 0.1s; }
 .song-card:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); transform: scale(0.97); }
-.song-card img {
-  width: 100%; aspect-ratio: 1/1; object-fit: cover;
-  border: 1px solid var(--lo); background: var(--win);
-}
-.song-card .card-title {
-  font: 700 14px/1.2 "Pixelify Sans", monospace; color: var(--screen-text);
-  text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-
-/* Player & Lirik */
+.song-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid var(--lo); background: var(--win); }
+.song-card .card-title { font: 700 14px/1.2 "Pixelify Sans", monospace; color: var(--screen-text); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #playerView { display: flex; flex-direction: column; gap: 14px; }
-.back-btn {
-  align-self: flex-start; cursor: pointer;
-  font: 700 14px "Pixelify Sans", monospace;
-  background: var(--win); border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
-  padding: 6px 12px; color: var(--ink);
-}
+.back-btn { align-self: flex-start; cursor: pointer; font: 700 14px "Pixelify Sans", monospace; background: var(--win); border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi); padding: 6px 12px; color: var(--ink); }
 .back-btn:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); }
-
 .player{display:flex;gap:12px;align-items:center;background:var(--screen);color:var(--screen-text);padding:10px 12px;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .play-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;font:700 20px "Pixelify Sans",monospace;cursor:pointer;color:#14141c;background:var(--star);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
 .play-btn:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo);transform:translateY(1px)}
@@ -151,19 +120,32 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:16px;margin-top:-5px;background:var(--star);border:2px solid #14141c}
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
-
 .lyrics-wrap { height: 300px; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; position: relative; }
 .lyrics-inner { padding: 14px; font: 500 15px/1.7 "IBM Plex Mono", monospace; color: var(--screen-text); transition: transform 0.4s ease-out; }
 .lyrics-inner .line { margin: 0 0 10px; opacity: 0.35; transition: opacity 0.3s ease, color 0.3s ease; }
 .lyrics-inner .line.active { opacity: 1; color: #fff; font-weight: 700; text-shadow: 0 0 6px var(--screen-text); }
 .lyrics-inner .line.passed { opacity: 0.55; }
-
 .tap-sync{display:none;gap:8px;align-items:center;margin-top:8px}
 .tap-sync.on{display:flex}
 .tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
 .tap-sync button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .tap-sync .tap-hit{background:var(--star);color:#14141c}
 @media (prefers-reduced-motion:reduce){.lyrics-inner{transition:none}}
+
+/* === GAME DINO === */
+.game-container { position: relative; width: 100%; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; }
+#dinoCanvas { display: block; width: 100%; height: 200px; }
+.game-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5); color: var(--screen-text); font: 700 20px "Pixelify Sans", monospace; text-align: center;
+}
+.game-overlay.hidden { display: none; }
+.game-overlay button {
+  margin-top: 10px; padding: 8px 16px; cursor: pointer;
+  font: 700 16px "Pixelify Sans", monospace; color: #14141c; background: var(--star);
+  border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
+}
+.game-overlay button:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); }
 </style>
 </head>
 <body>
@@ -197,6 +179,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       <a href="#beranda">Beranda</a>
       <a href="#proyek">Proyek</a>
       <a href="#musik">Musik</a>
+      <a href="#game">Game</a>
       <a href="#tentang">Tentang</a>
       <a href="#kontak">Kontak</a>
     </nav>
@@ -255,38 +238,27 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   <section class="win" data-view="musik" aria-label="Musik">
     <div class="bar"><span>musik.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body musik">
-      
-      <!-- HEADER: PENCARIAN & LIST LAGU -->
       <div id="libraryView">
         <div class="musik-header">
           <h2>Pustaka Lagu</h2>
           <input type="text" id="searchBox" class="search-box" placeholder="Cari lagu..." autocomplete="off">
         </div>
         <div class="song-grid" id="songGrid">
-          <!-- Kartu Lagu 1: BYE -->
           <div class="song-card" data-src="bye.mp3" data-title="Bye" data-artist="Ariana Grande">
             <img src="bye.jpg" alt="Cover Bye">
             <div class="card-title">Bye</div>
           </div>
-
-          <!-- Kartu Lagu 2: 1000X -->
           <div class="song-card" data-src="1000X.mp3" data-title="1000X" data-artist="Ghea Indrawari">
             <img src="1000X.jpg" alt="Cover 1000X">
             <div class="card-title">1000X</div>
           </div>
         </div>
       </div>
-
-      <!-- PLAYER VIEW: MUNCUL PAS DIKLIK -->
       <div id="playerView" hidden>
         <button type="button" class="back-btn" id="backBtn">← Kembali</button>
-        
         <h2 id="nowPlayingTitle">Judul Lagu</h2>
         <p class="musik-sub" id="nowPlayingArtist">Artis</p>
-
-        <!-- INI DIA BUG-NYA, ID="lagu" UDAH DITAMBAHIN BALIK -->
         <audio id="lagu" preload="metadata"></audio>
-
         <div class="player">
           <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
           <div class="player-info">
@@ -295,18 +267,32 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
             <div class="player-time"><span id="tCur">0:00</span> / <span id="tDur">0:00</span></div>
           </div>
         </div>
-
         <div class="lyrics-wrap" id="lyricsBox">
           <div class="lyrics-inner" id="lyricsInner"></div>
         </div>
-
         <div class="tap-sync" id="tapSync">
           <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
           <button type="button" id="tapHit" class="tap-hit" hidden>⏱ TAP (baris berikutnya)</button>
           <button type="button" id="tapDone" hidden>💾 Selesai & Copy</button>
         </div>
       </div>
+    </div>
+  </section>
 
+  <!-- === GAME DINO === -->
+  <section class="win" data-view="game" aria-label="Game">
+    <div class="bar"><span>game.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body" style="display:grid;gap:14px">
+      <h2>Dino Run</h2>
+      <p class="musik-sub">Tekan <b>Spasi</b> atau <b>Klik/Tap</b> layar untuk loncat.</p>
+      
+      <div class="game-container">
+        <canvas id="dinoCanvas"></canvas>
+        <div class="game-overlay" id="gameOverlay">
+          <div id="gameOverText">Game Over</div>
+          <button type="button" id="restartBtn">Main Lagi</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -471,7 +457,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 })();
 </script>
 
-<!-- === MUSIK LOGIC + LIRIK + TAP SYNC === -->
+<!-- === MUSIK LOGIC === -->
 <script>
 (function(){
   var libraryView = document.getElementById("libraryView");
@@ -479,7 +465,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   var searchBox = document.getElementById("searchBox");
   var songGrid = document.getElementById("songGrid");
   var backBtn = document.getElementById("backBtn");
-  
   var audio = document.getElementById("lagu");
   var playBtn = document.getElementById("playBtn");
   var seek = document.getElementById("seek");
@@ -493,148 +478,44 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   if(!audio || !box || !inner) return;
 
-  // --- DATA LIRIK ---
   var SONGS_DATA = {
     "Bye": [
-      [0.68,  "Bye-bye, boy, bye, hmm"],
-      [7.50,  "Hmm"],
-      [11.68, "Bye-bye, and boy, bye"],
-      [15.19, "It's over, it's over, oh yeah"],
-      [17.94, "This ain't the first time I've been hostage to these tears"],
-      [22.20, "I can't believe I'm finally movin' through my fears"],
-      [26.61, "At least, I know how hard we tried, both you and me"],
-      [31.20, "Didn't we? Didn't we?"],
-      [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [39.50, "It's time"],
-      [44.35, "Bye-bye, boy, bye"],
-      [48.72, "Bye-bye, it's over, it's over, oh yeah"],
-      [53.02, "Bye-bye, I'm takin' what's mine, yeah"],
-      [57.41, "Bye-bye, it's over, it's over, oh yeah"],
-      [62.09, "You know, I'm stronger than I think"],
-      [65.90, "Usually, I'd join you on the floor, but this dance ain't for me"],
-      [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"],
-      [74.59, "Didn't think you'd lose me"],
-      [76.75, "Now it's just too late to choose me"],
-      [79.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [84.00, "It's time (it's time)"],
-      [88.00, "Bye-bye, boy, bye (boy, bye)"],
-      [92.00, "Bye-bye, it's over, it's over, oh yeah"],
-      [96.00, "Bye-bye, I'm takin' what's mine, yeah"],
-      [100.0, "Bye-bye, it's over, it's over, oh yeah"],
-      [106.37,"Now it's certainly bittersweet"],
-      [110.89,"This hook feels too hard to sing"],
-      [116.12,"But it's better than repeat (than repeat, than repeat, than repeat)"],
-      [127.24,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
-      [131.58,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [135.99,"Bye-bye, I'm takin' what's mine, yeah"],
-      [140.35,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
-      [144.77,"Bye-bye (bye-bye), boy, bye"],
-      [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [153.49,"Bye-bye, I'm takin' what's mine, yeah"],
-      [157.80,"Bye-bye, it's over, it's over, oh yeah"]
+      [0.68,  "Bye-bye, boy, bye, hmm"], [7.50,  "Hmm"], [11.68, "Bye-bye, and boy, bye"], [15.19, "It's over, it's over, oh yeah"], [17.94, "This ain't the first time I've been hostage to these tears"], [22.20, "I can't believe I'm finally movin' through my fears"], [26.61, "At least, I know how hard we tried, both you and me"], [31.20, "Didn't we? Didn't we?"], [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"], [39.50, "It's time"], [44.35, "Bye-bye, boy, bye"], [48.72, "Bye-bye, it's over, it's over, oh yeah"], [53.02, "Bye-bye, I'm takin' what's mine, yeah"], [57.41, "Bye-bye, it's over, it's over, oh yeah"], [62.09, "You know, I'm stronger than I think"], [65.90, "Usually, I'd join you on the floor, but this dance ain't for me"], [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"], [74.59, "Didn't think you'd lose me"], [76.75, "Now it's just too late to choose me"], [79.50, "So I grab my stuff, Courtney just pulled up in the driveway"], [84.00, "It's time (it's time)"], [88.00, "Bye-bye, boy, bye (boy, bye)"], [92.00, "Bye-bye, it's over, it's over, oh yeah"], [96.00, "Bye-bye, I'm takin' what's mine, yeah"], [100.0, "Bye-bye, it's over, it's over, oh yeah"], [106.37,"Now it's certainly bittersweet"], [110.89,"This hook feels too hard to sing"], [116.12,"But it's better than repeat (than repeat, than repeat, than repeat)"], [127.24,"Bye-bye (bye-bye), boy, bye (boy, bye)"], [131.58,"Bye-bye, it's over, it's over, oh yeah (bye)"], [135.99,"Bye-bye, I'm takin' what's mine, yeah"], [140.35,"Bye-bye, it's over, it's over, oh yeah (ooh)"], [144.77,"Bye-bye (bye-bye), boy, bye"], [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"], [153.49,"Bye-bye, I'm takin' what's mine, yeah"], [157.80,"Bye-bye, it's over, it's over, oh yeah"]
     ],
     "1000X": [
-      [23.49, "Kadang aku iri melihat mereka"],
-      [28.24, "Tercipta seperti pasangan yang sempurna"],
-      [33.00, "Saling mencintai dan begitu bahagia"],
-      [37.47, "Dan dipuja puji insan yang memandangnya"],
-      [42.28, "Lalu aku memandangmu"],
-      [46.78, "Dan tersadar betapa beruntungnya"],
-      [51.20, "Ada cinta seperti cintamu kepadaku"],
-      [58.53, "Hooo"],
-      [59.87, "Cukup aku milikmu dan kamu milikku"],
-      [64.76, "Tetap disampingku sampai jadi debu"],
-      [69.36, "Sampai akhir waktu"],
-      [71.82, "Sampai maut yang bersaksi cintaku abadi"],
-      [77.94, "Dan bila aku terlahir 1000X lagi"],
-      [82.92, "Di dunia yang lain aku tak peduli"],
-      [87.57, "Kau akan kucari"],
-      [90.11, "Sampai kau tau betapa kau kucintai"],
-      [97.05, "Lalu aku memandangmu"],
-      [101.68, "Dan tersadar betapa beruntungnya"],
-      [106.13, "Ada cinta seperti cintamu kepadaku"],
-      [113.29, "Hooo"],
-      [114.65, "Cukup aku milikmu dan kamu milikku"],
-      [119.66, "Tetap disampingku sampai jadi debu"],
-      [124.11, "Sampai akhir waktu"],
-      [126.78, "Sampai maut yang bersaksi cintaku abadi"],
-      [132.77, "Dan bila aku terlahir 1000X lagi"],
-      [138.00, "Di dunia yang lain, aku tak peduli"],
-      [142.42, "Kau akan kucari"],
-      [145.00, "Sampai kau tau betapa kau kucintai"],
-      [151.23, "Sampai sampai maut maut"],
-      [153.69, "Sampai maut yang bersaksi"],
-      [155.86, "Sampai sampai seribu seribu"],
-      [158.13, "Kali lagi"],
-      [159.03, "1000X lagi"],
-      [160.55, "(Kau akan kucari)"],
-      [163.00, "Kau kan ku cintai"],
-      [165.31, "(Kau kan kucintai)"],
-      [169.54, "Cukup aku milikmu kau milikku"],
-      [174.50, "(Tetap disampingku)"],
-      [176.74, "Sampai jadi debu"],
-      [179.02, "Sampai akhir waktu"],
-      [181.77, "Hooo"],
-      [186.01, "Kau tetap milikku"],
-      [188.03, "(Cukup aku milikmu dan kamu milikku)"],
-      [190.72, "Bintang di malamku"],
-      [192.93, "(Tetap disampingku sampai jadi debu)"],
-      [195.61, "Detak di jantungku"],
-      [197.74, "(Sampai akhir waktu)"],
-      [199.98, "(Sampai maut yang bersaksi cintaku abadi)"],
-      [202.60, "Cintaku abadi"],
-      [206.18, "(Dan bila aku terlahir 1000X lagi)"],
-      [209.18, "1000X lagi"],
-      [210.95, "(Di dunia yang lain aku tak peduli)"],
-      [214.04, "Aku tak peduli"],
-      [215.69, "(Kau akan kucari)"],
-      [218.14, "Sampai kau tahu berapa kau kucintai"]
+      [23.49, "Kadang aku iri melihat mereka"], [28.24, "Tercipta seperti pasangan yang sempurna"], [33.00, "Saling mencintai dan begitu bahagia"], [37.47, "Dan dipuja puji insan yang memandangnya"], [42.28, "Lalu aku memandangmu"], [46.78, "Dan tersadar betapa beruntungnya"], [51.20, "Ada cinta seperti cintamu kepadaku"], [58.53, "Hooo"], [59.87, "Cukup aku milikmu dan kamu milikku"], [64.76, "Tetap disampingku sampai jadi debu"], [69.36, "Sampai akhir waktu"], [71.82, "Sampai maut yang bersaksi cintaku abadi"], [77.94, "Dan bila aku terlahir 1000X lagi"], [82.92, "Di dunia yang lain aku tak peduli"], [87.57, "Kau akan kucari"], [90.11, "Sampai kau tau betapa kau kucintai"], [97.05, "Lalu aku memandangmu"], [101.68, "Dan tersadar betapa beruntungnya"], [106.13, "Ada cinta seperti cintamu kepadaku"], [113.29, "Hooo"], [114.65, "Cukup aku milikmu dan kamu milikku"], [119.66, "Tetap disampingku sampai jadi debu"], [124.11, "Sampai akhir waktu"], [126.78, "Sampai maut yang bersaksi cintaku abadi"], [132.77, "Dan bila aku terlahir 1000X lagi"], [138.00, "Di dunia yang lain, aku tak peduli"], [142.42, "Kau akan kucari"], [145.00, "Sampai kau tau betapa kau kucintai"], [151.23, "Sampai sampai maut maut"], [153.69, "Sampai maut yang bersaksi"], [155.86, "Sampai sampai seribu seribu"], [158.13, "Kali lagi"], [159.03, "1000X lagi"], [160.55, "(Kau akan kucari)"], [163.00, "Kau kan ku cintai"], [165.31, "(Kau kan kucintai)"], [169.54, "Cukup aku milikmu kau milikku"], [174.50, "(Tetap disampingku)"], [176.74, "Sampai jadi debu"], [179.02, "Sampai akhir waktu"], [181.77, "Hooo"], [186.01, "Kau tetap milikku"], [188.03, "(Cukup aku milikmu dan kamu milikku)"], [190.72, "Bintang di malamku"], [192.93, "(Tetap disampingku sampai jadi debu)"], [195.61, "Detak di jantungku"], [197.74, "(Sampai akhir waktu)"], [199.98, "(Sampai maut yang bersaksi cintaku abadi)"], [202.60, "Cintaku abadi"], [206.18, "(Dan bila aku terlahir 1000X lagi)"], [209.18, "1000X lagi"], [210.95, "(Di dunia yang lain aku tak peduli)"], [214.04, "Aku tak peduli"], [215.69, "(Kau akan kucari)"], [218.14, "Sampai kau tahu berapa kau kucintai"]
     ]
   };
-
   var currentLyrics = [];
 
-  // --- FITUR PENCARIAN ---
   searchBox.addEventListener("input", function(){
     var q = this.value.toLowerCase();
     var cards = songGrid.querySelectorAll(".song-card");
     cards.forEach(function(card){
       var title = card.querySelector(".card-title").textContent.toLowerCase();
-      if(title.includes(q)) card.style.display = "flex";
-      else card.style.display = "none";
+      if(title.includes(q)) card.style.display = "flex"; else card.style.display = "none";
     });
   });
 
-  // --- BUKA PLAYER PAS KARTU DIKLIK ---
   songGrid.addEventListener("click", function(e){
     var card = e.target.closest(".song-card");
     if(!card) return;
-
     var src = card.getAttribute("data-src");
     var title = card.getAttribute("data-title");
     var artist = card.getAttribute("data-artist");
-
-    // 1. Setup UI Player
     nowPlayingTitle.textContent = title;
     nowPlayingArtist.textContent = artist;
     playerTitle.textContent = title + " — " + artist;
-    
-    // 2. Ganti Lirik
     currentLyrics = SONGS_DATA[title] || [];
     renderLyrics();
-
-    // 3. Ganti Audio
     audio.src = src;
     audio.load();
     playBtn.textContent = "▶";
-    
-    // 4. Sembunyikan Library, Tampilkan Player
     libraryView.hidden = true;
     playerView.hidden = false;
     window.scrollTo(0,0);
   });
 
-  // --- TOMBOL KEMBALI ---
   backBtn.addEventListener("click", function(){
     audio.pause();
     libraryView.hidden = false;
@@ -642,7 +523,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     window.scrollTo(0,0);
   });
 
-  // --- LOGIKA LIRIK & AUDIO ---
   function renderLyrics() {
     inner.innerHTML = "";
     inner.style.transform = "translateY(0px)";
@@ -665,16 +545,13 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     if(!currentLyrics.length) return;
     var t = audio.currentTime, idx = -1;
     for(var i=0; i<currentLyrics.length; i++){
-      if(t >= currentLyrics[i][0]) idx = i;
-      else break;
+      if(t >= currentLyrics[i][0]) idx = i; else break;
     }
-    
     var els = inner.querySelectorAll(".line");
     els.forEach(function(el, i){
       el.classList.toggle("active", i === idx);
       el.classList.toggle("passed", i < idx);
     });
-    
     if(idx >= 0 && els[idx]){
       var el = els[idx];
       var targetY = el.offsetTop - (box.clientHeight / 2) + (el.offsetHeight / 2);
@@ -711,43 +588,212 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   audio.addEventListener("ended", function(){ playBtn.textContent = "▶"; audio.currentTime = 0; });
   seek.addEventListener("input", function(){ if(audio.duration) audio.currentTime = (seek.value/100)*audio.duration });
   audio.addEventListener("seeked", updateLyrics);
+})();
+</script>
 
-  // --- TAP SYNC ---
-  var tapSync=document.getElementById("tapSync");
-  var tapStart=document.getElementById("tapStart");
-  var tapHit=document.getElementById("tapHit");
-  var tapDone=document.getElementById("tapDone");
-  if(tapSync){
-    var rec=[],cur=0;
-    tapStart.addEventListener("click",function(){
-      if(!currentLyrics.length) return;
-      rec=[];cur=0;
-      tapStart.hidden=true;
-      tapHit.hidden=false;tapDone.hidden=false;
-      tapHit.textContent="⏱ TAP: "+currentLyrics[0][1];
-      if(audio.paused){audio.play().catch(function(){})}
-    });
-    tapHit.addEventListener("click",function(){
-      if(cur>=currentLyrics.length-1){
-        tapHit.hidden=true;tapDone.hidden=false;
+<!-- === GAME DINO LOGIC === -->
+<script>
+(function(){
+  var canvas = document.getElementById("dinoCanvas");
+  if(!canvas) return;
+  var ctx = canvas.getContext("2d");
+  var overlay = document.getElementById("gameOverlay");
+  var restartBtn = document.getElementById("restartBtn");
+  var gameOverText = document.getElementById("gameOverText");
+
+  var W = 600, H = 200;
+  canvas.width = W; canvas.height = H;
+
+  var isRunning = false;
+  var isGameOver = false;
+  var score = 0;
+  var highScore = localStorage.getItem("dinoHighScore") || 0;
+  var speed = 5;
+  var frame = 0;
+  var reqId;
+
+  var dino = {
+    x: 50, y: 140, w: 30, h: 40, vy: 0,
+    gravity: 0.6, jumpForce: -11, isJumping: false,
+    color: "var(--screen-text)"
+  };
+
+  var obstacles = [];
+  var clouds = [{x: 200, y: 30}, {x: 500, y: 60}];
+
+  // Fungsi loncat
+  function jump() {
+    if(!isRunning && !isGameOver) startGame();
+    if(isGameOver) return;
+    if(!dino.isJumping) {
+      dino.vy = dino.jumpForce;
+      dino.isJumping = true;
+    }
+  }
+
+  // Kontrol
+  window.addEventListener("keydown", function(e) {
+    if(e.code === "Space" || e.code === "ArrowUp") {
+      if(document.activeElement.tagName !== "INPUT" && !document.getElementById("game").hidden) {
+        e.preventDefault();
+        jump();
+      }
+    }
+  });
+  canvas.addEventListener("pointerdown", function(e) {
+    e.preventDefault();
+    jump();
+  });
+
+  restartBtn.addEventListener("click", function() {
+    startGame();
+  });
+
+  function startGame() {
+    isRunning = true;
+    isGameOver = false;
+    score = 0;
+    speed = 5;
+    frame = 0;
+    dino.y = 140;
+    dino.vy = 0;
+    dino.isJumping = false;
+    obstacles = [];
+    overlay.classList.add("hidden");
+    if(reqId) cancelAnimationFrame(reqId);
+    loop();
+  }
+
+  function gameOver() {
+    isRunning = false;
+    isGameOver = true;
+    if(score > highScore) {
+      highScore = Math.floor(score);
+      localStorage.setItem("dinoHighScore", highScore);
+    }
+    gameOverText.innerHTML = "Game Over<br><span style='font-size:14px'>Skor: "+Math.floor(score)+" | Tertinggi: "+highScore+"</span>";
+    overlay.classList.remove("hidden");
+  }
+
+  function loop() {
+    if(!isRunning) return;
+    update();
+    draw();
+    reqId = requestAnimationFrame(loop);
+  }
+
+  function update() {
+    frame++;
+    score += 0.1;
+    if(frame % 100 === 0) speed += 0.2; // Makin cepet
+
+    // Fisika Dino
+    dino.y += dino.vy;
+    dino.vy += dino.gravity;
+    if(dino.y >= 140) {
+      dino.y = 140;
+      dino.vy = 0;
+      dino.isJumping = false;
+    }
+
+    // Spawn Musuh (Kaktus / Batu)
+    if(frame > 60 && Math.random() < 0.02) {
+      var isTall = Math.random() > 0.5;
+      obstacles.push({
+        x: W,
+        y: isTall ? 110 : 130,
+        w: isTall ? 15 : 20,
+        h: isTall ? 30 : 20
+      });
+    }
+
+    // Gerakin Musuh
+    for(var i = obstacles.length - 1; i >= 0; i--) {
+      var obs = obstacles[i];
+      obs.x -= speed;
+
+      // Tabrakan (AABB)
+      if(dino.x < obs.x + obs.w && dino.x + dino.w > obs.x &&
+         dino.y < obs.y + obs.h && dino.y + dino.h > obs.y) {
+        gameOver();
         return;
       }
-      rec.push([+audio.currentTime.toFixed(2),currentLyrics[cur][1]]);
-      cur++;
-      tapHit.textContent="⏱ TAP: "+currentLyrics[cur][1];
-    });
-    tapDone.addEventListener("click",function(){
-      var out="[\n"+rec.map(function(r){
-        return '  ['+r[0]+', '+JSON.stringify(r[1])+']';
-      }).join(",\n")+"\n]";
-      console.log(out);
-      if(navigator.clipboard){navigator.clipboard.writeText(out).then(function(){
-        alert("Timing udah di-copy ke clipboard!");
-      }).catch(function(){alert("Copy gagal. Lihat di Console (F12).")})}
-      else{alert("Lihat timing di Console (F12).")}
-      tapSync.classList.remove("on");
+      if(obs.x + obs.w < 0) obstacles.splice(i, 1);
+    }
+
+    // Gerakin Awan
+    clouds.forEach(function(c) {
+      c.x -= speed * 0.2;
+      if(c.x < -50) { c.x = W + 50; c.y = Math.random() * 80 + 10; }
     });
   }
+
+  function draw() {
+    // Background layar
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
+    ctx.fillRect(0, 0, W, H);
+    
+    // Warna elemen (Hijau layar)
+    var color = getComputedStyle(document.documentElement).getPropertyValue('--screen-text').trim() || "#7dffa8";
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+
+    // Gambar Awan
+    clouds.forEach(function(c) {
+      ctx.fillRect(c.x, c.y, 30, 8);
+      ctx.fillRect(c.x + 10, c.y - 6, 15, 6);
+    });
+
+    // Gambar Garis Tanah
+    ctx.beginPath();
+    ctx.moveTo(0, 180);
+    ctx.lineTo(W, 180);
+    ctx.stroke();
+
+    // Gambar Dino (Kotak-kotak pixel)
+    ctx.fillRect(dino.x, dino.y, dino.w, dino.h); // Badan
+    ctx.fillRect(dino.x + 20, dino.y - 10, 15, 15); // Kepala
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
+    ctx.fillRect(dino.x + 25, dino.y - 5, 4, 4); // Mata
+    ctx.fillStyle = color;
+    // Kaki animasi lari
+    if(!dino.isJumping && frame % 10 < 5) {
+      ctx.fillRect(dino.x + 5, dino.y + dino.h, 6, 8);
+      ctx.fillRect(dino.x + 20, dino.y + dino.h, 6, 4);
+    } else {
+      ctx.fillRect(dino.x + 5, dino.y + dino.h, 6, 4);
+      ctx.fillRect(dino.x + 20, dino.y + dino.h, 6, 8);
+    }
+
+    // Gambar Musuh
+    obstacles.forEach(function(obs) {
+      ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+      // Duri kaktus
+      if(obs.w == 15) {
+        ctx.fillRect(obs.x - 5, obs.y + 10, 25, 5);
+      }
+    });
+
+    // Skor
+    ctx.font = "700 16px 'Pixelify Sans', monospace";
+    ctx.textAlign = "right";
+    ctx.fillText("HI " + highScore + "  " + Math.floor(score), W - 20, 30);
+  }
+
+  // Init tampilan
+  function initDraw() {
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
+    ctx.fillRect(0, 0, W, H);
+    var color = getComputedStyle(document.documentElement).getPropertyValue('--screen-text').trim() || "#7dffa8";
+    ctx.fillStyle = color;
+    ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
+    ctx.fillRect(dino.x + 20, dino.y - 10, 15, 15);
+    ctx.beginPath(); ctx.moveTo(0, 180); ctx.lineTo(W, 180); ctx.stroke();
+    ctx.font = "700 16px 'Pixelify Sans', monospace";
+    ctx.textAlign = "right";
+    ctx.fillText("HI " + highScore, W - 20, 30);
+  }
+  initDraw();
 })();
 </script>
 </body>
