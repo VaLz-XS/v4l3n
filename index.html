@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>VaLen🤭</title>
+
+<!-- === LOGO TAB (FAVICON) === -->
+<link rel="icon" type="image/png" href="logo.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -265,7 +269,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
             <div class="card-title">Bye</div>
           </div>
 
-          <!-- Kartu Lagu 2: 1000X (GANTI JADI 1000X.mp3 KALO DI REPO NAMANYA BESAR) -->
+          <!-- Kartu Lagu 2: 1000X -->
           <div class="song-card" data-src="1000X.mp3" data-title="1000X" data-artist="Ghea Indrawari">
             <img src="1000X.jpg" alt="Cover 1000X">
             <div class="card-title">1000X</div>
@@ -280,6 +284,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
         <h2 id="nowPlayingTitle">Judul Lagu</h2>
         <p class="musik-sub" id="nowPlayingArtist">Artis</p>
 
+        <!-- INI DIA BUG-NYA, ID="lagu" UDAH DITAMBAHIN BALIK -->
         <audio id="lagu" preload="metadata"></audio>
 
         <div class="player">
