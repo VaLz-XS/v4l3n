@@ -96,6 +96,46 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .musik{display:grid;gap:14px}
 .musik h2{font-size:1.6rem}
 .musik-sub{margin:0;opacity:.75;font-size:14px}
+
+/* Pencarian & Grid Lagu */
+.musik-header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.search-box {
+  flex: 1; min-width: 200px; padding: 8px 12px;
+  font: 400 14px "IBM Plex Mono", monospace;
+  background: var(--screen); color: var(--screen-text);
+  border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+  outline: none;
+}
+.search-box:focus { border-color: var(--star); }
+.song-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 10px;
+}
+.song-card {
+  cursor: pointer; background: var(--screen); padding: 8px;
+  border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
+  display: flex; flex-direction: column; gap: 8px;
+  transition: transform 0.1s;
+}
+.song-card:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); transform: scale(0.97); }
+.song-card img {
+  width: 100%; aspect-ratio: 1/1; object-fit: cover;
+  border: 1px solid var(--lo); background: var(--win);
+}
+.song-card .card-title {
+  font: 700 14px/1.2 "Pixelify Sans", monospace; color: var(--screen-text);
+  text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Player & Lirik */
+#playerView { display: flex; flex-direction: column; gap: 14px; }
+.back-btn {
+  align-self: flex-start; cursor: pointer;
+  font: 700 14px "Pixelify Sans", monospace;
+  background: var(--win); border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
+  padding: 6px 12px; color: var(--ink);
+}
+.back-btn:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); }
+
 .player{display:flex;gap:12px;align-items:center;background:var(--screen);color:var(--screen-text);padding:10px 12px;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .play-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;font:700 20px "Pixelify Sans",monospace;cursor:pointer;color:#14141c;background:var(--star);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
 .play-btn:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo);transform:translateY(1px)}
@@ -108,35 +148,12 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
 
-/* === LIRIK (DIPERBAIKI TOTAL) === */
-.lyrics-wrap {
-  height: 340px;
-  background: var(--screen);
-  border: 2px solid;
-  border-color: var(--lo) var(--hi) var(--hi) var(--lo);
-  overflow: hidden; /* Kunci kotak biar ga ada scrollbar */
-  position: relative;
-}
-.lyrics-inner {
-  padding: 14px;
-  font: 500 15px/1.7 "IBM Plex Mono", monospace;
-  color: var(--screen-text);
-  transition: transform 0.4s ease-out; /* Animasi geser lirik */
-}
-.lyrics-inner .line {
-  margin: 0 0 10px;
-  opacity: 0.35;
-  transition: opacity 0.3s ease, color 0.3s ease;
-}
-.lyrics-inner .line.active {
-  opacity: 1;
-  color: #fff;
-  font-weight: 700;
-  text-shadow: 0 0 6px var(--screen-text);
-}
-.lyrics-inner .line.passed {
-  opacity: 0.55;
-}
+.lyrics-wrap { height: 300px; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; position: relative; }
+.lyrics-inner { padding: 14px; font: 500 15px/1.7 "IBM Plex Mono", monospace; color: var(--screen-text); transition: transform 0.4s ease-out; }
+.lyrics-inner .line { margin: 0 0 10px; opacity: 0.35; transition: opacity 0.3s ease, color 0.3s ease; }
+.lyrics-inner .line.active { opacity: 1; color: #fff; font-weight: 700; text-shadow: 0 0 6px var(--screen-text); }
+.lyrics-inner .line.passed { opacity: 0.55; }
+
 .tap-sync{display:none;gap:8px;align-items:center;margin-top:8px}
 .tap-sync.on{display:flex}
 .tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
@@ -234,29 +251,52 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   <section class="win" data-view="musik" aria-label="Musik">
     <div class="bar"><span>musik.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body musik">
-      <h2>Ariana Grande — Bye</h2>
-      <p class="musik-sub">Tekan play, liriknya jalan sendiri.</p>
-
-      <audio id="lagu" src="bye.mp3" preload="metadata"></audio>
-
-      <div class="player">
-        <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
-        <div class="player-info">
-          <div class="player-title">Bye — Ariana Grande</div>
-          <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Geser lagu">
-          <div class="player-time"><span id="tCur">0:00</span> / <span id="tDur">0:00</span></div>
+      
+      <!-- HEADER: PENCARIAN & LIST LAGU -->
+      <div id="libraryView">
+        <div class="musik-header">
+          <h2>Pustaka Lagu</h2>
+          <input type="text" id="searchBox" class="search-box" placeholder="Cari lagu..." autocomplete="off">
+        </div>
+        <div class="song-grid" id="songGrid">
+          <!-- Kartu Lagu 1 -->
+          <div class="song-card" data-src="bye.mp3" data-title="Bye" data-artist="Ariana Grande">
+            <img src="bye.jpg" alt="Cover Bye">
+            <div class="card-title">Bye</div>
+          </div>
+          <!-- Kalau mau nambah lagu lain, copy div song-card di atas, ganti data & gambar -->
         </div>
       </div>
 
-      <div class="lyrics-wrap" id="lyricsBox">
-        <div class="lyrics-inner" id="lyricsInner"></div>
+      <!-- PLAYER VIEW: MUNCUL PAS DIKLIK -->
+      <div id="playerView" hidden>
+        <button type="button" class="back-btn" id="backBtn">← Kembali</button>
+        
+        <h2 id="nowPlayingTitle">Judul Lagu</h2>
+        <p class="musik-sub" id="nowPlayingArtist">Artis</p>
+
+        <audio id="lagu" preload="metadata"></audio>
+
+        <div class="player">
+          <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
+          <div class="player-info">
+            <div class="player-title" id="playerTitle">Judul Lagu — Artis</div>
+            <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Geser lagu">
+            <div class="player-time"><span id="tCur">0:00</span> / <span id="tDur">0:00</span></div>
+          </div>
+        </div>
+
+        <div class="lyrics-wrap" id="lyricsBox">
+          <div class="lyrics-inner" id="lyricsInner"></div>
+        </div>
+
+        <div class="tap-sync" id="tapSync">
+          <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
+          <button type="button" id="tapHit" class="tap-hit" hidden>⏱ TAP (baris berikutnya)</button>
+          <button type="button" id="tapDone" hidden>💾 Selesai & Copy</button>
+        </div>
       </div>
 
-      <div class="tap-sync" id="tapSync">
-        <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
-        <button type="button" id="tapHit" class="tap-hit" hidden>⏱ TAP (baris berikutnya)</button>
-        <button type="button" id="tapDone" hidden>💾 Selesai & Copy</button>
-      </div>
     </div>
   </section>
 
@@ -421,126 +461,191 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 })();
 </script>
 
-<!-- === MUSIK + LIRIK + TAP SYNC === -->
+<!-- === MUSIK LOGIC + LIRIK + TAP SYNC === -->
 <script>
 (function(){
-  var audio=document.getElementById("lagu");
-  var playBtn=document.getElementById("playBtn");
-  var seek=document.getElementById("seek");
-  var tCur=document.getElementById("tCur");
-  var tDur=document.getElementById("tDur");
-  var box=document.getElementById("lyricsBox");
-  var inner=document.getElementById("lyricsInner");
-  if(!audio||!box||!inner) return;
+  var libraryView = document.getElementById("libraryView");
+  var playerView = document.getElementById("playerView");
+  var searchBox = document.getElementById("searchBox");
+  var songGrid = document.getElementById("songGrid");
+  var backBtn = document.getElementById("backBtn");
+  
+  var audio = document.getElementById("lagu");
+  var playBtn = document.getElementById("playBtn");
+  var seek = document.getElementById("seek");
+  var tCur = document.getElementById("tCur");
+  var tDur = document.getElementById("tDur");
+  var box = document.getElementById("lyricsBox");
+  var inner = document.getElementById("lyricsInner");
+  var nowPlayingTitle = document.getElementById("nowPlayingTitle");
+  var nowPlayingArtist = document.getElementById("nowPlayingArtist");
+  var playerTitle = document.getElementById("playerTitle");
 
-  // Lirik lengkap (timing dari LRC)
-  var LYRICS = [
-    [0.68,  "Bye-bye, boy, bye, hmm"],
-    [7.50,  "Hmm"],
-    [11.68, "Bye-bye, and boy, bye"],
-    [15.19, "It's over, it's over, oh yeah"],
-    [17.94, "This ain't the first time I've been hostage to these tears"],
-    [22.20, "I can't believe I'm finally movin' through my fears"],
-    [26.61, "At least, I know how hard we tried, both you and me"],
-    [31.20, "Didn't we? Didn't we?"],
-    [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"],
-    [39.50, "It's time"],
-    [44.35, "Bye-bye, boy, bye"],
-    [48.72, "Bye-bye, it's over, it's over, oh yeah"],
-    [53.02, "Bye-bye, I'm takin' what's mine, yeah"],
-    [57.41, "Bye-bye, it's over, it's over, oh yeah"],
-    [62.09, "You know, I'm stronger than I think"],
-    [65.90, "Usually, I'd join you on the floor, but this dance ain't for me"],
-    [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"],
-    [74.59, "Didn't think you'd lose me"],
-    [76.75, "Now it's just too late to choose me"],
-    [79.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
-    [84.00, "It's time (it's time)"],
-    [88.00, "Bye-bye, boy, bye (boy, bye)"],
-    [92.00, "Bye-bye, it's over, it's over, oh yeah"],
-    [96.00, "Bye-bye, I'm takin' what's mine, yeah"],
-    [100.0, "Bye-bye, it's over, it's over, oh yeah"],
-    [106.37,"Now it's certainly bittersweet"],
-    [110.89,"This hook feels too hard to sing"],
-    [116.12,"But it's better than repeat (than repeat, than repeat, than repeat)"],
-    [127.24,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
-    [131.58,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-    [135.99,"Bye-bye, I'm takin' what's mine, yeah"],
-    [140.35,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
-    [144.77,"Bye-bye (bye-bye), boy, bye"],
-    [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-    [153.49,"Bye-bye, I'm takin' what's mine, yeah"],
-    [157.80,"Bye-bye, it's over, it's over, oh yeah"]
-  ];
+  if(!audio || !box || !inner) return;
 
-  var els=[];
-  LYRICS.forEach(function(item,i){
-    var p=document.createElement("p");
-    p.className="line";
-    p.textContent=item[1];
-    p.dataset.t=item[0];
-    inner.appendChild(p);
-    els.push(p);
+  // --- DATA LIRIK (Bisa lu simpan di object biar support banyak lagu nanti) ---
+  var SONGS_DATA = {
+    "Bye": [
+      [0.68,  "Bye-bye, boy, bye, hmm"],
+      [7.50,  "Hmm"],
+      [11.68, "Bye-bye, and boy, bye"],
+      [15.19, "It's over, it's over, oh yeah"],
+      [17.94, "This ain't the first time I've been hostage to these tears"],
+      [22.20, "I can't believe I'm finally movin' through my fears"],
+      [26.61, "At least, I know how hard we tried, both you and me"],
+      [31.20, "Didn't we? Didn't we?"],
+      [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"],
+      [39.50, "It's time"],
+      [44.35, "Bye-bye, boy, bye"],
+      [48.72, "Bye-bye, it's over, it's over, oh yeah"],
+      [53.02, "Bye-bye, I'm takin' what's mine, yeah"],
+      [57.41, "Bye-bye, it's over, it's over, oh yeah"],
+      [62.09, "You know, I'm stronger than I think"],
+      [65.90, "Usually, I'd join you on the floor, but this dance ain't for me"],
+      [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"],
+      [74.59, "Didn't think you'd lose me"],
+      [76.75, "Now it's just too late to choose me"],
+      [79.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
+      [84.00, "It's time (it's time)"],
+      [88.00, "Bye-bye, boy, bye (boy, bye)"],
+      [92.00, "Bye-bye, it's over, it's over, oh yeah"],
+      [96.00, "Bye-bye, I'm takin' what's mine, yeah"],
+      [100.0, "Bye-bye, it's over, it's over, oh yeah"],
+      [106.37,"Now it's certainly bittersweet"],
+      [110.89,"This hook feels too hard to sing"],
+      [116.12,"But it's better than repeat (than repeat, than repeat, than repeat)"],
+      [127.24,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
+      [131.58,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+      [135.99,"Bye-bye, I'm takin' what's mine, yeah"],
+      [140.35,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
+      [144.77,"Bye-bye (bye-bye), boy, bye"],
+      [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+      [153.49,"Bye-bye, I'm takin' what's mine, yeah"],
+      [157.80,"Bye-bye, it's over, it's over, oh yeah"]
+    ]
+  };
+
+  var currentLyrics = [];
+
+  // --- FITUR PENCARIAN ---
+  searchBox.addEventListener("input", function(){
+    var q = this.value.toLowerCase();
+    var cards = songGrid.querySelectorAll(".song-card");
+    cards.forEach(function(card){
+      var title = card.querySelector(".card-title").textContent.toLowerCase();
+      if(title.includes(q)) card.style.display = "flex";
+      else card.style.display = "none";
+    });
   });
 
+  // --- BUKA PLAYER PAS KARTU DIKLIK ---
+  songGrid.addEventListener("click", function(e){
+    var card = e.target.closest(".song-card");
+    if(!card) return;
+
+    var src = card.getAttribute("data-src");
+    var title = card.getAttribute("data-title");
+    var artist = card.getAttribute("data-artist");
+
+    // 1. Setup UI Player
+    nowPlayingTitle.textContent = title;
+    nowPlayingArtist.textContent = artist;
+    playerTitle.textContent = title + " — " + artist;
+    
+    // 2. Ganti Lirik
+    currentLyrics = SONGS_DATA[title] || [];
+    renderLyrics();
+
+    // 3. Ganti Audio
+    audio.src = src;
+    audio.load();
+    playBtn.textContent = "▶";
+    
+    // 4. Sembunyikan Library, Tampilkan Player
+    libraryView.hidden = true;
+    playerView.hidden = false;
+    window.scrollTo(0,0); // Scroll ke atas biar langsung liat play button
+  });
+
+  // --- TOMBOL KEMBALI ---
+  backBtn.addEventListener("click", function(){
+    audio.pause();
+    libraryView.hidden = false;
+    playerView.hidden = true;
+    window.scrollTo(0,0);
+  });
+
+  // --- LOGIKA LIRIK & AUDIO ---
+  function renderLyrics() {
+    inner.innerHTML = "";
+    inner.style.transform = "translateY(0px)"; // Reset posisi
+    currentLyrics.forEach(function(item){
+      var p = document.createElement("p");
+      p.className = "line";
+      p.textContent = item[1];
+      p.dataset.t = item[0];
+      inner.appendChild(p);
+    });
+  }
+
   function fmt(s){
-    if(!isFinite(s))return "0:00";
-    var m=Math.floor(s/60),r=Math.floor(s%60);
-    return m+":"+(r<10?"0":"")+r;
+    if(!isFinite(s)) return "0:00";
+    var m = Math.floor(s/60), r = Math.floor(s%60);
+    return m + ":" + (r<10?"0":"") + r;
   }
 
   function updateLyrics(){
-    var t=audio.currentTime,idx=-1;
-    for(var i=0;i<LYRICS.length;i++){
-      if(t>=LYRICS[i][0]) idx=i;
+    if(!currentLyrics.length) return;
+    var t = audio.currentTime, idx = -1;
+    for(var i=0; i<currentLyrics.length; i++){
+      if(t >= currentLyrics[i][0]) idx = i;
       else break;
     }
-    els.forEach(function(el,i){
-      el.classList.toggle("active",i===idx);
-      el.classList.toggle("passed",i<idx);
+    
+    var els = inner.querySelectorAll(".line");
+    els.forEach(function(el, i){
+      el.classList.toggle("active", i === idx);
+      el.classList.toggle("passed", i < idx);
     });
     
-    // TRIK SCROLL PAKAI TRANSFORM (ANTI-LEWAT)
-    if(idx>=0){
-      var el=els[idx];
-      // Hitung posisi tengah
+    if(idx >= 0 && els[idx]){
+      var el = els[idx];
       var targetY = el.offsetTop - (box.clientHeight / 2) + (el.offsetHeight / 2);
-      if(targetY < 0) targetY = 0; // Biar ga scroll ke atas berlebihan
-      
-      // Geser pake transform, bukan scroll!
+      if(targetY < 0) targetY = 0;
       inner.style.transform = "translateY(-" + targetY + "px)";
     }
   }
 
   function sync(){
     updateLyrics();
-    if(audio.duration)seek.value=(audio.currentTime/audio.duration)*100;
-    tCur.textContent=fmt(audio.currentTime);
-    if(!audio.paused)requestAnimationFrame(sync);
+    if(audio.duration) seek.value = (audio.currentTime/audio.duration)*100;
+    tCur.textContent = fmt(audio.currentTime);
+    if(!audio.paused) requestAnimationFrame(sync);
   }
 
-  playBtn.addEventListener("click",function(){
+  playBtn.addEventListener("click", function(){
     if(audio.paused){
       audio.play().then(function(){
-        playBtn.textContent="❚❚";
+        playBtn.textContent = "❚❚";
         requestAnimationFrame(sync);
       }).catch(function(){});
-    }else{
-      audio.pause();playBtn.textContent="▶";
+    } else {
+      audio.pause();
+      playBtn.textContent = "▶";
     }
   });
 
-  audio.addEventListener("loadedmetadata",function(){tDur.textContent=fmt(audio.duration)});
-  audio.addEventListener("timeupdate",function(){
-    if(audio.duration)seek.value=(audio.currentTime/audio.duration)*100;
-    tCur.textContent=fmt(audio.currentTime);
+  audio.addEventListener("loadedmetadata", function(){ tDur.textContent = fmt(audio.duration) });
+  audio.addEventListener("timeupdate", function(){
+    if(audio.duration) seek.value = (audio.currentTime/audio.duration)*100;
+    tCur.textContent = fmt(audio.currentTime);
     updateLyrics();
   });
-  audio.addEventListener("ended",function(){playBtn.textContent="▶";audio.currentTime=0});
-  seek.addEventListener("input",function(){if(audio.duration)audio.currentTime=(seek.value/100)*audio.duration});
-  audio.addEventListener("seeked",updateLyrics);
+  audio.addEventListener("ended", function(){ playBtn.textContent = "▶"; audio.currentTime = 0; });
+  seek.addEventListener("input", function(){ if(audio.duration) audio.currentTime = (seek.value/100)*audio.duration });
+  audio.addEventListener("seeked", updateLyrics);
 
-  // Tap Sync
+  // --- TAP SYNC (Opsional, buat benerin timing) ---
   var tapSync=document.getElementById("tapSync");
   var tapStart=document.getElementById("tapStart");
   var tapHit=document.getElementById("tapHit");
@@ -548,25 +653,26 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   if(tapSync){
     var rec=[],cur=0;
     tapStart.addEventListener("click",function(){
+      if(!currentLyrics.length) return;
       rec=[];cur=0;
       tapStart.hidden=true;
       tapHit.hidden=false;tapDone.hidden=false;
-      tapHit.textContent="⏱ TAP: "+LYRICS[0][1];
+      tapHit.textContent="⏱ TAP: "+currentLyrics[0][1];
       if(audio.paused){audio.play().catch(function(){})}
     });
     tapHit.addEventListener("click",function(){
-      if(cur>=LYRICS.length-1){
+      if(cur>=currentLyrics.length-1){
         tapHit.hidden=true;tapDone.hidden=false;
         return;
       }
-      rec.push([+audio.currentTime.toFixed(2),LYRICS[cur][1]]);
+      rec.push([+audio.currentTime.toFixed(2),currentLyrics[cur][1]]);
       cur++;
-      tapHit.textContent="⏱ TAP: "+LYRICS[cur][1];
+      tapHit.textContent="⏱ TAP: "+currentLyrics[cur][1];
     });
     tapDone.addEventListener("click",function(){
-      var out="var LYRICS=[\n"+rec.map(function(r){
+      var out="[\n"+rec.map(function(r){
         return '  ['+r[0]+', '+JSON.stringify(r[1])+']';
-      }).join(",\n")+"\n];";
+      }).join(",\n")+"\n]";
       console.log(out);
       if(navigator.clipboard){navigator.clipboard.writeText(out).then(function(){
         alert("Timing udah di-copy ke clipboard!");
