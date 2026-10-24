@@ -608,20 +608,29 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   var isGameOver = false;
   var score = 0;
   var highScore = localStorage.getItem("dinoHighScore") || 0;
-  var speed = 5;
+  var speed = 6;
   var frame = 0;
   var reqId;
+  var groundY = 170; 
 
   var dino = {
-    x: 50, y: 140, w: 30, h: 40, vy: 0,
-    gravity: 0.6, jumpForce: -11, isJumping: false,
-    color: "var(--screen-text)"
+    x: 50, 
+    y: groundY - 44,
+    w: 30, 
+    h: 44, 
+    vy: 0,
+    gravity: 0.6, 
+    jumpForce: -11, 
+    isJumping: false
   };
 
   var obstacles = [];
-  var clouds = [{x: 200, y: 30}, {x: 500, y: 60}];
+  var clouds = [
+    {x: 100, y: 40, s: 1}, 
+    {x: 350, y: 70, s: 1.5},
+    {x: 550, y: 30, s: 0.8}
+  ];
 
-  // Fungsi loncat
   function jump() {
     if(!isRunning && !isGameOver) startGame();
     if(isGameOver) return;
@@ -631,15 +640,15 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     }
   }
 
-  // Kontrol
   window.addEventListener("keydown", function(e) {
     if(e.code === "Space" || e.code === "ArrowUp") {
-      if(document.activeElement.tagName !== "INPUT" && !document.getElementById("game").hidden) {
+      if(!document.getElementById("game").hidden) {
         e.preventDefault();
         jump();
       }
     }
   });
+  
   canvas.addEventListener("pointerdown", function(e) {
     e.preventDefault();
     jump();
@@ -653,9 +662,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     isRunning = true;
     isGameOver = false;
     score = 0;
-    speed = 5;
+    speed = 6;
     frame = 0;
-    dino.y = 140;
+    dino.y = groundY - dino.h;
     dino.vy = 0;
     dino.isJumping = false;
     obstacles = [];
@@ -685,114 +694,182 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   function update() {
     frame++;
     score += 0.1;
-    if(frame % 100 === 0) speed += 0.2; // Makin cepet
+    if(frame % 100 === 0 && speed < 15) speed += 0.2;
 
-    // Fisika Dino
     dino.y += dino.vy;
     dino.vy += dino.gravity;
-    if(dino.y >= 140) {
-      dino.y = 140;
+    if(dino.y >= groundY - dino.h) {
+      dino.y = groundY - dino.h;
       dino.vy = 0;
       dino.isJumping = false;
     }
 
-    // Spawn Musuh (Kaktus / Batu)
-    if(frame > 60 && Math.random() < 0.02) {
+    if(frame > 60 && Math.random() < 0.015) {
       var isTall = Math.random() > 0.5;
       obstacles.push({
         x: W,
-        y: isTall ? 110 : 130,
+        y: isTall ? groundY - 40 : groundY - 25,
         w: isTall ? 15 : 20,
-        h: isTall ? 30 : 20
+        h: isTall ? 40 : 25
       });
     }
 
-    // Gerakin Musuh
     for(var i = obstacles.length - 1; i >= 0; i--) {
       var obs = obstacles[i];
       obs.x -= speed;
-
-      // Tabrakan (AABB)
-      if(dino.x < obs.x + obs.w && dino.x + dino.w > obs.x &&
-         dino.y < obs.y + obs.h && dino.y + dino.h > obs.y) {
+      var dX = dino.x + 5, dY = dino.y + 5, dW = dino.w - 10, dH = dino.h - 5;
+      if(dX < obs.x + obs.w && dX + dW > obs.x && dY < obs.y + obs.h && dY + dH > obs.y) {
         gameOver();
         return;
       }
       if(obs.x + obs.w < 0) obstacles.splice(i, 1);
     }
 
-    // Gerakin Awan
     clouds.forEach(function(c) {
-      c.x -= speed * 0.2;
-      if(c.x < -50) { c.x = W + 50; c.y = Math.random() * 80 + 10; }
+      c.x -= speed * 0.1;
+      if(c.x < -60) { 
+        c.x = W + 60; 
+        c.y = Math.random() * 60 + 20; 
+      }
     });
   }
 
   function draw() {
-    // Background layar
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
-    ctx.fillRect(0, 0, W, H);
-    
-    // Warna elemen (Hijau layar)
-    var color = getComputedStyle(document.documentElement).getPropertyValue('--screen-text').trim() || "#7dffa8";
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
+    // 1. Langit Senja
+    var grad = ctx.createLinearGradient(0, 0, 0, groundY);
+    grad.addColorStop(0, "#2b1055"); 
+    grad.addColorStop(0.5, "#d83f87"); 
+    grad.addColorStop(1, "#ff9a44"); 
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, groundY);
 
-    // Gambar Awan
+    // 2. Matahari
+    ctx.fillStyle = "#ffd36e";
+    ctx.beginPath();
+    ctx.arc(W/2, groundY - 30, 40, Math.PI, 0);
+    ctx.fill();
+
+    // 3. Gunung Belakang
+    ctx.fillStyle = "#5d2a72";
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(100, groundY - 100);
+    ctx.lineTo(250, groundY - 40);
+    ctx.lineTo(400, groundY - 120);
+    ctx.lineTo(W, groundY - 50);
+    ctx.lineTo(W, groundY);
+    ctx.closePath();
+    ctx.fill();
+
+    // 4. Gunung Depan
+    ctx.fillStyle = "#8e3b7e";
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(150, groundY - 50);
+    ctx.lineTo(300, groundY - 80);
+    ctx.lineTo(450, groundY - 30);
+    ctx.lineTo(W, groundY - 70);
+    ctx.lineTo(W, groundY);
+    ctx.closePath();
+    ctx.fill();
+
+    // 5. Awan
+    ctx.fillStyle = "#ffffff";
     clouds.forEach(function(c) {
-      ctx.fillRect(c.x, c.y, 30, 8);
-      ctx.fillRect(c.x + 10, c.y - 6, 15, 6);
+      ctx.fillRect(c.x, c.y, 30 * c.s, 8 * c.s);
+      ctx.fillRect(c.x + 8 * c.s, c.y - 6 * c.s, 16 * c.s, 6 * c.s);
+      ctx.fillRect(c.x + 18 * c.s, c.y - 4 * c.s, 10 * c.s, 4 * c.s);
     });
 
-    // Gambar Garis Tanah
+    // 6. Tanah
+    ctx.fillStyle = "#1e0d29";
+    ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.strokeStyle = "#ff9a44";
     ctx.beginPath();
-    ctx.moveTo(0, 180);
-    ctx.lineTo(W, 180);
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(W, groundY);
+    ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Gambar Dino (Kotak-kotak pixel)
-    ctx.fillRect(dino.x, dino.y, dino.w, dino.h); // Badan
-    ctx.fillRect(dino.x + 20, dino.y - 10, 15, 15); // Kepala
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
-    ctx.fillRect(dino.x + 25, dino.y - 5, 4, 4); // Mata
-    ctx.fillStyle = color;
-    // Kaki animasi lari
-    if(!dino.isJumping && frame % 10 < 5) {
-      ctx.fillRect(dino.x + 5, dino.y + dino.h, 6, 8);
-      ctx.fillRect(dino.x + 20, dino.y + dino.h, 6, 4);
-    } else {
-      ctx.fillRect(dino.x + 5, dino.y + dino.h, 6, 4);
-      ctx.fillRect(dino.x + 20, dino.y + dino.h, 6, 8);
-    }
-
-    // Gambar Musuh
+    // 7. Kaktus
+    ctx.fillStyle = "#1e0d29";
     obstacles.forEach(function(obs) {
       ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-      // Duri kaktus
-      if(obs.w == 15) {
-        ctx.fillRect(obs.x - 5, obs.y + 10, 25, 5);
+      if(obs.w === 15) {
+        ctx.fillRect(obs.x - 6, obs.y + 15, 27, 6);
+      } else {
+        ctx.fillRect(obs.x - 4, obs.y + 10, 28, 5);
       }
     });
 
-    // Skor
+    // 8. Dino
+    var dx = dino.x, dy = dino.y;
+    ctx.fillRect(dx, dy + 15, 25, 20);
+    ctx.fillRect(dx - 5, dy + 5, 10, 15); 
+    ctx.fillRect(dx + 15, dy, 15, 20);
+    ctx.fillRect(dx + 25, dy + 10, 8, 6);
+    
+    ctx.fillStyle = "#ff9a44";
+    ctx.fillRect(dx + 23, dy + 4, 4, 4);
+    ctx.fillStyle = "#1e0d29";
+    ctx.fillRect(dx + 18, dy + 20, 8, 4);
+    
+    if(!dino.isJumping && frame % 10 < 5) {
+      ctx.fillRect(dx + 5, dy + 35, 6, 9);
+      ctx.fillRect(dx + 17, dy + 35, 6, 5);
+    } else {
+      ctx.fillRect(dx + 5, dy + 35, 6, 5);
+      ctx.fillRect(dx + 17, dy + 35, 6, 9);
+    }
+
+    // 9. Skor
+    ctx.fillStyle = "#fff";
     ctx.font = "700 16px 'Pixelify Sans', monospace";
     ctx.textAlign = "right";
-    ctx.fillText("HI " + highScore + "  " + Math.floor(score), W - 20, 30);
+    ctx.fillText("HI " + Math.floor(highScore).toString().padStart(4, '0') + "  " + Math.floor(score).toString().padStart(4, '0'), W - 20, 30);
   }
 
-  // Init tampilan
   function initDraw() {
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--screen').trim() || "#0d1a14";
-    ctx.fillRect(0, 0, W, H);
-    var color = getComputedStyle(document.documentElement).getPropertyValue('--screen-text').trim() || "#7dffa8";
-    ctx.fillStyle = color;
-    ctx.fillRect(dino.x, dino.y, dino.w, dino.h);
-    ctx.fillRect(dino.x + 20, dino.y - 10, 15, 15);
-    ctx.beginPath(); ctx.moveTo(0, 180); ctx.lineTo(W, 180); ctx.stroke();
+    var grad = ctx.createLinearGradient(0, 0, 0, groundY);
+    grad.addColorStop(0, "#2b1055");
+    grad.addColorStop(0.5, "#d83f87");
+    grad.addColorStop(1, "#ff9a44");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, groundY);
+
+    ctx.fillStyle = "#ffd36e";
+    ctx.beginPath(); ctx.arc(W/2, groundY - 30, 40, Math.PI, 0); ctx.fill();
+
+    ctx.fillStyle = "#5d2a72";
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(100, groundY - 100); ctx.lineTo(250, groundY - 40); ctx.lineTo(400, groundY - 120); ctx.lineTo(W, groundY - 50); ctx.lineTo(W, groundY); ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle = "#8e3b7e";
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(150, groundY - 50); ctx.lineTo(300, groundY - 80); ctx.lineTo(450, groundY - 30); ctx.lineTo(W, groundY - 70); ctx.lineTo(W, groundY); ctx.closePath(); ctx.fill();
+
+    ctx.fillStyle = "#ffffff";
+    clouds.forEach(function(c) {
+      ctx.fillRect(c.x, c.y, 30 * c.s, 8 * c.s);
+      ctx.fillRect(c.x + 8 * c.s, c.y - 6 * c.s, 16 * c.s, 6 * c.s);
+      ctx.fillRect(c.x + 18 * c.s, c.y - 4 * c.s, 10 * c.s, 4 * c.s);
+    });
+
+    ctx.fillStyle = "#1e0d29";
+    ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.strokeStyle = "#ff9a44";
+    ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(W, groundY); ctx.lineWidth = 2; ctx.stroke();
+
+    var dx = dino.x, dy = dino.y;
+    ctx.fillStyle = "#1e0d29";
+    ctx.fillRect(dx, dy + 15, 25, 20); ctx.fillRect(dx - 5, dy + 5, 10, 15); ctx.fillRect(dx + 15, dy, 15, 20); ctx.fillRect(dx + 25, dy + 10, 8, 6);
+    ctx.fillStyle = "#ff9a44"; ctx.fillRect(dx + 23, dy + 4, 4, 4);
+    ctx.fillStyle = "#1e0d29"; ctx.fillRect(dx + 18, dy + 20, 8, 4); ctx.fillRect(dx + 5, dy + 35, 6, 9); ctx.fillRect(dx + 17, dy + 35, 6, 5);
+
+    ctx.fillStyle = "#fff";
     ctx.font = "700 16px 'Pixelify Sans', monospace";
     ctx.textAlign = "right";
-    ctx.fillText("HI " + highScore, W - 20, 30);
+    ctx.fillText("HI " + Math.floor(highScore).toString().padStart(4, '0'), W - 20, 30);
   }
+  
   initDraw();
 })();
 </script>
