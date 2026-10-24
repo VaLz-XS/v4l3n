@@ -132,6 +132,20 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .tap-sync .tap-hit{background:var(--star);color:#14141c}
 @media (prefers-reduced-motion:reduce){.lyrics-inner{transition:none}}
 
+/* === FITUR JAGA LAYAR === */
+.keep-awake-btn {
+  flex: none; cursor: pointer; white-space: nowrap;
+  font: 700 13px "Pixelify Sans", monospace;
+  color: var(--ink); background: var(--win);
+  border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
+  padding: 0 12px; height: 44px;
+}
+.keep-awake-btn.active {
+  background: var(--star); color: #14141c;
+  border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+.keep-awake-btn:active { transform: translateY(1px); }
+
 /* === GAME DINO === */
 .game-container { position: relative; width: 100%; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; }
 #dinoCanvas { display: block; width: 100%; height: 200px; }
@@ -261,6 +275,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
         <audio id="lagu" preload="metadata"></audio>
         <div class="player">
           <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
+          <!-- TOMBOL JAGA LAYAR -->
+          <button type="button" id="keepAwakeBtn" class="keep-awake-btn" aria-label="Jaga layar tetap hidup">🔆 Jaga Layar</button>
           <div class="player-info">
             <div class="player-title" id="playerTitle">Judul Lagu — Artis</div>
             <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Geser lagu">
@@ -457,7 +473,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 })();
 </script>
 
-<!-- === MUSIK LOGIC === -->
+<!-- === MUSIK LOGIC + WAKE LOCK === -->
 <script>
 (function(){
   var libraryView = document.getElementById("libraryView");
@@ -475,6 +491,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   var nowPlayingTitle = document.getElementById("nowPlayingTitle");
   var nowPlayingArtist = document.getElementById("nowPlayingArtist");
   var playerTitle = document.getElementById("playerTitle");
+  var keepAwakeBtn = document.getElementById("keepAwakeBtn");
 
   if(!audio || !box || !inner) return;
 
@@ -488,6 +505,65 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   };
   var currentLyrics = [];
 
+  // === LOGIKA WAKE LOCK (JAGA LAYAR) ===
+  var wakeLock = null;
+
+  async function requestWakeLock() {
+    if (!('wakeLock' in navigator)) {
+      alert("Browser lu nggak support fitur ini, bro. Coba update browser atau pakai Chrome.");
+      return;
+    }
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      keepAwakeBtn.classList.add('active');
+      keepAwakeBtn.textContent = '🔆 Layar Aktif';
+      
+      // Kalau sistem matiin paksa (misal baterai low), balikin tombol ke normal
+      wakeLock.addEventListener('release', function() {
+        keepAwakeBtn.classList.remove('active');
+        keepAwakeBtn.textContent = '🔆 Jaga Layar';
+        wakeLock = null;
+      });
+    } catch (err) {
+      console.warn('Wake Lock gagal:', err);
+      alert("Gagal jaga layar. Pastiin web udah HTTPS dan coba klik lagi.");
+    }
+  }
+
+  function releaseWakeLock() {
+    if (wakeLock !== null) {
+      wakeLock.release();
+      wakeLock = null;
+      keepAwakeBtn.classList.remove('active');
+      keepAwakeBtn.textContent = '🔆 Jaga Layar';
+    }
+  }
+
+  // Tombol Jaga Layar diklik
+  if (keepAwakeBtn) {
+    keepAwakeBtn.addEventListener('click', function() {
+      if (wakeLock === null) {
+        requestWakeLock();
+      } else {
+        releaseWakeLock();
+      }
+    });
+  }
+
+  // Otomatis lepas kalau lagu di-pause (biar baterai aman)
+  audio.addEventListener('pause', releaseWakeLock);
+  
+  // Otomatis lepas kalau user pindah tab (biar nggak ngabisin baterai di background)
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      releaseWakeLock();
+    } else if (!audio.paused && wakeLock === null) {
+      // Kalau balik ke tab dan lagu masih main, nyalain lagi
+      requestWakeLock();
+    }
+  });
+
+  // === FITUR PENCARIAN ===
   searchBox.addEventListener("input", function(){
     var q = this.value.toLowerCase();
     var cards = songGrid.querySelectorAll(".song-card");
@@ -518,6 +594,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   backBtn.addEventListener("click", function(){
     audio.pause();
+    releaseWakeLock(); // Pastiin layar bebas lagi
     libraryView.hidden = false;
     playerView.hidden = true;
     window.scrollTo(0,0);
@@ -585,7 +662,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     tCur.textContent = fmt(audio.currentTime);
     updateLyrics();
   });
-  audio.addEventListener("ended", function(){ playBtn.textContent = "▶"; audio.currentTime = 0; });
+  audio.addEventListener("ended", function(){ 
+    playBtn.textContent = "▶"; 
+    audio.currentTime = 0; 
+    releaseWakeLock(); 
+  });
   seek.addEventListener("input", function(){ if(audio.duration) audio.currentTime = (seek.value/100)*audio.duration });
   audio.addEventListener("seeked", updateLyrics);
 })();
@@ -735,7 +816,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   }
 
   function draw() {
-    // 1. Langit Senja
     var grad = ctx.createLinearGradient(0, 0, 0, groundY);
     grad.addColorStop(0, "#2b1055"); 
     grad.addColorStop(0.5, "#d83f87"); 
@@ -743,13 +823,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, groundY);
 
-    // 2. Matahari
     ctx.fillStyle = "#ffd36e";
     ctx.beginPath();
     ctx.arc(W/2, groundY - 30, 40, Math.PI, 0);
     ctx.fill();
 
-    // 3. Gunung Belakang
     ctx.fillStyle = "#5d2a72";
     ctx.beginPath();
     ctx.moveTo(0, groundY);
@@ -761,7 +839,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ctx.closePath();
     ctx.fill();
 
-    // 4. Gunung Depan
     ctx.fillStyle = "#8e3b7e";
     ctx.beginPath();
     ctx.moveTo(0, groundY);
@@ -773,7 +850,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ctx.closePath();
     ctx.fill();
 
-    // 5. Awan
     ctx.fillStyle = "#ffffff";
     clouds.forEach(function(c) {
       ctx.fillRect(c.x, c.y, 30 * c.s, 8 * c.s);
@@ -781,7 +857,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       ctx.fillRect(c.x + 18 * c.s, c.y - 4 * c.s, 10 * c.s, 4 * c.s);
     });
 
-    // 6. Tanah
     ctx.fillStyle = "#1e0d29";
     ctx.fillRect(0, groundY, W, H - groundY);
     ctx.strokeStyle = "#ff9a44";
@@ -791,7 +866,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // 7. Kaktus
     ctx.fillStyle = "#1e0d29";
     obstacles.forEach(function(obs) {
       ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
@@ -802,7 +876,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       }
     });
 
-    // 8. Dino
     var dx = dino.x, dy = dino.y;
     ctx.fillRect(dx, dy + 15, 25, 20);
     ctx.fillRect(dx - 5, dy + 5, 10, 15); 
@@ -822,7 +895,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       ctx.fillRect(dx + 17, dy + 35, 6, 9);
     }
 
-    // 9. Skor
     ctx.fillStyle = "#fff";
     ctx.font = "700 16px 'Pixelify Sans', monospace";
     ctx.textAlign = "right";
