@@ -107,7 +107,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:16px;margin-top:-5px;background:var(--star);border:2px solid #14141c}
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
-.lyrics{max-height:340px;overflow-y:auto;padding:16px 14px;background:var(--screen);color:var(--screen-text);border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);font:500 15px/1.7 "IBM Plex Mono",monospace;scroll-behavior:smooth}
+
+/* Fix Layout Lirik */
+.lyrics{
+  max-height:340px;overflow-y:auto;
+  padding:150px 14px; /* Padding atas & bawah biar baris pertama/terakhir bisa ke tengah */
+  background:var(--screen);color:var(--screen-text);
+  border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);
+  font:500 15px/1.7 "IBM Plex Mono",monospace;
+  scroll-behavior:smooth;
+  scrollbar-width:none; /* Sembunyikan scrollbar di Firefox */
+}
+.lyrics::-webkit-scrollbar { display: none; } /* Sembunyikan scrollbar di Chrome/Safari */
 .lyrics .line{margin:0 0 10px;opacity:.35;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease,color .35s ease}
 .lyrics .line.active{opacity:1;transform:none;color:#fff;font-weight:700;text-shadow:0 0 6px var(--screen-text)}
 .lyrics .line.passed{opacity:.55;transform:none}
@@ -405,10 +416,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   if(!audio||!box) return;
 
   // === LIRIK LENGKAP "BYE" — ARIANA GRANDE ===
-  // Format: [detik_mulai, "baris"]
+  // Timing di bawah ini udah disesuaikan sama intro (0-15 detik)
   var LYRICS = [
     [0.68,  "Bye-bye, boy, bye, hmm"],
-    [7.5,   "Hmm"],
+    [7.50,  "Hmm"],
     [11.68, "Bye-bye, and boy, bye"],
     [15.19, "It's over, it's over, oh yeah"],
     [17.94, "This ain't the first time I've been hostage to these tears"],
@@ -416,7 +427,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     [26.61, "At least, I know how hard we tried, both you and me"],
     [31.20, "Didn't we? Didn't we?"],
     [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"],
-    [39.5,  "It's time"],
+    [39.50, "It's time"],
     [44.35, "Bye-bye, boy, bye"],
     [48.72, "Bye-bye, it's over, it's over, oh yeah"],
     [53.02, "Bye-bye, I'm takin' what's mine, yeah"],
@@ -426,11 +437,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"],
     [74.59, "Didn't think you'd lose me"],
     [76.75, "Now it's just too late to choose me"],
-    [79.5,  "So I grab my stuff, Courtney just pulled up in the driveway"],
-    [84.0,  "It's time (it's time)"],
-    [88.0,  "Bye-bye, boy, bye (boy, bye)"],
-    [92.0,  "Bye-bye, it's over, it's over, oh yeah"],
-    [96.0,  "Bye-bye, I'm takin' what's mine, yeah"],
+    [79.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
+    [84.00, "It's time (it's time)"],
+    [88.00, "Bye-bye, boy, bye (boy, bye)"],
+    [92.00, "Bye-bye, it's over, it's over, oh yeah"],
+    [96.00, "Bye-bye, I'm takin' what's mine, yeah"],
     [100.0, "Bye-bye, it's over, it's over, oh yeah"],
     [106.37,"Now it's certainly bittersweet"],
     [110.89,"This hook feels too hard to sing"],
@@ -442,7 +453,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     [144.77,"Bye-bye (bye-bye), boy, bye"],
     [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"],
     [153.49,"Bye-bye, I'm takin' what's mine, yeah"],
-    [157.8, "Bye-bye, it's over, it's over, oh yeah"]
+    [157.80,"Bye-bye, it's over, it's over, oh yeah"]
   ];
 
   var els=[];
@@ -454,7 +465,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     box.appendChild(p);
     els.push(p);
   });
-  var pad=document.createElement("div");pad.style.height="140px";box.appendChild(pad);
 
   function fmt(s){
     if(!isFinite(s))return "0:00";
@@ -464,13 +474,17 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   function updateLyrics(){
     var t=audio.currentTime,idx=-1;
-    for(var i=0;i<LYRICS.length;i++){if(t>=LYRICS[i][0])idx=i;else break;}
+    for(var i=0;i<LYRICS.length;i++){
+      if(t>=LYRICS[i][0]) idx=i;
+      else break;
+    }
     els.forEach(function(el,i){
       el.classList.toggle("active",i===idx);
       el.classList.toggle("passed",i<idx);
     });
     if(idx>=0){
       var el=els[idx];
+      // Kalkulasi scroll biar pas di tengah box
       var y=el.offsetTop-box.clientHeight/2+el.offsetHeight/2;
       box.scrollTo({top:y,behavior:"smooth"});
     }
