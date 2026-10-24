@@ -51,16 +51,31 @@ dt{opacity:.7} dd{margin:0}
 .task{background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:6px 10px;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offset:2px}
 [hidden]{display:none!important}
+
+/* === LOADING SCREEN === */
 #load{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:var(--desk);background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:6px 6px}
 #load.out{opacity:0;visibility:hidden;transition:opacity .35s steps(4),visibility 0s .35s}
-.ld{width:min(340px,100%)}
+.ld{width:min(360px,100%)}
 .ld h2{font-size:1.8rem}
 .ld p{margin:.6em 0 .9em;min-height:1.6em}
 .track{display:grid;grid-template-columns:repeat(20,1fr);gap:2px;padding:3px;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);background:var(--screen)}
 .track i{height:16px}
 .track i.on{background:var(--star)}
 .pct{text-align:right;font-size:13px;margin-top:6px}
-@media (prefers-reduced-motion:reduce){#load.out{transition:none}}
+.halo-btn{
+  display:block;width:100%;margin-top:12px;cursor:pointer;
+  font:700 16px/1.35 "Pixelify Sans",monospace;
+  color:#fff;background:var(--bar);
+  border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);
+  padding:12px 14px;text-align:center;
+  animation:haloPulse 1.6s ease-in-out infinite;
+}
+.halo-btn:hover{filter:brightness(1.15)}
+.halo-btn:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo);transform:translateY(2px)}
+.halo-btn:disabled{opacity:.7;cursor:default;animation:none}
+@keyframes haloPulse{50%{transform:scale(1.02)}}
+@media (prefers-reduced-motion:reduce){#load.out,.halo-btn{transition:none;animation:none}}
+
 .top{position:relative;z-index:5}
 .menu-btn{margin-left:auto;display:grid;place-items:center;width:36px;height:28px;padding:0;cursor:pointer;color:var(--ink);background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
 .menu-btn:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
@@ -80,7 +95,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 </head>
 <body>
 <noscript><style>#load{display:none}</style></noscript>
-<div id="load" role="status" aria-live="polite">
+
+<!-- === LOADING / SELAMAT DATANG === -->
+<div id="load" role="dialog" aria-modal="true" aria-label="Selamat datang">
   <div class="win ld">
     <div class="bar"><span>memuat.exe</span></div>
     <div class="body">
@@ -88,9 +105,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       <p id="ldt">Memuat tampilan…</p>
       <div class="track" id="trk" aria-hidden="true"></div>
       <div class="pct" id="pct">0%</div>
+      <button type="button" id="masukBtn" class="halo-btn" hidden>
+        Selamat datang, klik untuk membuka beranda
+      </button>
     </div>
   </div>
 </div>
+<audio id="valenSfx" src="valen.mp3" preload="auto"></audio>
+
 <main>
   <header class="top">
     <div class="win">
@@ -271,28 +293,47 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 </script>
 <script>
 (function(){
-  var ld=document.getElementById("load"),trk=document.getElementById("trk"),pct=document.getElementById("pct"),tx=document.getElementById("ldt");
+  var ld=document.getElementById("load"),trk=document.getElementById("trk"),
+      pct=document.getElementById("pct"),tx=document.getElementById("ldt"),
+      btn=document.getElementById("masukBtn"),sfx=document.getElementById("valenSfx");
   var N=20,blocks=[],i;
   for(i=0;i<N;i++){var b=document.createElement("i");trk.appendChild(b);blocks.push(b)}
-  var msgs=["Memuat tampilan…","Menyiapkan bot…","Memanggil Tenka…","Hampir selesai…"];
+  var msgs=["Memuat tampilan…","Menyiapkan bot…","Memanggil Tenka…","Siap."];
   var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
-  var total=reduce?600:1900,start=Date.now(),loaded=document.readyState==="complete",done=false;
-  window.addEventListener("load",function(){loaded=true});
+  var total=reduce?600:1500,start=Date.now(),done=false;
+
   function finish(){
     if(done)return;done=true;
     ld.classList.add("out");
     setTimeout(function(){ld.hidden=true;document.dispatchEvent(new Event("masuk"))},reduce?0:350);
   }
+
   var tick=setInterval(function(){
     var p=Math.min(1,(Date.now()-start)/total);
-    if(!loaded)p=Math.min(p,.9);
     var n=Math.round(p*N);
     for(var k=0;k<N;k++)blocks[k].className=k<n?"on":"";
     pct.textContent=Math.round(p*100)+"%";
     tx.textContent=msgs[Math.min(msgs.length-1,Math.floor(p*msgs.length))];
-    if(p>=1){clearInterval(tick);setTimeout(finish,200)}
+    if(p>=1){
+      clearInterval(tick);
+      tx.textContent="Selamat datang di VaLen.";
+      btn.hidden=false;
+    }
   },60);
-  setTimeout(finish,6000);
+
+  btn.addEventListener("click",function(){
+    btn.disabled=true;
+    btn.textContent="Membuka beranda…";
+    if(sfx){
+      try{
+        sfx.currentTime=0;
+        sfx.loop=false;
+        var p=sfx.play();
+        if(p&&p.catch)p.catch(function(){});
+      }catch(e){}
+    }
+    setTimeout(finish, reduce?0:600);
+  });
 })();
 </script>
 </body>
