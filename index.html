@@ -108,26 +108,41 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
 
-/* Fix Layout Lirik */
-.lyrics{
-  max-height:340px;overflow-y:auto;
-  padding:150px 14px; /* Padding atas & bawah biar baris pertama/terakhir bisa ke tengah */
-  background:var(--screen);color:var(--screen-text);
-  border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);
-  font:500 15px/1.7 "IBM Plex Mono",monospace;
-  scroll-behavior:smooth;
-  scrollbar-width:none; /* Sembunyikan scrollbar di Firefox */
+/* === LIRIK (DIPERBAIKI TOTAL) === */
+.lyrics-wrap {
+  height: 340px;
+  background: var(--screen);
+  border: 2px solid;
+  border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+  overflow: hidden; /* Kunci kotak biar ga ada scrollbar */
+  position: relative;
 }
-.lyrics::-webkit-scrollbar { display: none; } /* Sembunyikan scrollbar di Chrome/Safari */
-.lyrics .line{margin:0 0 10px;opacity:.35;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease,color .35s ease}
-.lyrics .line.active{opacity:1;transform:none;color:#fff;font-weight:700;text-shadow:0 0 6px var(--screen-text)}
-.lyrics .line.passed{opacity:.55;transform:none}
+.lyrics-inner {
+  padding: 14px;
+  font: 500 15px/1.7 "IBM Plex Mono", monospace;
+  color: var(--screen-text);
+  transition: transform 0.4s ease-out; /* Animasi geser lirik */
+}
+.lyrics-inner .line {
+  margin: 0 0 10px;
+  opacity: 0.35;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+.lyrics-inner .line.active {
+  opacity: 1;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 6px var(--screen-text);
+}
+.lyrics-inner .line.passed {
+  opacity: 0.55;
+}
 .tap-sync{display:none;gap:8px;align-items:center;margin-top:8px}
 .tap-sync.on{display:flex}
 .tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
 .tap-sync button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .tap-sync .tap-hit{background:var(--star);color:#14141c}
-@media (prefers-reduced-motion:reduce){.lyrics .line{transition:none}.lyrics{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){.lyrics-inner{transition:none}}
 </style>
 </head>
 <body>
@@ -233,7 +248,9 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
         </div>
       </div>
 
-      <div class="lyrics" id="lyrics" aria-live="polite"></div>
+      <div class="lyrics-wrap" id="lyricsBox">
+        <div class="lyrics-inner" id="lyricsInner"></div>
+      </div>
 
       <div class="tap-sync" id="tapSync">
         <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
@@ -246,7 +263,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   <section class="win about" data-view="tentang">
     <div class="bar"><span>tentang.txt</span><i class="btn"></i></div>
     <div class="body">
-      <p>Saya VaLen. Saya suka membuat bot yang benar-benar dipakai orang di WhatsApp, dari yang sederhana sampai yang penuh fitur.</p>
+      <p>Saya VaLen. Saya suka membuat bot yang benar-benar dipakai orang di WhatsApp, dari yang sederhana sampai yang kompleks.</p>
       <p>Setiap bot punya rilis sendiri, jadi kamu bisa pilih yang sesuai kebutuhan.</p>
     </div>
   </section>
@@ -412,11 +429,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   var seek=document.getElementById("seek");
   var tCur=document.getElementById("tCur");
   var tDur=document.getElementById("tDur");
-  var box=document.getElementById("lyrics");
-  if(!audio||!box) return;
+  var box=document.getElementById("lyricsBox");
+  var inner=document.getElementById("lyricsInner");
+  if(!audio||!box||!inner) return;
 
-  // === LIRIK LENGKAP "BYE" — ARIANA GRANDE ===
-  // Timing di bawah ini udah disesuaikan sama intro (0-15 detik)
+  // Lirik lengkap (timing dari LRC)
   var LYRICS = [
     [0.68,  "Bye-bye, boy, bye, hmm"],
     [7.50,  "Hmm"],
@@ -462,7 +479,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     p.className="line";
     p.textContent=item[1];
     p.dataset.t=item[0];
-    box.appendChild(p);
+    inner.appendChild(p);
     els.push(p);
   });
 
@@ -482,11 +499,16 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       el.classList.toggle("active",i===idx);
       el.classList.toggle("passed",i<idx);
     });
+    
+    // TRIK SCROLL PAKAI TRANSFORM (ANTI-LEWAT)
     if(idx>=0){
       var el=els[idx];
-      // Kalkulasi scroll biar pas di tengah box
-      var y=el.offsetTop-box.clientHeight/2+el.offsetHeight/2;
-      box.scrollTo({top:y,behavior:"smooth"});
+      // Hitung posisi tengah
+      var targetY = el.offsetTop - (box.clientHeight / 2) + (el.offsetHeight / 2);
+      if(targetY < 0) targetY = 0; // Biar ga scroll ke atas berlebihan
+      
+      // Geser pake transform, bukan scroll!
+      inner.style.transform = "translateY(-" + targetY + "px)";
     }
   }
 
@@ -518,7 +540,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   seek.addEventListener("input",function(){if(audio.duration)audio.currentTime=(seek.value/100)*audio.duration});
   audio.addEventListener("seeked",updateLyrics);
 
-  /* === TAP SYNC === */
+  // Tap Sync
   var tapSync=document.getElementById("tapSync");
   var tapStart=document.getElementById("tapStart");
   var tapHit=document.getElementById("tapHit");
@@ -547,7 +569,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       }).join(",\n")+"\n];";
       console.log(out);
       if(navigator.clipboard){navigator.clipboard.writeText(out).then(function(){
-        alert("Timing udah di-copy ke clipboard!\n\nBuka Console (F12) kalau mau lihat juga.");
+        alert("Timing udah di-copy ke clipboard!");
       }).catch(function(){alert("Copy gagal. Lihat di Console (F12).")})}
       else{alert("Lihat timing di Console (F12).")}
       tapSync.classList.remove("on");
