@@ -91,6 +91,32 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .say{position:absolute;bottom:100%;margin-bottom:8px;width:max-content;max-width:180px;padding:6px 10px;background:#fff;color:#14141c;border:2px solid #14141c;font:500 14px/1.3 "Pixelify Sans",monospace;pointer-events:none;box-shadow:3px 3px 0 rgba(0,0,0,.35)}
 .say.below{bottom:auto;top:100%;margin:8px 0 0}
 .say.l{left:0}.say.r{right:0}
+
+/* === MUSIK === */
+.musik{display:grid;gap:14px}
+.musik h2{font-size:1.6rem}
+.musik-sub{margin:0;opacity:.75;font-size:14px}
+.player{display:flex;gap:12px;align-items:center;background:var(--screen);color:var(--screen-text);padding:10px 12px;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+.play-btn{flex:none;width:44px;height:44px;display:grid;place-items:center;font:700 20px "Pixelify Sans",monospace;cursor:pointer;color:#14141c;background:var(--star);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+.play-btn:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo);transform:translateY(1px)}
+.player-info{flex:1;display:grid;gap:6px;min-width:0}
+.player-title{font:700 15px "Pixelify Sans",monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-time{font-size:12px;opacity:.8;text-align:right}
+#seek{-webkit-appearance:none;appearance:none;width:100%;height:10px;background:transparent;cursor:pointer}
+#seek::-webkit-slider-runnable-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
+#seek::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:16px;margin-top:-5px;background:var(--star);border:2px solid #14141c}
+#seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
+#seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
+.lyrics{max-height:340px;overflow-y:auto;padding:16px 14px;background:var(--screen);color:var(--screen-text);border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);font:500 15px/1.7 "IBM Plex Mono",monospace;scroll-behavior:smooth}
+.lyrics .line{margin:0 0 10px;opacity:.35;transform:translateY(6px);transition:opacity .35s ease,transform .35s ease,color .35s ease}
+.lyrics .line.active{opacity:1;transform:none;color:#fff;font-weight:700;text-shadow:0 0 6px var(--screen-text)}
+.lyrics .line.passed{opacity:.55;transform:none}
+.tap-sync{display:none;gap:8px;align-items:center;margin-top:8px}
+.tap-sync.on{display:flex}
+.tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+.tap-sync button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+.tap-sync .tap-hit{background:var(--star);color:#14141c}
+@media (prefers-reduced-motion:reduce){.lyrics .line{transition:none}.lyrics{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -123,10 +149,12 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     <nav class="win menu" id="menu" hidden aria-label="Menu halaman">
       <a href="#beranda">Beranda</a>
       <a href="#proyek">Proyek</a>
+      <a href="#musik">Musik</a>
       <a href="#tentang">Tentang</a>
       <a href="#kontak">Kontak</a>
     </nav>
   </header>
+
   <section class="win hero" data-view="beranda" aria-label="Perkenalan">
     <div class="bar"><span>beranda.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body hero">
@@ -174,6 +202,34 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
         <span class="tag soon">segera hadir</span>
       </div>
     </article>
+  </section>
+
+  <!-- === MUSIK === -->
+  <section class="win" data-view="musik" aria-label="Musik">
+    <div class="bar"><span>musik.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body musik">
+      <h2>Ariana Grande — Bye</h2>
+      <p class="musik-sub">Tekan play, liriknya jalan sendiri.</p>
+
+      <audio id="lagu" src="bye.mp3" preload="metadata"></audio>
+
+      <div class="player">
+        <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
+        <div class="player-info">
+          <div class="player-title">Bye — Ariana Grande</div>
+          <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Geser lagu">
+          <div class="player-time"><span id="tCur">0:00</span> / <span id="tDur">0:00</span></div>
+        </div>
+      </div>
+
+      <div class="lyrics" id="lyrics" aria-live="polite"></div>
+
+      <div class="tap-sync" id="tapSync">
+        <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
+        <button type="button" id="tapHit" class="tap-hit" hidden>⏱ TAP (baris berikutnya)</button>
+        <button type="button" id="tapDone" hidden>💾 Selesai & Copy</button>
+      </div>
+    </div>
   </section>
 
   <section class="win about" data-view="tentang">
@@ -334,6 +390,155 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     }
     setTimeout(finish, reduce?0:600);
   });
+})();
+</script>
+
+<!-- === MUSIK + LIRIK + TAP SYNC === -->
+<script>
+(function(){
+  var audio=document.getElementById("lagu");
+  var playBtn=document.getElementById("playBtn");
+  var seek=document.getElementById("seek");
+  var tCur=document.getElementById("tCur");
+  var tDur=document.getElementById("tDur");
+  var box=document.getElementById("lyrics");
+  if(!audio||!box) return;
+
+  // === LIRIK LENGKAP "BYE" — ARIANA GRANDE ===
+  // Format: [detik_mulai, "baris"]
+  var LYRICS = [
+    [0.68,  "Bye-bye, boy, bye, hmm"],
+    [7.5,   "Hmm"],
+    [11.68, "Bye-bye, and boy, bye"],
+    [15.19, "It's over, it's over, oh yeah"],
+    [17.94, "This ain't the first time I've been hostage to these tears"],
+    [22.20, "I can't believe I'm finally movin' through my fears"],
+    [26.61, "At least, I know how hard we tried, both you and me"],
+    [31.20, "Didn't we? Didn't we?"],
+    [34.22, "So I grab my stuff, Courtney just pulled up in the driveway"],
+    [39.5,  "It's time"],
+    [44.35, "Bye-bye, boy, bye"],
+    [48.72, "Bye-bye, it's over, it's over, oh yeah"],
+    [53.02, "Bye-bye, I'm takin' what's mine, yeah"],
+    [57.41, "Bye-bye, it's over, it's over, oh yeah"],
+    [62.09, "You know, I'm stronger than I think"],
+    [65.90, "Usually, I'd join you on the floor, but this dance ain't for me"],
+    [70.34, "Boy, just turn the music up, maybe someday we'll look back with love"],
+    [74.59, "Didn't think you'd lose me"],
+    [76.75, "Now it's just too late to choose me"],
+    [79.5,  "So I grab my stuff, Courtney just pulled up in the driveway"],
+    [84.0,  "It's time (it's time)"],
+    [88.0,  "Bye-bye, boy, bye (boy, bye)"],
+    [92.0,  "Bye-bye, it's over, it's over, oh yeah"],
+    [96.0,  "Bye-bye, I'm takin' what's mine, yeah"],
+    [100.0, "Bye-bye, it's over, it's over, oh yeah"],
+    [106.37,"Now it's certainly bittersweet"],
+    [110.89,"This hook feels too hard to sing"],
+    [116.12,"But it's better than repeat (than repeat, than repeat, than repeat)"],
+    [127.24,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
+    [131.58,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+    [135.99,"Bye-bye, I'm takin' what's mine, yeah"],
+    [140.35,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
+    [144.77,"Bye-bye (bye-bye), boy, bye"],
+    [149.03,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+    [153.49,"Bye-bye, I'm takin' what's mine, yeah"],
+    [157.8, "Bye-bye, it's over, it's over, oh yeah"]
+  ];
+
+  var els=[];
+  LYRICS.forEach(function(item,i){
+    var p=document.createElement("p");
+    p.className="line";
+    p.textContent=item[1];
+    p.dataset.t=item[0];
+    box.appendChild(p);
+    els.push(p);
+  });
+  var pad=document.createElement("div");pad.style.height="140px";box.appendChild(pad);
+
+  function fmt(s){
+    if(!isFinite(s))return "0:00";
+    var m=Math.floor(s/60),r=Math.floor(s%60);
+    return m+":"+(r<10?"0":"")+r;
+  }
+
+  function updateLyrics(){
+    var t=audio.currentTime,idx=-1;
+    for(var i=0;i<LYRICS.length;i++){if(t>=LYRICS[i][0])idx=i;else break;}
+    els.forEach(function(el,i){
+      el.classList.toggle("active",i===idx);
+      el.classList.toggle("passed",i<idx);
+    });
+    if(idx>=0){
+      var el=els[idx];
+      var y=el.offsetTop-box.clientHeight/2+el.offsetHeight/2;
+      box.scrollTo({top:y,behavior:"smooth"});
+    }
+  }
+
+  function sync(){
+    updateLyrics();
+    if(audio.duration)seek.value=(audio.currentTime/audio.duration)*100;
+    tCur.textContent=fmt(audio.currentTime);
+    if(!audio.paused)requestAnimationFrame(sync);
+  }
+
+  playBtn.addEventListener("click",function(){
+    if(audio.paused){
+      audio.play().then(function(){
+        playBtn.textContent="❚❚";
+        requestAnimationFrame(sync);
+      }).catch(function(){});
+    }else{
+      audio.pause();playBtn.textContent="▶";
+    }
+  });
+
+  audio.addEventListener("loadedmetadata",function(){tDur.textContent=fmt(audio.duration)});
+  audio.addEventListener("timeupdate",function(){
+    if(audio.duration)seek.value=(audio.currentTime/audio.duration)*100;
+    tCur.textContent=fmt(audio.currentTime);
+    updateLyrics();
+  });
+  audio.addEventListener("ended",function(){playBtn.textContent="▶";audio.currentTime=0});
+  seek.addEventListener("input",function(){if(audio.duration)audio.currentTime=(seek.value/100)*audio.duration});
+  audio.addEventListener("seeked",updateLyrics);
+
+  /* === TAP SYNC === */
+  var tapSync=document.getElementById("tapSync");
+  var tapStart=document.getElementById("tapStart");
+  var tapHit=document.getElementById("tapHit");
+  var tapDone=document.getElementById("tapDone");
+  if(tapSync){
+    var rec=[],cur=0;
+    tapStart.addEventListener("click",function(){
+      rec=[];cur=0;
+      tapStart.hidden=true;
+      tapHit.hidden=false;tapDone.hidden=false;
+      tapHit.textContent="⏱ TAP: "+LYRICS[0][1];
+      if(audio.paused){audio.play().catch(function(){})}
+    });
+    tapHit.addEventListener("click",function(){
+      if(cur>=LYRICS.length-1){
+        tapHit.hidden=true;tapDone.hidden=false;
+        return;
+      }
+      rec.push([+audio.currentTime.toFixed(2),LYRICS[cur][1]]);
+      cur++;
+      tapHit.textContent="⏱ TAP: "+LYRICS[cur][1];
+    });
+    tapDone.addEventListener("click",function(){
+      var out="var LYRICS=[\n"+rec.map(function(r){
+        return '  ['+r[0]+', '+JSON.stringify(r[1])+']';
+      }).join(",\n")+"\n];";
+      console.log(out);
+      if(navigator.clipboard){navigator.clipboard.writeText(out).then(function(){
+        alert("Timing udah di-copy ke clipboard!\n\nBuka Console (F12) kalau mau lihat juga.");
+      }).catch(function(){alert("Copy gagal. Lihat di Console (F12).")})}
+      else{alert("Lihat timing di Console (F12).")}
+      tapSync.classList.remove("on");
+    });
+  }
 })();
 </script>
 </body>
