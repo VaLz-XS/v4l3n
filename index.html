@@ -808,7 +808,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       [151.43, "All I need is the great expectation of you", "glitch-red"],
       [158.24, "All I need is", "glitch-red"],
       [161.91, "All I need is you", "glitch-red"]
-    ]
+    ],
   };
   var currentLyrics = [];
 
@@ -823,7 +823,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     try {
       wakeLock = await navigator.wakeLock.request('screen');
       keepAwakeBtn.classList.add('active');
-      var textNode = Array.from(keepAwakeBtn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+      var textNode = Array.from(keepAwakeBn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
       if (textNode) textNode.nodeValue = " Layar Aktif";
       
       wakeLock.addEventListener('release', function() {
