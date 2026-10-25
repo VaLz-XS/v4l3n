@@ -267,6 +267,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
             <img src="1000X.jpg" alt="Cover 1000X">
             <div class="card-title">1000X</div>
           </div>
+          <!-- Kartu Lagu Baru: Merry Christmas -->
+          <div class="song-card" data-src="merry.mp3" data-title="Merry Christmas, Please Don't Call" data-artist="Bleachers">
+            <img src="merry.jpg" alt="Cover Merry Christmas">
+            <div class="card-title">Merry Christmas</div>
+          </div>
         </div>
       </div>
       
@@ -500,7 +505,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   if(!audio || !box || !inner) return;
 
-  // TIMING LIRIK BYE (PRESISI BAGIAN TENGAH)
+  // TIMING LIRIK DARI LRC
   var SONGS_DATA = {
     "Bye": [
       [0.00,  "Bye-bye, boy, bye, hmm"],
@@ -542,6 +547,57 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ],
     "1000X": [
       [23.49, "Kadang aku iri melihat mereka"], [28.24, "Tercipta seperti pasangan yang sempurna"], [33.00, "Saling mencintai dan begitu bahagia"], [37.47, "Dan dipuja puji insan yang memandangnya"], [42.28, "Lalu aku memandangmu"], [46.78, "Dan tersadar betapa beruntungnya"], [51.20, "Ada cinta seperti cintamu kepadaku"], [58.53, "Hooo"], [59.87, "Cukup aku milikmu dan kamu milikku"], [64.76, "Tetap disampingku sampai jadi debu"], [69.36, "Sampai akhir waktu"], [71.82, "Sampai maut yang bersaksi cintaku abadi"], [77.94, "Dan bila aku terlahir 1000X lagi"], [82.92, "Di dunia yang lain aku tak peduli"], [87.57, "Kau akan kucari"], [90.11, "Sampai kau tau betapa kau kucintai"], [97.05, "Lalu aku memandangmu"], [101.68, "Dan tersadar betapa beruntungnya"], [106.13, "Ada cinta seperti cintamu kepadaku"], [113.29, "Hooo"], [114.65, "Cukup aku milikmu dan kamu milikku"], [119.66, "Tetap disampingku sampai jadi debu"], [124.11, "Sampai akhir waktu"], [126.78, "Sampai maut yang bersaksi cintaku abadi"], [132.77, "Dan bila aku terlahir 1000X lagi"], [138.00, "Di dunia yang lain, aku tak peduli"], [142.42, "Kau akan kucari"], [145.00, "Sampai kau tau betapa kau kucintai"], [151.23, "Sampai sampai maut maut"], [153.69, "Sampai maut yang bersaksi"], [155.86, "Sampai sampai seribu seribu"], [158.13, "Kali lagi"], [159.03, "1000X lagi"], [160.55, "(Kau akan kucari)"], [163.00, "Kau kan ku cintai"], [165.31, "(Kau kan kucintai)"], [169.54, "Cukup aku milikmu kau milikku"], [174.50, "(Tetap disampingku)"], [176.74, "Sampai jadi debu"], [179.02, "Sampai akhir waktu"], [181.77, "Hooo"], [186.01, "Kau tetap milikku"], [188.03, "(Cukup aku milikmu dan kamu milikku)"], [190.72, "Bintang di malamku"], [192.93, "(Tetap disampingku sampai jadi debu)"], [195.61, "Detak di jantungku"], [197.74, "(Sampai akhir waktu)"], [199.98, "(Sampai maut yang bersaksi cintaku abadi)"], [202.60, "Cintaku abadi"], [206.18, "(Dan bila aku terlahir 1000X lagi)"], [209.18, "1000X lagi"], [210.95, "(Di dunia yang lain aku tak peduli)"], [214.04, "Aku tak peduli"], [215.69, "(Kau akan kucari)"], [218.14, "Sampai kau tahu berapa kau kucintai"]
+    ],
+    "Merry Christmas, Please Don't Call": [
+      [5.10, "To the tempo of your uptight"],
+      [7.37, "Is the flicker of a street light"],
+      [10.48, "You know this moment, don't ya"],
+      [13.70, "And time is strangely calm now"],
+      [16.18, "'Cause everybody's gone it's"],
+      [19.41, "Just you and your anger"],
+      [22.07, "Oh, golden boy, don't act like you were kind"],
+      [27.66, "You were mine but you were awful every time"],
+      [30.78, "So don't tell them what you told me"],
+      [32.88, "Don't hold me like you know me"],
+      [35.99, "I would rather burn forever"],
+      [39.45, "But you should know that I died slow"],
+      [43.78, "Running through the halls of your haunted home"],
+      [47.93, "And the toughest part is that we both know"],
+      [52.11, "What happened to you"],
+      [54.23, "Why you're out on your own"],
+      [57.22, "Merry Christmas, please don't call"],
+      [65.05, "You really left me on the line, kid"],
+      [67.65, "Holding all your baggage"],
+      [70.49, "You know I'm not your father"],
+      [73.53, "Who says welcome to your uptight"],
+      [75.84, "While it flickers like a street light"],
+      [78.98, "He flickers through your damage"],
+      [82.17, "Oh, golden boy, you shined a light on your home"],
+      [87.35, "And at your best you were magic, I was sold"],
+      [90.69, "But don't tell 'em what you told me"],
+      [92.98, "Don't even tell 'em that you know me"],
+      [95.96, "I would rather burn forever"],
+      [99.58, "But you should know that I died slow"],
+      [103.88, "Running through the halls of your haunted home"],
+      [108.00, "And the toughest part is that we both know"],
+      [112.01, "What happened to you"],
+      [114.06, "Why you're out on your own"],
+      [117.14, "Merry Christmas"],
+      [118.97, "Please don't call"],
+      [124.73, "One ticket out of your heavy gaze"],
+      [128.58, "I want one ticket off of your carousel"],
+      [132.59, "I want one ticket out of your heavy gaze"],
+      [136.76, "I want one ticket off of your carousel"],
+      [142.26, "But you should know that I died slow"],
+      [146.87, "Running through the halls of your haunted home"],
+      [151.03, "And the toughest part is that we both know"],
+      [154.96, "What happened to you"],
+      [156.93, "Why you're out on your own"],
+      [159.89, "Merry Christmas"],
+      [161.85, "Please don't call"],
+      [164.33, "Merry Christmas"],
+      [165.73, "I'm not yours at all"],
+      [168.35, "Merry Christmas"]
     ]
   };
   var currentLyrics = [];
