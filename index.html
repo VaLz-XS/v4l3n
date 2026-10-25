@@ -117,6 +117,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   color: var(--ink); background: var(--win);
   border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi);
   padding: 6px 12px;
+  display: flex; align-items: center; gap: 6px;
 }
 .keep-awake-btn.active { background: var(--star); color: #14141c; border-color: var(--lo) var(--hi) var(--hi) var(--lo); }
 .keep-awake-btn:active { transform: translateY(1px); }
@@ -142,7 +143,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
 /* Tombol Tap Sync */
 .tap-sync{display:flex; gap:8px; align-items:center; margin-top:8px}
-.tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+.tap-sync button{flex:1;font:700 14px "Pixelify Sans",monospace;padding:8px;cursor:pointer;background:var(--win);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi); display:flex; align-items:center; justify-content:center; gap:6px;}
 .tap-sync button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .tap-sync .tap-hit{background:var(--star);color:#14141c}
 @media (prefers-reduced-motion:reduce){.lyrics-inner{transition:none}}
@@ -271,10 +272,13 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
             <img src="merry.jpg" alt="Cover Merry Christmas">
             <div class="card-title">Merry Christmas</div>
           </div>
-          <!-- Kartu Lagu Baru: I'll Do It -->
           <div class="song-card" data-src="illdoit.mp3" data-title="I'll Do It" data-artist="Heidi Montag">
             <img src="illdoit.jpg" alt="Cover I'll Do It">
             <div class="card-title">I'll Do It</div>
+          </div>
+          <div class="song-card" data-src="bersenja.mp3" data-title="Bersenja Gurau" data-artist="Raim Laode">
+            <img src="bersenja.jpg" alt="Cover Bersenja Gurau">
+            <div class="card-title">Bersenja Gurau</div>
           </div>
         </div>
       </div>
@@ -282,7 +286,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       <div id="playerView" hidden>
         <div class="player-header">
           <button type="button" class="back-btn" id="backBtn">← Kembali</button>
-          <button type="button" id="keepAwakeBtn" class="keep-awake-btn" aria-label="Jaga layar tetap hidup">🔆 Jaga Layar</button>
+          <button type="button" id="keepAwakeBtn" class="keep-awake-btn" aria-label="Jaga layar tetap hidup">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            Jaga Layar
+          </button>
         </div>
 
         <h2 id="nowPlayingTitle">Judul Lagu</h2>
@@ -301,9 +308,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
           <div class="lyrics-inner" id="lyricsInner"></div>
         </div>
         <div class="tap-sync" id="tapSync">
-          <button type="button" id="tapStart">🎯 Mulai Tap Sync</button>
-          <button type="button" id="tapHit" class="tap-hit" hidden>⏱ TAP (baris berikutnya)</button>
-          <button type="button" id="tapDone" hidden>💾 Selesai & Copy</button>
+          <button type="button" id="tapStart">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            Mulai Tap Sync
+          </button>
+          <button type="button" id="tapHit" class="tap-hit" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            TAP (baris berikutnya)
+          </button>
+          <button type="button" id="tapDone" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            Selesai & Copy
+          </button>
         </div>
       </div>
     </div>
@@ -511,136 +527,19 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   var SONGS_DATA = {
     "Bye": [
-      [0.00,  "Bye-bye, boy, bye, hmm"],
-      [8.00,  "Hmm"],
-      [12.00, "Bye-bye, and boy, bye"],
-      [14.70, "It's over, it's over, oh yeah"],
-      [17.60, "This ain't the first time I've been hostage to these tears"],
-      [21.80, "I can't believe I'm finally movin' through my fears"],
-      [26.70, "At least, I know how hard we tried, both you and me"],
-      [31.80, "Didn't we? Didn't we?"],
-      [35.00, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [42.50, "It's time"],
-      [46.20, "Bye-bye, boy, bye"],
-      [48.80, "Bye-bye, it's over, it's over, oh yeah"],
-      [52.80, "Bye-bye, I'm takin' what's mine, yeah"],
-      [56.10, "Bye-bye, it's over, it's over, oh yeah"],
-      [60.00, "You know, I'm stronger than I think"],
-      [64.50, "Usually, I'd join you on the floor, but this dance ain't for me"],
-      [69.50, "Boy, just turn the music up, maybe someday we'll look back with love"],
-      [74.50, "Didn't think you'd lose me"],
-      [76.50, "Now it's just too late to choose me"],
-      [78.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [86.50, "It's time (it's time)"],
-      [91.10, "Bye-bye, boy, bye (boy, bye)"],
-      [93.50, "Bye-bye, it's over, it's over, oh yeah"],
-      [97.80, "Bye-bye, I'm takin' what's mine, yeah"],
-      [101.00, "Bye-bye, it's over, it's over, oh yeah"],
-      [105.30, "Now it's certainly bittersweet"],
-      [110.90, "This hook feels too hard to sing"],
-      [116.80, "But it's better than repeat (than repeat, than repeat, than repeat)"],
-      [124.30, "Bye-bye (bye-bye), boy, bye (boy, bye)"],
-      [126.80, "Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [129.30, "Bye-bye, I'm takin' what's mine, yeah"],
-      [133.00, "Bye-bye, it's over, it's over, oh yeah (ooh)"],
-      [136.00, "Bye-bye (bye-bye), boy, bye"],
-      [139.90, "Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [141.80, "Bye-bye, I'm takin' what's mine, yeah"],
-      [145.00, "Bye-bye, it's over, it's over, oh yeah"]
+      [0.00,  "Bye-bye, boy, bye, hmm"], [8.00,  "Hmm"], [12.00, "Bye-bye, and boy, bye"], [14.70, "It's over, it's over, oh yeah"], [17.60, "This ain't the first time I've been hostage to these tears"], [21.80, "I can't believe I'm finally movin' through my fears"], [26.70, "At least, I know how hard we tried, both you and me"], [31.80, "Didn't we? Didn't we?"], [35.00, "So I grab my stuff, Courtney just pulled up in the driveway"], [42.50, "It's time"], [46.20, "Bye-bye, boy, bye"], [48.80, "Bye-bye, it's over, it's over, oh yeah"], [52.80, "Bye-bye, I'm takin' what's mine, yeah"], [56.10, "Bye-bye, it's over, it's over, oh yeah"], [60.00, "You know, I'm stronger than I think"], [64.50, "Usually, I'd join you on the floor, but this dance ain't for me"], [69.50, "Boy, just turn the music up, maybe someday we'll look back with love"], [74.50, "Didn't think you'd lose me"], [76.50, "Now it's just too late to choose me"], [78.50, "So I grab my stuff, Courtney just pulled up in the driveway"], [86.50, "It's time (it's time)"], [91.10, "Bye-bye, boy, bye (boy, bye)"], [93.50, "Bye-bye, it's over, it's over, oh yeah"], [97.80, "Bye-bye, I'm takin' what's mine, yeah"], [101.00, "Bye-bye, it's over, it's over, oh yeah"], [105.30, "Now it's certainly bittersweet"], [110.90, "This hook feels too hard to sing"], [116.80, "But it's better than repeat (than repeat, than repeat, than repeat)"], [124.30, "Bye-bye (bye-bye), boy, bye (boy, bye)"], [126.80, "Bye-bye, it's over, it's over, oh yeah (bye)"], [129.30, "Bye-bye, I'm takin' what's mine, yeah"], [133.00, "Bye-bye, it's over, it's over, oh yeah (ooh)"], [136.00, "Bye-bye (bye-bye), boy, bye"], [139.90, "Bye-bye, it's over, it's over, oh yeah (bye)"], [141.80, "Bye-bye, I'm takin' what's mine, yeah"], [145.00, "Bye-bye, it's over, it's over, oh yeah"]
     ],
     "1000X": [
       [23.49, "Kadang aku iri melihat mereka"], [28.24, "Tercipta seperti pasangan yang sempurna"], [33.00, "Saling mencintai dan begitu bahagia"], [37.47, "Dan dipuja puji insan yang memandangnya"], [42.28, "Lalu aku memandangmu"], [46.78, "Dan tersadar betapa beruntungnya"], [51.20, "Ada cinta seperti cintamu kepadaku"], [58.53, "Hooo"], [59.87, "Cukup aku milikmu dan kamu milikku"], [64.76, "Tetap disampingku sampai jadi debu"], [69.36, "Sampai akhir waktu"], [71.82, "Sampai maut yang bersaksi cintaku abadi"], [77.94, "Dan bila aku terlahir 1000X lagi"], [82.92, "Di dunia yang lain aku tak peduli"], [87.57, "Kau akan kucari"], [90.11, "Sampai kau tau betapa kau kucintai"], [97.05, "Lalu aku memandangmu"], [101.68, "Dan tersadar betapa beruntungnya"], [106.13, "Ada cinta seperti cintamu kepadaku"], [113.29, "Hooo"], [114.65, "Cukup aku milikmu dan kamu milikku"], [119.66, "Tetap disampingku sampai jadi debu"], [124.11, "Sampai akhir waktu"], [126.78, "Sampai maut yang bersaksi cintaku abadi"], [132.77, "Dan bila aku terlahir 1000X lagi"], [138.00, "Di dunia yang lain, aku tak peduli"], [142.42, "Kau akan kucari"], [145.00, "Sampai kau tau betapa kau kucintai"], [151.23, "Sampai sampai maut maut"], [153.69, "Sampai maut yang bersaksi"], [155.86, "Sampai sampai seribu seribu"], [158.13, "Kali lagi"], [159.03, "1000X lagi"], [160.55, "(Kau akan kucari)"], [163.00, "Kau kan ku cintai"], [165.31, "(Kau kan kucintai)"], [169.54, "Cukup aku milikmu kau milikku"], [174.50, "(Tetap disampingku)"], [176.74, "Sampai jadi debu"], [179.02, "Sampai akhir waktu"], [181.77, "Hooo"], [186.01, "Kau tetap milikku"], [188.03, "(Cukup aku milikmu dan kamu milikku)"], [190.72, "Bintang di malamku"], [192.93, "(Tetap disampingku sampai jadi debu)"], [195.61, "Detak di jantungku"], [197.74, "(Sampai akhir waktu)"], [199.98, "(Sampai maut yang bersaksi cintaku abadi)"], [202.60, "Cintaku abadi"], [206.18, "(Dan bila aku terlahir 1000X lagi)"], [209.18, "1000X lagi"], [210.95, "(Di dunia yang lain aku tak peduli)"], [214.04, "Aku tak peduli"], [215.69, "(Kau akan kucari)"], [218.14, "Sampai kau tahu berapa kau kucintai"]
     ],
     "Merry Christmas, Please Don't Call": [
-      [5.10, "To the tempo of your uptight"],
-      [7.37, "Is the flicker of a street light"],
-      [10.48, "You know this moment, don't ya"],
-      [13.70, "And time is strangely calm now"],
-      [16.18, "'Cause everybody's gone it's"],
-      [19.41, "Just you and your anger"],
-      [22.07, "Oh, golden boy, don't act like you were kind"],
-      [27.66, "You were mine but you were awful every time"],
-      [30.78, "So don't tell them what you told me"],
-      [32.88, "Don't hold me like you know me"],
-      [35.99, "I would rather burn forever"],
-      [39.45, "But you should know that I died slow"],
-      [43.78, "Running through the halls of your haunted home"],
-      [47.93, "And the toughest part is that we both know"],
-      [52.11, "What happened to you"],
-      [54.23, "Why you're out on your own"],
-      [57.22, "Merry Christmas, please don't call"],
-      [65.05, "You really left me on the line, kid"],
-      [67.65, "Holding all your baggage"],
-      [70.49, "You know I'm not your father"],
-      [73.53, "Who says welcome to your uptight"],
-      [75.84, "While it flickers like a street light"],
-      [78.98, "He flickers through your damage"],
-      [82.17, "Oh, golden boy, you shined a light on your home"],
-      [87.35, "And at your best you were magic, I was sold"],
-      [90.69, "But don't tell 'em what you told me"],
-      [92.98, "Don't even tell 'em that you know me"],
-      [95.96, "I would rather burn forever"],
-      [99.58, "But you should know that I died slow"],
-      [103.88, "Running through the halls of your haunted home"],
-      [108.00, "And the toughest part is that we both know"],
-      [112.01, "What happened to you"],
-      [114.06, "Why you're out on your own"],
-      [117.14, "Merry Christmas"],
-      [118.97, "Please don't call"],
-      [124.73, "One ticket out of your heavy gaze"],
-      [128.58, "I want one ticket off of your carousel"],
-      [132.59, "I want one ticket out of your heavy gaze"],
-      [136.76, "I want one ticket off of your carousel"],
-      [142.26, "But you should know that I died slow"],
-      [146.87, "Running through the halls of your haunted home"],
-      [151.03, "And the toughest part is that we both know"],
-      [154.96, "What happened to you"],
-      [156.93, "Why you're out on your own"],
-      [159.89, "Merry Christmas"],
-      [161.85, "Please don't call"],
-      [164.33, "Merry Christmas"],
-      [165.73, "I'm not yours at all"],
-      [168.35, "Merry Christmas"]
+      [5.10, "To the tempo of your uptight"], [7.37, "Is the flicker of a street light"], [10.48, "You know this moment, don't ya"], [13.70, "And time is strangely calm now"], [16.18, "'Cause everybody's gone it's"], [19.41, "Just you and your anger"], [22.07, "Oh, golden boy, don't act like you were kind"], [27.66, "You were mine but you were awful every time"], [30.78, "So don't tell them what you told me"], [32.88, "Don't hold me like you know me"], [35.99, "I would rather burn forever"], [39.45, "But you should know that I died slow"], [43.78, "Running through the halls of your haunted home"], [47.93, "And the toughest part is that we both know"], [52.11, "What happened to you"], [54.23, "Why you're out on your own"], [57.22, "Merry Christmas, please don't call"], [65.05, "You really left me on the line, kid"], [67.65, "Holding all your baggage"], [70.49, "You know I'm not your father"], [73.53, "Who says welcome to your uptight"], [75.84, "While it flickers like a street light"], [78.98, "He flickers through your damage"], [82.17, "Oh, golden boy, you shined a light on your home"], [87.35, "And at your best you were magic, I was sold"], [90.69, "But don't tell 'em what you told me"], [92.98, "Don't even tell 'em that you know me"], [95.96, "I would rather burn forever"], [99.58, "But you should know that I died slow"], [103.88, "Running through the halls of your haunted home"], [108.00, "And the toughest part is that we both know"], [112.01, "What happened to you"], [114.06, "Why you're out on your own"], [117.14, "Merry Christmas"], [118.97, "Please don't call"], [124.73, "One ticket out of your heavy gaze"], [128.58, "I want one ticket off of your carousel"], [132.59, "I want one ticket out of your heavy gaze"], [136.76, "I want one ticket off of your carousel"], [142.26, "But you should know that I died slow"], [146.87, "Running through the halls of your haunted home"], [151.03, "And the toughest part is that we both know"], [154.96, "What happened to you"], [156.93, "Why you're out on your own"], [159.89, "Merry Christmas"], [161.85, "Please don't call"], [164.33, "Merry Christmas"], [165.73, "I'm not yours at all"], [168.35, "Merry Christmas"]
     ],
     "I'll Do It": [
-      [13.45, "I'll be your blonde tonight if that's what you like (oh)"],
-      [18.60, "Stilettos and fishnets (oh), if that's what you like"],
-      [23.18, "I'll be your hot nurse, schoolgirl in curls (oh)"],
-      [28.66, "Whatever your type, baby, if that's what you like, I'll do it"],
-      [34.38, "Baby, take me off up into your dungeon"],
-      [39.14, "I brought some treats, I know that you gon' love 'em"],
-      [44.08, "Come eat my panties off me"],
-      [47.42, "Do whatever you feel comes naturally"],
-      [52.15, "'Cause I wanna let my hair down"],
-      [56.86, "Is that alright? Is that okay-a-ay?"],
-      [62.11, "'Cause I wanna let my hair down"],
-      [66.45, "Is that alright?"],
-      [71.15, "I'll be your blonde tonight, if that's what you like (oh)"],
-      [76.34, "Stilettos and fishnets (oh), if that's what you like"],
-      [80.89, "I'll be your hot nurse, schoolgirl in curls (oh)"],
-      [86.24, "Whatever your type, baby, if that's what you like, I'll do it"],
-      [92.39, "I'll do it (I'll do it), I'll do it"],
-      [95.92, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"],
-      [99.54, "Bitch, I do this"],
-      [101.58, "I hope you're ready for what I'm 'bout to do"],
-      [106.55, "Just close your eyes, open up when I tell you"],
-      [111.23, "Look now, don't touch, I'm gonna start without you"],
-      [115.23, "Rev me up, just put the key in my ignition, baby"],
-      [119.68, "'Cause I wanna let my hair down"],
-      [124.15, "Is that alright?"],
-      [129.35, "'Cause I wanna let my hair down"],
-      [133.67, "Is that alright?"],
-      [138.32, "I'll be your blonde tonight, if that's what you like (oh)"],
-      [143.51, "Stilettos and fishnets (oh), if that's what you like"],
-      [147.81, "I'll be your hot nurse, schoolgirl in curls (oh)"],
-      [153.04, "Whatever your type, baby, if that's what you like, I'll do it"],
-      [159.76, "I'll do it (I'll do it), I'll do it"],
-      [163.22, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"],
-      [166.92, "Bitch, I do this"],
-      [168.23, "I can be your type, you can believe the hype"],
-      [173.01, "Just push my buttons, baby, I'll go low, and you'll go high"],
-      [177.97, "You can be my pilot, and we mile high it"],
-      [182.72, "I'll dress it up and make it hot, but then you better fly it"]
+      [12.00, "I'll be your blonde tonight if that's what you like (oh)"], [17.10, "Stilettos and fishnets (oh), if that's what you like"], [21.70, "I'll be your hot nurse, schoolgirl in curls (oh)"], [27.20, "Whatever your type, baby, if that's what you like, I'll do it"], [32.90, "Baby, take me off up into your dungeon"], [37.60, "I brought some treats, I know that you gon' love 'em"], [42.60, "Come eat my panties off me"], [45.90, "Do whatever you feel comes naturally"], [50.70, "'Cause I wanna let my hair down"], [55.40, "Is that alright? Is that okay-a-ay?"], [60.60, "'Cause I wanna let my hair down"], [65.00, "Is that alright?"], [69.70, "I'll be your blonde tonight, if that's what you like (oh)"], [74.80, "Stilettos and fishnets (oh), if that's what you like"], [79.40, "I'll be your hot nurse, schoolgirl in curls (oh)"], [84.70, "Whatever your type, baby, if that's what you like, I'll do it"], [90.90, "I'll do it (I'll do it), I'll do it"], [94.40, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"], [98.00, "Bitch, I do this"], [100.10, "I hope you're ready for what I'm 'bout to do"], [105.00, "Just close your eyes, open up when I tell you"], [109.70, "Look now, don't touch, I'm gonna start without you"], [113.70, "Rev me up, just put the key in my ignition, baby"], [118.20, "'Cause I wanna let my hair down"], [122.60, "Is that alright?"], [127.80, "'Cause I wanna let my hair down"], [132.20, "Is that alright?"], [136.80, "I'll be your blonde tonight, if that's what you like (oh)"], [142.00, "Stilettos and fishnets (oh), if that's what you like"], [146.30, "I'll be your hot nurse, schoolgirl in curls (oh)"], [151.50, "Whatever your type, baby, if that's what you like, I'll do it"], [158.20, "I'll do it (I'll do it), I'll do it"], [161.70, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"], [165.40, "Bitch, I do this"], [166.70, "I can be your type, you can believe the hype"], [171.50, "Just push my buttons, baby, I'll go low, and you'll go high"], [176.40, "You can be my pilot, and we mile high it"], [181.20, "I'll dress it up and make it hot, but then you better fly it"]
+    ],
+    "Bersenja Gurau": [
+      [28.50, "Banyak yang salah mengira"], [31.00, "Senja bukan tentang kopi"], [34.50, "Lagu indie dan cerita"], [38.00, "Ku kasi tahu kepadamu"], [43.50, "Senja adalah hadiah"], [47.00, "Pejalan kaki menjemput magribnya"], [50.50, "Selalu ada pelangi"], [54.00, "Pada setiap mendungnya"], [58.50, "Setiap derita"], [63.00, "Ku kan ada slalu untukmu"], [67.00, "Temani setiap derita"], [71.50, "Jadi pelukan ternyaman untukmu"], [77.50, "Jika sempit hidup ini"], [81.00, "Tidur selalu tak tenang"], [85.00, "Pagi selalu menyiksa"], [90.00, "Semua akan baik saja"], [94.00, "Sebab Tuhan tlah berjanji"], [98.00, "Setelah sempit ada kemudahan"], [102.50, "Kita miliknya"], [107.00, "Semua telah tertulis"], [111.00, "Dan akan kembali padanya"], [116.00, "Jika sempit hidup ini"], [120.00, "Tidur selalu tak tenang"], [124.00, "Pagi selalu menyiksa"], [129.00, "Semua akan baik saja"], [133.00, "Sebab Tuhan tlah berjanji"], [137.00, "Setelah sempit ada kemudahan"], [141.50, "Kita miliknya"], [146.00, "Semua telah tertulis"], [150.00, "Dan akan kembali padanya"]
     ]
   };
   var currentLyrics = [];
@@ -656,11 +555,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     try {
       wakeLock = await navigator.wakeLock.request('screen');
       keepAwakeBtn.classList.add('active');
-      keepAwakeBtn.textContent = '🔆 Layar Aktif';
+      // Ubah teks di dalam tombol, biarkan SVG-nya
+      var textNode = Array.from(keepAwakeBtn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+      if (textNode) textNode.nodeValue = " Layar Aktif";
       
       wakeLock.addEventListener('release', function() {
         keepAwakeBtn.classList.remove('active');
-        keepAwakeBtn.textContent = '🔆 Jaga Layar';
+        var textNode = Array.from(keepAwakeBtn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+        if (textNode) textNode.nodeValue = " Jaga Layar";
         wakeLock = null;
       });
     } catch (err) {
@@ -674,7 +576,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       wakeLock.release();
       wakeLock = null;
       keepAwakeBtn.classList.remove('active');
-      keepAwakeBtn.textContent = '🔆 Jaga Layar';
+      var textNode = Array.from(keepAwakeBtn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+      if (textNode) textNode.nodeValue = " Jaga Layar";
     }
   }
 
@@ -814,7 +717,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       rec=[];cur=0;
       tapStart.hidden=true;
       tapHit.hidden=false;tapDone.hidden=false;
-      tapHit.textContent="⏱ TAP: "+currentLyrics[0][1];
+      // Ganti teks di dalam tombol tapHit tanpa ngilangin SVG
+      var textNode = Array.from(tapHit.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+      if(textNode) textNode.nodeValue = " TAP: " + currentLyrics[0][1];
+      
       if(audio.paused){audio.play().catch(function(){})}
     });
     tapHit.addEventListener("click",function(){
@@ -824,7 +730,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       }
       rec.push([+audio.currentTime.toFixed(2),currentLyrics[cur][1]]);
       cur++;
-      tapHit.textContent="⏱ TAP: "+currentLyrics[cur][1];
+      var textNode = Array.from(tapHit.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
+      if(textNode) textNode.nodeValue = " TAP: " + currentLyrics[cur][1];
     });
     tapDone.addEventListener("click",function(){
       var out="[\n"+rec.map(function(r){
@@ -835,7 +742,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
         alert("Timing udah di-copy ke clipboard!");
       }).catch(function(){alert("Copy gagal. Lihat di Console (F12).")})}
       else{alert("Lihat timing di Console (F12).")}
-      // Kembaliin ke tampilan semula
       tapStart.hidden=false;
       tapHit.hidden=true;
       tapDone.hidden=true;
