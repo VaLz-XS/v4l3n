@@ -157,7 +157,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   transform: scale(0.9); 
 }
 
-/* Efek Glitch Merah Chandelier */
+/* Efek Glitch Merah */
 .lyrics-inner .line.glitch-red {
   color: #ff2a2a !important;
   font-weight: 800;
@@ -315,6 +315,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
           <div class="song-card" data-src="chandelier.mp3" data-title="Chandelier" data-artist="Sia">
             <img src="chandelier.jpg" alt="Cover Chandelier">
             <div class="card-title">Chandelier</div>
+          </div>
+          <div class="song-card" data-src="great.mp3" data-title="Great Expectation" data-artist="Sienna Spiro">
+            <img src="great.jpg" alt="Cover Great Expectation">
+            <div class="card-title">Great Expectation</div>
           </div>
         </div>
       </div>
@@ -562,7 +566,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   if(!audio || !box || !inner) return;
 
   var SONGS_DATA = {
-        "Bye": [
+    "Bye": [
       [11.12, "Bye-bye"],
       [12.83, "Yeah, boy, bye"],
       [14.68, "It's over, it's over, oh, yeah"],
@@ -674,7 +678,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       [203.29, "I'll do it, I-I-I-I-I I'll do it"],
       [206.05, "I-I-I-I-I bitch, I'll do this"]
     ],
-        "Bersenja Gurau": [
+    "Bersenja Gurau": [
       [11.73, "Banyak yang salah mengira"],
       [17.85, "Senja bukan tentang kopi, lagu indie, dan cerita"],
       [24.04, "Ku kasih tahu kepadamu"],
@@ -762,6 +766,48 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       [200.94, "'Cause I'm just holding on for tonight"],
       [203.76, "Oh, I'm just holding on for tonight"],
       [206.27, "On for tonight, on for tonight"]
+    ],
+    "Great Expectation": [
+      [13.89, "In my head, you lay down next to me"],
+      [17.05, "Kiss my lips, hold me carefully"],
+      [20.12, "Say goodbye and feel all the withdrawals"],
+      [26.42, "But it's not the same in reality"],
+      [29.74, "I say your name, but you don't get back to me"],
+      [33.18, "'Til you got something you need me for"],
+      [37.84, "So I sing just to know I'm alive"],
+      [42.18, "And I cried all the tears I could cry"],
+      [45.74, "If happiness is just an illusion"],
+      [48.54, "You were the best I ever had"],
+      [52.19, "If you can't be what I want"],
+      [55.19, "And the things you say aren't true"],
+      [58.65, "All I need is the great expectation of you"],
+      [64.55, "Expectation of you"],
+      [68.01, "The tracks of my tears go back for years"],
+      [71.34, "When I was young, I've always had the fears"],
+      [74.76, "One would leave, so I held on so long"],
+      [80.75, "But to each their own, you come and go a lot"],
+      [84.15, "It's black and white, but I go back and change the plot"],
+      [87.70, "Just to have you in the way I want, so I"],
+      [93.86, "Sing just to know I'm alive (I sing, so I)"],
+      [96.60, "And I cried all the tears I could cry (I cried for you)"],
+      [100.09, "If happiness is just an illusion"],
+      [102.96, "You were the best I ever had"],
+      [106.48, "If you can't be what I want (be what I want)"],
+      [109.57, "And the things you say aren't true (aren't true, yeah, true)"],
+      [113.02, "All I need is the great expectation of you, oh"],
+      [119.32, "Cry my tears and let 'em dry (mm, expectation of you)"],
+      [122.77, "Cry my tears and testify"],
+      [125.96, "You exist inside my mind"],
+      [129.14, "You, so"],
+      [130.67, "So I sing just to know I'm alive", "glitch-red"],
+      [135.11, "And I cried all the tears I could cry (I cried for you)", "glitch-red"],
+      [138.66, "If happiness is just an illusion", "glitch-red"],
+      [141.38, "You were the best I ever had (best I had)", "glitch-red"],
+      [144.96, "If you can't be what I want (be what I want)", "glitch-red"],
+      [147.75, "And the things you say aren't true (aren't true, yeah, true)", "glitch-red"],
+      [151.43, "All I need is the great expectation of you", "glitch-red"],
+      [158.24, "All I need is", "glitch-red"],
+      [161.91, "All I need is you", "glitch-red"]
     ]
   };
   var currentLyrics = [];
