@@ -267,10 +267,14 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
             <img src="1000X.jpg" alt="Cover 1000X">
             <div class="card-title">1000X</div>
           </div>
-          <!-- Kartu Lagu Baru: Merry Christmas -->
           <div class="song-card" data-src="merry.mp3" data-title="Merry Christmas, Please Don't Call" data-artist="Bleachers">
             <img src="merry.jpg" alt="Cover Merry Christmas">
             <div class="card-title">Merry Christmas</div>
+          </div>
+          <!-- Kartu Lagu Baru: I'll Do It -->
+          <div class="song-card" data-src="illdoit.mp3" data-title="I'll Do It" data-artist="Heidi Montag">
+            <img src="illdoit.jpg" alt="Cover I'll Do It">
+            <div class="card-title">I'll Do It</div>
           </div>
         </div>
       </div>
@@ -505,7 +509,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   if(!audio || !box || !inner) return;
 
-  // TIMING LIRIK DARI LRC
   var SONGS_DATA = {
     "Bye": [
       [0.00,  "Bye-bye, boy, bye, hmm"],
@@ -598,6 +601,46 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       [164.33, "Merry Christmas"],
       [165.73, "I'm not yours at all"],
       [168.35, "Merry Christmas"]
+    ],
+    "I'll Do It": [
+      [13.45, "I'll be your blonde tonight if that's what you like (oh)"],
+      [18.60, "Stilettos and fishnets (oh), if that's what you like"],
+      [23.18, "I'll be your hot nurse, schoolgirl in curls (oh)"],
+      [28.66, "Whatever your type, baby, if that's what you like, I'll do it"],
+      [34.38, "Baby, take me off up into your dungeon"],
+      [39.14, "I brought some treats, I know that you gon' love 'em"],
+      [44.08, "Come eat my panties off me"],
+      [47.42, "Do whatever you feel comes naturally"],
+      [52.15, "'Cause I wanna let my hair down"],
+      [56.86, "Is that alright? Is that okay-a-ay?"],
+      [62.11, "'Cause I wanna let my hair down"],
+      [66.45, "Is that alright?"],
+      [71.15, "I'll be your blonde tonight, if that's what you like (oh)"],
+      [76.34, "Stilettos and fishnets (oh), if that's what you like"],
+      [80.89, "I'll be your hot nurse, schoolgirl in curls (oh)"],
+      [86.24, "Whatever your type, baby, if that's what you like, I'll do it"],
+      [92.39, "I'll do it (I'll do it), I'll do it"],
+      [95.92, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"],
+      [99.54, "Bitch, I do this"],
+      [101.58, "I hope you're ready for what I'm 'bout to do"],
+      [106.55, "Just close your eyes, open up when I tell you"],
+      [111.23, "Look now, don't touch, I'm gonna start without you"],
+      [115.23, "Rev me up, just put the key in my ignition, baby"],
+      [119.68, "'Cause I wanna let my hair down"],
+      [124.15, "Is that alright?"],
+      [129.35, "'Cause I wanna let my hair down"],
+      [133.67, "Is that alright?"],
+      [138.32, "I'll be your blonde tonight, if that's what you like (oh)"],
+      [143.51, "Stilettos and fishnets (oh), if that's what you like"],
+      [147.81, "I'll be your hot nurse, schoolgirl in curls (oh)"],
+      [153.04, "Whatever your type, baby, if that's what you like, I'll do it"],
+      [159.76, "I'll do it (I'll do it), I'll do it"],
+      [163.22, "I-I-I-I-I-I-I'll do it, I-I-I-I-I"],
+      [166.92, "Bitch, I do this"],
+      [168.23, "I can be your type, you can believe the hype"],
+      [173.01, "Just push my buttons, baby, I'll go low, and you'll go high"],
+      [177.97, "You can be my pilot, and we mile high it"],
+      [182.72, "I'll dress it up and make it hot, but then you better fly it"]
     ]
   };
   var currentLyrics = [];
