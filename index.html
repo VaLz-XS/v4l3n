@@ -271,7 +271,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       </div>
       
       <div id="playerView" hidden>
-        <!-- Header Player: Kembali & Jaga Layar -->
         <div class="player-header">
           <button type="button" class="back-btn" id="backBtn">← Kembali</button>
           <button type="button" id="keepAwakeBtn" class="keep-awake-btn" aria-label="Jaga layar tetap hidup">🔆 Jaga Layar</button>
@@ -501,45 +500,45 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 
   if(!audio || !box || !inner) return;
 
-  // TIMING LIRIK BYE DIPERBAIKI (Disesuaikan sama durasi 3:03)
+  // TIMING LIRIK BYE (DIPERCEPAT BIAR PAS SAMA LAGU LU)
   var SONGS_DATA = {
     "Bye": [
       [0.50,  "Bye-bye, boy, bye, hmm"],
-      [8.00,  "Hmm"],
-      [12.50, "Bye-bye, and boy, bye"],
-      [17.00, "It's over, it's over, oh yeah"],
-      [21.50, "This ain't the first time I've been hostage to these tears"],
-      [26.00, "I can't believe I'm finally movin' through my fears"],
-      [30.50, "At least, I know how hard we tried, both you and me"],
-      [35.00, "Didn't we? Didn't we?"],
-      [38.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [43.00, "It's time"],
-      [48.00, "Bye-bye, boy, bye"],
-      [52.50, "Bye-bye, it's over, it's over, oh yeah"],
-      [57.00, "Bye-bye, I'm takin' what's mine, yeah"],
-      [61.50, "Bye-bye, it's over, it's over, oh yeah"],
-      [66.00, "You know, I'm stronger than I think"],
-      [70.50, "Usually, I'd join you on the floor, but this dance ain't for me"],
-      [75.00, "Boy, just turn the music up, maybe someday we'll look back with love"],
-      [79.50, "Didn't think you'd lose me"],
-      [82.00, "Now it's just too late to choose me"],
-      [85.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
-      [90.00, "It's time (it's time)"],
-      [94.00, "Bye-bye, boy, bye (boy, bye)"],
-      [98.50, "Bye-bye, it's over, it's over, oh yeah"],
-      [103.00,"Bye-bye, I'm takin' what's mine, yeah"],
-      [107.50,"Bye-bye, it's over, it's over, oh yeah"],
-      [112.50,"Now it's certainly bittersweet"],
-      [117.00,"This hook feels too hard to sing"],
-      [122.00,"But it's better than repeat (than repeat, than repeat, than repeat)"],
-      [133.00,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
-      [137.50,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [142.00,"Bye-bye, I'm takin' what's mine, yeah"],
-      [146.50,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
-      [151.00,"Bye-bye (bye-bye), boy, bye"],
-      [155.50,"Bye-bye, it's over, it's over, oh yeah (bye)"],
-      [160.00,"Bye-bye, I'm takin' what's mine, yeah"],
-      [165.00,"Bye-bye, it's over, it's over, oh yeah"]
+      [6.00,  "Hmm"],
+      [9.50,  "Bye-bye, and boy, bye"],
+      [13.00, "It's over, it's over, oh yeah"],
+      [16.50, "This ain't the first time I've been hostage to these tears"],
+      [20.50, "I can't believe I'm finally movin' through my fears"],
+      [24.50, "At least, I know how hard we tried, both you and me"],
+      [28.50, "Didn't we? Didn't we?"],
+      [32.00, "So I grab my stuff, Courtney just pulled up in the driveway"],
+      [36.00, "It's time"],
+      [41.50, "Bye-bye, boy, bye"],
+      [45.50, "Bye-bye, it's over, it's over, oh yeah"],
+      [49.50, "Bye-bye, I'm takin' what's mine, yeah"],
+      [53.50, "Bye-bye, it's over, it's over, oh yeah"],
+      [58.00, "You know, I'm stronger than I think"],
+      [62.00, "Usually, I'd join you on the floor, but this dance ain't for me"],
+      [66.50, "Boy, just turn the music up, maybe someday we'll look back with love"],
+      [71.00, "Didn't think you'd lose me"],
+      [73.50, "Now it's just too late to choose me"],
+      [76.50, "So I grab my stuff, Courtney just pulled up in the driveway"],
+      [80.00, "It's time (it's time)"],
+      [84.00, "Bye-bye, boy, bye (boy, bye)"],
+      [88.50, "Bye-bye, it's over, it's over, oh yeah"],
+      [92.50, "Bye-bye, I'm takin' what's mine, yeah"],
+      [97.00, "Bye-bye, it's over, it's over, oh yeah"],
+      [101.50,"Now it's certainly bittersweet"],
+      [106.00,"This hook feels too hard to sing"],
+      [111.00,"But it's better than repeat (than repeat, than repeat, than repeat)"],
+      [122.00,"Bye-bye (bye-bye), boy, bye (boy, bye)"],
+      [126.50,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+      [131.00,"Bye-bye, I'm takin' what's mine, yeah"],
+      [135.00,"Bye-bye, it's over, it's over, oh yeah (ooh)"],
+      [139.50,"Bye-bye (bye-bye), boy, bye"],
+      [143.50,"Bye-bye, it's over, it's over, oh yeah (bye)"],
+      [148.00,"Bye-bye, I'm takin' what's mine, yeah"],
+      [152.00,"Bye-bye, it's over, it's over, oh yeah"]
     ],
     "1000X": [
       [23.49, "Kadang aku iri melihat mereka"], [28.24, "Tercipta seperti pasangan yang sempurna"], [33.00, "Saling mencintai dan begitu bahagia"], [37.47, "Dan dipuja puji insan yang memandangnya"], [42.28, "Lalu aku memandangmu"], [46.78, "Dan tersadar betapa beruntungnya"], [51.20, "Ada cinta seperti cintamu kepadaku"], [58.53, "Hooo"], [59.87, "Cukup aku milikmu dan kamu milikku"], [64.76, "Tetap disampingku sampai jadi debu"], [69.36, "Sampai akhir waktu"], [71.82, "Sampai maut yang bersaksi cintaku abadi"], [77.94, "Dan bila aku terlahir 1000X lagi"], [82.92, "Di dunia yang lain aku tak peduli"], [87.57, "Kau akan kucari"], [90.11, "Sampai kau tau betapa kau kucintai"], [97.05, "Lalu aku memandangmu"], [101.68, "Dan tersadar betapa beruntungnya"], [106.13, "Ada cinta seperti cintamu kepadaku"], [113.29, "Hooo"], [114.65, "Cukup aku milikmu dan kamu milikku"], [119.66, "Tetap disampingku sampai jadi debu"], [124.11, "Sampai akhir waktu"], [126.78, "Sampai maut yang bersaksi cintaku abadi"], [132.77, "Dan bila aku terlahir 1000X lagi"], [138.00, "Di dunia yang lain, aku tak peduli"], [142.42, "Kau akan kucari"], [145.00, "Sampai kau tau betapa kau kucintai"], [151.23, "Sampai sampai maut maut"], [153.69, "Sampai maut yang bersaksi"], [155.86, "Sampai sampai seribu seribu"], [158.13, "Kali lagi"], [159.03, "1000X lagi"], [160.55, "(Kau akan kucari)"], [163.00, "Kau kan ku cintai"], [165.31, "(Kau kan kucintai)"], [169.54, "Cukup aku milikmu kau milikku"], [174.50, "(Tetap disampingku)"], [176.74, "Sampai jadi debu"], [179.02, "Sampai akhir waktu"], [181.77, "Hooo"], [186.01, "Kau tetap milikku"], [188.03, "(Cukup aku milikmu dan kamu milikku)"], [190.72, "Bintang di malamku"], [192.93, "(Tetap disampingku sampai jadi debu)"], [195.61, "Detak di jantungku"], [197.74, "(Sampai akhir waktu)"], [199.98, "(Sampai maut yang bersaksi cintaku abadi)"], [202.60, "Cintaku abadi"], [206.18, "(Dan bila aku terlahir 1000X lagi)"], [209.18, "1000X lagi"], [210.95, "(Di dunia yang lain aku tak peduli)"], [214.04, "Aku tak peduli"], [215.69, "(Kau akan kucari)"], [218.14, "Sampai kau tahu berapa kau kucintai"]
