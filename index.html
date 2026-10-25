@@ -135,11 +135,27 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
 
+/* === ANIMASI LIRIK ALA SPOTIFY === */
 .lyrics-wrap { height: 300px; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; position: relative; }
-.lyrics-inner { padding: 14px; font: 500 15px/1.7 "IBM Plex Mono", monospace; color: var(--screen-text); transition: transform 0.4s ease-out; }
-.lyrics-inner .line { margin: 0 0 10px; opacity: 0.35; transition: opacity 0.3s ease, color 0.3s ease; }
-.lyrics-inner .line.active { opacity: 1; color: #fff; font-weight: 700; text-shadow: 0 0 6px var(--screen-text); }
-.lyrics-inner .line.passed { opacity: 0.55; }
+.lyrics-inner { padding: 14px 20px; font: 500 16px/1.4 "IBM Plex Mono", monospace; color: var(--screen-text); transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+.lyrics-inner .line { 
+  margin: 0 0 16px; 
+  opacity: 0.3; 
+  transform: scale(0.95); 
+  transform-origin: left center;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.lyrics-inner .line.active { 
+  opacity: 1; 
+  color: #fff; 
+  font-weight: 700; 
+  transform: scale(1.1); 
+  text-shadow: 0 0 8px var(--screen-text), 0 0 12px var(--screen-text); 
+}
+.lyrics-inner .line.passed { 
+  opacity: 0.4; 
+  transform: scale(0.9); 
+}
 
 /* Tombol Tap Sync */
 .tap-sync{display:flex; gap:8px; align-items:center; margin-top:8px}
@@ -555,7 +571,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     try {
       wakeLock = await navigator.wakeLock.request('screen');
       keepAwakeBtn.classList.add('active');
-      // Ubah teks di dalam tombol, biarkan SVG-nya
       var textNode = Array.from(keepAwakeBtn.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
       if (textNode) textNode.nodeValue = " Layar Aktif";
       
@@ -717,7 +732,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
       rec=[];cur=0;
       tapStart.hidden=true;
       tapHit.hidden=false;tapDone.hidden=false;
-      // Ganti teks di dalam tombol tapHit tanpa ngilangin SVG
       var textNode = Array.from(tapHit.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== "");
       if(textNode) textNode.nodeValue = " TAP: " + currentLyrics[0][1];
       
