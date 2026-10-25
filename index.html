@@ -135,7 +135,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #seek::-moz-range-track{height:10px;background:var(--screen);border:2px solid var(--lo)}
 #seek::-moz-range-thumb{width:12px;height:16px;background:var(--star);border:2px solid #14141c;border-radius:0}
 
-/* === ANIMASI LIRIK ALA SPOTIFY === */
+/* === ANIMASI LIRIK & GLITCH === */
 .lyrics-wrap { height: 300px; background: var(--screen); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); overflow: hidden; position: relative; }
 .lyrics-inner { padding: 14px 20px; font: 500 16px/1.4 "IBM Plex Mono", monospace; color: var(--screen-text); transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
 .lyrics-inner .line { 
@@ -155,6 +155,22 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .lyrics-inner .line.passed { 
   opacity: 0.4; 
   transform: scale(0.9); 
+}
+
+/* Efek Glitch Merah Chandelier */
+.lyrics-inner .line.glitch-red {
+  color: #ff2a2a !important;
+  font-weight: 800;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 2px 0 0 #00ffff, -2px 0 0 #ffff00 !important;
+  animation: glitchAnim 0.15s infinite;
+}
+@keyframes glitchAnim {
+  0% { transform: translate(0, 0) scale(1.1) skew(0deg); }
+  20% { transform: translate(-2px, 2px) scale(1.1) skew(2deg); }
+  40% { transform: translate(2px, -2px) scale(1.1) skew(-2deg); }
+  60% { transform: translate(-1px, -1px) scale(1.1) skew(1deg); }
+  80% { transform: translate(1px, 1px) scale(1.1) skew(-1deg); }
+  100% { transform: translate(0, 0) scale(1.1) skew(0deg); }
 }
 
 /* Tombol Tap Sync */
@@ -295,6 +311,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
           <div class="song-card" data-src="bersenja.mp3" data-title="Bersenja Gurau" data-artist="Raim Laode">
             <img src="bersenja.jpg" alt="Cover Bersenja Gurau">
             <div class="card-title">Bersenja Gurau</div>
+          </div>
+          <!-- Kartu Lagu Baru: Chandelier -->
+          <div class="song-card" data-src="chandelier.mp3" data-title="Chandelier" data-artist="Sia">
+            <img src="chandelier.jpg" alt="Cover Chandelier">
+            <div class="card-title">Chandelier</div>
           </div>
         </div>
       </div>
@@ -556,6 +577,26 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     ],
     "Bersenja Gurau": [
       [28.50, "Banyak yang salah mengira"], [31.00, "Senja bukan tentang kopi"], [34.50, "Lagu indie dan cerita"], [38.00, "Ku kasi tahu kepadamu"], [43.50, "Senja adalah hadiah"], [47.00, "Pejalan kaki menjemput magribnya"], [50.50, "Selalu ada pelangi"], [54.00, "Pada setiap mendungnya"], [58.50, "Setiap derita"], [63.00, "Ku kan ada slalu untukmu"], [67.00, "Temani setiap derita"], [71.50, "Jadi pelukan ternyaman untukmu"], [77.50, "Jika sempit hidup ini"], [81.00, "Tidur selalu tak tenang"], [85.00, "Pagi selalu menyiksa"], [90.00, "Semua akan baik saja"], [94.00, "Sebab Tuhan tlah berjanji"], [98.00, "Setelah sempit ada kemudahan"], [102.50, "Kita miliknya"], [107.00, "Semua telah tertulis"], [111.00, "Dan akan kembali padanya"], [116.00, "Jika sempit hidup ini"], [120.00, "Tidur selalu tak tenang"], [124.00, "Pagi selalu menyiksa"], [129.00, "Semua akan baik saja"], [133.00, "Sebab Tuhan tlah berjanji"], [137.00, "Setelah sempit ada kemudahan"], [141.50, "Kita miliknya"], [146.00, "Semua telah tertulis"], [150.00, "Dan akan kembali padanya"]
+    ],
+    "Chandelier": [
+      [10.00, "Party girls don't get hurt"],
+      [13.00, "Can't feel anything, when will I learn?"],
+      [18.00, "I push it down, push it down"],
+      [23.00, "I'm the one for a good time call"],
+      [26.00, "Phone's blowin' up, they're ringin' my doorbell"],
+      [31.00, "I feel the love, feel the love"],
+      [38.00, "1, 2, 3, 1, 2, 3, drink"],
+      [41.00, "1, 2, 3, 1, 2, 3, drink"],
+      [44.00, "1, 2, 3, 1, 2, 3, drink"],
+      [47.00, "Throw 'em back 'til I lose count"],
+      [52.00, "I'm gonna swing from the chandelier", "glitch-red"],
+      [56.00, "From the chandelier", "glitch-red"],
+      [60.00, "I'm gonna live like tomorrow doesn't exist", "glitch-red"],
+      [64.00, "Like it doesn't exist", "glitch-red"],
+      [68.00, "I'm gonna fly like a bird through the night", "glitch-red"],
+      [72.00, "Feel my tears as they dry", "glitch-red"],
+      [76.00, "I'm gonna swing from the chandelier", "glitch-red"],
+      [80.00, "From the chandelier", "glitch-red"]
     ]
   };
   var currentLyrics = [];
@@ -655,7 +696,8 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     inner.style.transform = "translateY(0px)";
     currentLyrics.forEach(function(item){
       var p = document.createElement("p");
-      p.className = "line";
+      // Cek kalau ada class khusus (elemen ke-3)
+      p.className = "line" + (item[2] ? " " + item[2] : "");
       p.textContent = item[1];
       p.dataset.t = item[0];
       inner.appendChild(p);
@@ -676,6 +718,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
     }
     var els = inner.querySelectorAll(".line");
     els.forEach(function(el, i){
+      // Simpan class glitch kalau ada
+      var isGlitch = el.className.indexOf("glitch-red") !== -1;
+      el.className = "line" + (isGlitch ? " glitch-red" : "");
+      
       el.classList.toggle("active", i === idx);
       el.classList.toggle("passed", i < idx);
     });
