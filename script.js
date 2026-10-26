@@ -898,3 +898,84 @@
     }
   });
 })();
+
+// ============================================
+// === PROTEKSI ISENG (BUKAN KEAMANAN BENERAN) ===
+// ============================================
+(function(){
+  // --- 1. Blokir klik kanan & shortcut DevTools ---
+  document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "F12"){ e.preventDefault(); return false; }
+    if(e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key.toUpperCase())){
+      e.preventDefault(); return false;
+    }
+    if(e.ctrlKey && e.key.toUpperCase() === "U"){
+      e.preventDefault(); return false;
+    }
+    if(e.ctrlKey && e.key.toUpperCase() === "S"){
+      e.preventDefault(); return false;
+    }
+  });
+
+  // --- 2. Deteksi DevTools kebuka → overlay ---
+  var overlay = document.createElement("div");
+  overlay.id = "devtoolsGuard";
+  overlay.innerHTML = "<div>Tutup DevTools dulu ya 🙏<br><small>Website ini nggak bisa dilihat selama DevTools kebuka.</small></div>";
+  overlay.style.cssText = [
+    "position:fixed","inset:0","z-index:99999",
+    "background:rgba(0,0,0,.92)","color:#7dffa8",
+    "display:none","place-items:center","text-align:center",
+    "font:700 18px/1.5 'Pixelify Sans',monospace",
+    "padding:24px"
+  ].join(";");
+  document.body.appendChild(overlay);
+
+  var devtoolsOpen = false;
+  function checkDevTools(){
+    var wDiff = window.outerWidth - window.innerWidth;
+    var hDiff = window.outerHeight - window.innerHeight;
+    var open = wDiff > 160 || hDiff > 160;
+    if(open !== devtoolsOpen){
+      devtoolsOpen = open;
+      overlay.style.display = open ? "grid" : "none";
+    }
+  }
+  setInterval(checkDevTools, 800);
+
+  // --- 3. Text freezer ringan ---
+  var frozen = new WeakMap();
+  function freezeNode(node){
+    if(node.nodeType === 3 && !frozen.has(node)){
+      frozen.set(node, node.nodeValue);
+    }
+  }
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var n;
+  while(n = walker.nextNode()) freezeNode(n);
+
+  var mo = new MutationObserver(function(muts){
+    muts.forEach(function(m){
+      if(m.type === "characterData" && frozen.has(m.target)){
+        var orig = frozen.get(m.target);
+        if(m.target.nodeValue !== orig){
+          m.target.nodeValue = orig;
+        }
+      }
+      if(m.type === "childList"){
+        m.addedNodes.forEach(function(nd){
+          if(nd.nodeType === 3) freezeNode(nd);
+          else if(nd.nodeType === 1){
+            var w2 = document.createTreeWalker(nd, NodeFilter.SHOW_TEXT);
+            var n2;
+            while(n2 = w2.nextNode()) freezeNode(n2);
+          }
+        });
+      }
+    });
+  });
+  mo.observe(document.body, {characterData:true, childList:true, subtree:true});
+})();
