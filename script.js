@@ -494,6 +494,54 @@
       [210.90, "So I don't have to say you were"],
       [214.47, "The one that got away"],
       [218.23, "The one that got away"]
+    ],
+    "Tarot": [
+      [32.53, "Nama yang sama bertahan"],
+      [37.18, "Dalam ruangan hening"],
+      [40.99, "Tanpa suara, bertahan"],
+      [45.10, "Tak bergeming"],
+      [49.23, "Terlalu lama bercanda"],
+      [53.86, "Kita tak terbiasa"],
+      [57.76, "Dengan celaka yang nyata"],
+      [62.29, "Diam, tak berdaya"],
+      [66.52, "Namun, aku bingung kenapa ku tak pergi"],
+      [71.48, "Aku bingung kalian masih di sini"],
+      [75.58, "Apa mungkin kar'na terlalu lama?"],
+      [79.86, "Apa benar 'tuk berbagi derita?"],
+      [83.93, "Mungkin nanti semua justru memburuk"],
+      [88.03, "Hati-hati, namun terjatuh lagi"],
+      [92.34, "Tapi luka adalah niscaya"],
+      [96.47, "Kutanggung denganmu s'lama ku mampu"],
+      [103.55, "S'lama ku mampu"],
+      [117.59, "Di kehidupan kedua (di kehidupan kedua)"],
+      [120.58, "S'moga kau tak terlalu keras kepala"],
+      [124.93, "Atau mungkin ini bukan yang pertama (ini bukan yang pertama)"],
+      [129.16, "Dan kita dib'ri kesempatan berubah"],
+      [133.20, "Ku yakin nyawa kita bertautan"],
+      [138.37, "Khatam berbagai cobaan"],
+      [141.58, "Selalu menertawakan ramalan bintang, kartu tarot"],
+      [147.01, "Orang pintar pembaca nasib"],
+      [150.07, "Namun, aku bingung kenapa ku tak pergi"],
+      [154.91, "Aku bingung kalian masih di sini"],
+      [159.05, "Apa mungkin kar'na terlalu lama?"],
+      [163.14, "Apa benar 'tuk berbagi derita?"],
+      [167.35, "Mungkin nanti semua justru memburuk"],
+      [171.57, "Hati-hati, namun terjatuh lagi"],
+      [175.77, "Tapi luka adalah niscaya"],
+      [179.84, "Kutanggung denganmu s'lama ku mampu"],
+      [186.77, "(S'lama ku mampu)"],
+      [191.57, "Selalu menertawakan ramalan bintang, kartu tarot"],
+      [197.08, "Orang pintar pembaca nasib"],
+      [200.03, "Namun, padamu ku percaya"],
+      [210.93, "Tak masuk logika"],
+      [219.28, "Padamu ku percaya"],
+      [227.66, "Tak masuk logika (tak masuk logika)"],
+      [236.02, "Padamu ku percaya (padamu ku percaya)"],
+      [244.47, "Tak masuk logika (tak masuk logika)"],
+      [252.72, "Padamu ku percaya (padamu ku percaya)"],
+      [260.96, "Tak masuk logika (tak masuk logika)"],
+      [269.40, "Padamu ku percaya, oh"],
+      [277.87, "Tak masuk logika"]
     ]
   };
   var currentLyrics = [];
@@ -878,24 +926,19 @@
     if(reply){
       addMsg(reply, "bot");
     } else {
-      // Cek apakah Puter.js tersedia
       if(typeof puter === "undefined" || !puter.ai){
         addMsg('Kurumi MD: fitur "' + cmd + '" tidak ditemukan. Ketik .menu untuk lihat daftar fitur.', "bot");
         return;
       }
 
-      // Tampilkan pesan loading
       var loadingMsg = addMsg("Kurumi MD: bentar, mikir dulu...", "bot");
 
-      // Panggil AI Puter
       puter.ai.chat(
         "Kamu adalah Kurumi MD, bot WhatsApp yang ramah dan helpful. Jawab singkat, santai, dan dalam Bahasa Indonesia. Pertanyaan user: " + cmd,
         { model: 'gpt-5.4-nano' }
       )
         .then(function(response){
-          // Hapus pesan loading
           if(loadingMsg && loadingMsg.parentNode) loadingMsg.remove();
-          // Tampilkan jawaban AI
           addMsg("Kurumi MD: " + response, "bot");
         })
         .catch(function(error){
@@ -927,7 +970,6 @@
 // === PROTEKSI ISENG (BUKAN KEAMANAN BENERAN) ===
 // ============================================
 (function(){
-  // --- 1. Blokir klik kanan & shortcut DevTools ---
   document.addEventListener("contextmenu", function(e){
     e.preventDefault();
   });
@@ -945,7 +987,6 @@
     }
   });
 
-  // --- 2. Deteksi DevTools kebuka → overlay ---
   var overlay = document.createElement("div");
   overlay.id = "devtoolsGuard";
   overlay.innerHTML = "<div>Tutup DevTools dulu ya 🙏<br><small>Website ini nggak bisa dilihat selama DevTools kebuka.</small></div>";
@@ -970,7 +1011,6 @@
   }
   setInterval(checkDevTools, 800);
 
-  // --- 3. Text freezer ringan ---
   var frozen = new WeakMap();
   function freezeNode(node){
     if(node.nodeType === 3 && !frozen.has(node)){
