@@ -197,7 +197,6 @@
 
 // === MUSIK, WAKE LOCK, & DINO ===
 (function(){
-  // --- LOGIKA MUSIK ---
   var libraryView = document.getElementById("libraryView");
   var playerView = document.getElementById("playerView");
   var searchBox = document.getElementById("searchBox");
@@ -314,11 +313,69 @@
     "Great Expectation": [
       [13.39, "In my head, you lay down next to me"], [16.55, "Kiss my lips, hold me carefully"], [19.62, "Say goodbye and feel all the withdrawals"], [25.92, "But it's not the same in reality"], [29.24, "I say your name, but you don't get back to me"], [32.68, "'Til you got something you need me for"], [37.34, "So I sing just to know I'm alive"], [41.68, "And I cried all the tears I could cry"], [45.24, "If happiness is just an illusion"], [48.04, "You were the best I ever had"], [51.69, "If you can't be what I want"], [54.69, "And the things you say aren't true"], [58.15, "All I need is the great expectation of you"], [64.05, "Expectation of you"], [67.51, "The tracks of my tears go back for years"], [70.84, "When I was young, I've always had the fears"], [74.26, "One would leave, so I held on so long"], [80.25, "But to each their own, you come and go a lot"], [83.65, "It's black and white, but I go back and change the plot"], [87.20, "Just to have you in the way I want, so I"], [93.36, "Sing just to know I'm alive (I sing, so I)"], [96.10, "And I cried all the tears I could cry (I cried for you)"], [99.59, "If happiness is just an illusion"], [102.46, "You were the best I ever had"], [105.98, "If you can't be what I want (be what I want)"], [109.07, "And the things you say aren't true (aren't true, yeah, true)"], [112.52, "All I need is the great expectation of you, oh"], [118.82, "Cry my tears and let 'em dry (mm, expectation of you)"], [122.27, "Cry my tears and testify"], [125.46, "You exist inside my mind"], [128.64, "You, so"],
       [130.17, "So I sing just to know I'm alive", "glitch-red"], [134.61, "And I cried all the tears I could cry (I cried for you)", "glitch-red"], [138.16, "If happiness is just an illusion", "glitch-red"], [140.88, "You were the best I ever had (best I had)", "glitch-red"], [144.46, "If you can't be what I want (be what I want)", "glitch-red"], [147.25, "And the things you say aren't true (aren't true, yeah, true)", "glitch-red"], [150.93, "All I need is the great expectation of you", "glitch-red"], [157.74, "All I need is", "glitch-red"], [161.41, "All I need is you", "glitch-red"]
+    ],
+    "Everything U Are": [
+      [12.06, "Wajahmu kuingat selalu"],
+      [19.06, "Lupakan hal-hal yang menggangguku"],
+      [25.75, "Kar'na hari ini mata kita beradu"],
+      [31.71, "Kita saling bantu"],
+      [35.18, "Melepas perasaan"],
+      [38.02, "Tinggi ke angkasa"],
+      [41.19, "Menantang dunia"],
+      [44.23, "Merayakan muda"],
+      [47.32, "'Tuk satu jam saja"],
+      [49.27, "Kita hampir mati"],
+      [51.69, "Dan kauselamatkan aku"],
+      [54.70, "Dan ku menyelamatkanmu"],
+      [57.81, "Dan sekarang aku tahu"],
+      [61.12, "Cerita kita tak jauh berbeda"],
+      [68.52, "Got beat down by the world"],
+      [71.91, "Sometimes I wanna fold"],
+      [73.89, "Namun, suratmu 'kan kuceritakan"],
+      [76.56, "Ke anak-anakku nanti"],
+      [79.36, "Bahwa aku pernah dicintai"],
+      [84.24, "With everything you are"],
+      [90.31, "Fully as I am"],
+      [93.47, "With everything you are"],
+      [98.01, "Wajahmu yang beragam rupa"],
+      [105.02, "Pastikan ku tak sendirian"],
+      [111.64, "Jalani derita"],
+      [114.94, "Kaubawakan kisahmu, aku mendengarkan"],
+      [121.01, "Oh, kita bergantian"],
+      [124.15, "Bertukar nestapa"],
+      [127.18, "Menawar trauma"],
+      [130.33, "Datang seadanya"],
+      [133.26, "Terasku terbuka"],
+      [135.45, "Kita hampir mati"],
+      [137.89, "Dan kauselamatkan aku"],
+      [141.02, "Dan ku menyelamatkanmu"],
+      [144.06, "Dan sekarang aku tahu"],
+      [147.18, "Cerita kita tak jauh berbeda"],
+      [154.96, "Got beat down by the world"],
+      [158.06, "Sometimes I wanna fold"],
+      [160.00, "Namun, suratmu 'kan kuceritakan"],
+      [162.68, "Ke anak-anakku nanti"],
+      [165.43, "Bahwa aku pernah dicintai"],
+      [170.10, "Seada-adanya"],
+      [173.57, "Sekurang-kurangnya"],
+      [176.55, "Walau sulit utarakan hatiku dengan indah"],
+      [182.62, "Walau jarang ku bernyanyi"],
+      [185.60, "Dengan cara yang indah"],
+      [188.75, "Tapi tak sekali pun kisahku"],
+      [192.51, "Pernah kaubantah, ho"],
+      [196.77, "Cerita kita tak jauh berbeda"],
+      [204.01, "Got beat down by the world (got beat down by the world)"],
+      [207.26, "Sometimes I wanna fold"],
+      [209.28, "Namun, suratmu 'kan kuceritakan"],
+      [211.89, "Ke anak-anakku nanti"],
+      [214.87, "Bahwa aku pernah dicintai"],
+      [219.40, "With everything you are"],
+      [225.63, "Fully as I am"],
+      [228.51, "With everything you are"]
     ]
   };
   var currentLyrics = [];
 
-  // === WAKE LOCK (BENERIN ERROR ALERT) ===
   var wakeLock = null;
   async function requestWakeLock() {
     if (!('wakeLock' in navigator)) {
@@ -369,7 +426,6 @@
 
   if(!audio || !box || !inner) return;
 
-  // --- FITUR PENCARIAN ---
   searchBox.addEventListener("input", function(){
     var q = this.value.toLowerCase();
     var cards = songGrid.querySelectorAll(".song-card");
@@ -379,7 +435,6 @@
     });
   });
 
-  // --- BUKA PLAYER ---
   songGrid.addEventListener("click", function(e){
     var card = e.target.closest(".song-card");
     if(!card) return;
@@ -479,7 +534,6 @@
   seek.addEventListener("input", function(){ if(audio.duration) audio.currentTime = (seek.value/100)*audio.duration });
   audio.addEventListener("seeked", updateLyrics);
 
-  // --- TAP SYNC LOGIC ---
   var tapSync=document.getElementById("tapSync");
   var tapStart=document.getElementById("tapStart");
   var tapHit=document.getElementById("tapHit");
@@ -520,7 +574,6 @@
     });
   }
 
-  // --- GAME DINO LOGIC ---
   var canvas = document.getElementById("dinoCanvas");
   if(!canvas) return;
   var ctx = canvas.getContext("2d");
@@ -673,7 +726,7 @@
 })();
 
 // ============================================
-// === CHAT .MENU INTERAKTIF (BARU DITAMBAHKAN) ===
+// === CHAT .MENU INTERAKTIF ===
 // ============================================
 (function(){
   var box = document.getElementById("chatBox");
