@@ -848,7 +848,7 @@
 })();
 
 // ============================================
-// === CHAT .MENU INTERAKTIF ===
+// === CHAT .MENU INTERAKTIF + AI PUTER ===
 // ============================================
 (function(){
   var box = document.getElementById("chatBox");
@@ -870,6 +870,7 @@
     d.textContent = text;
     box.appendChild(d);
     box.scrollTop = box.scrollHeight;
+    return d;
   }
 
   function botReply(cmd){
@@ -877,7 +878,30 @@
     if(reply){
       addMsg(reply, "bot");
     } else {
-      addMsg('Kurumi MD: fitur "' + cmd + '" tidak ditemukan. Ketik .menu untuk lihat daftar fitur.', "bot");
+      // Cek apakah Puter.js tersedia
+      if(typeof puter === "undefined" || !puter.ai){
+        addMsg('Kurumi MD: fitur "' + cmd + '" tidak ditemukan. Ketik .menu untuk lihat daftar fitur.', "bot");
+        return;
+      }
+
+      // Tampilkan pesan loading
+      var loadingMsg = addMsg("Kurumi MD: bentar, mikir dulu...", "bot");
+
+      // Panggil AI Puter
+      puter.ai.chat(
+        "Kamu adalah Kurumi MD, bot WhatsApp yang ramah dan helpful. Jawab singkat, santai, dan dalam Bahasa Indonesia. Pertanyaan user: " + cmd,
+        { model: 'gpt-5.4-nano' }
+      )
+        .then(function(response){
+          // Hapus pesan loading
+          if(loadingMsg && loadingMsg.parentNode) loadingMsg.remove();
+          // Tampilkan jawaban AI
+          addMsg("Kurumi MD: " + response, "bot");
+        })
+        .catch(function(error){
+          if(loadingMsg && loadingMsg.parentNode) loadingMsg.remove();
+          addMsg("Kurumi MD: maaf, AI-nya lagi error. Coba lagi nanti ya.", "bot");
+        });
     }
   }
 
