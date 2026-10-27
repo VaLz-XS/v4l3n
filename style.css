@@ -90,7 +90,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .musik-header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .search-box { flex: 1; min-width: 200px; padding: 8px 12px; font: 400 14px "IBM Plex Mono", monospace; background: var(--screen); color: var(--screen-text); border: 2px solid; border-color: var(--lo) var(--hi) var(--hi) var(--lo); outline: none; }
 .search-box:focus { border-color: var(--star); }
-.song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 10px; }
+.song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 10px; }
 .song-card { cursor: pointer; background: var(--screen); padding: 8px; border: 2px solid; border-color: var(--hi) var(--lo) var(--lo) var(--hi); display: flex; flex-direction: column; gap: 8px; transition: transform 0.1s; }
 .song-card:active { border-color: var(--lo) var(--hi) var(--hi) var(--lo); transform: scale(0.97); }
 .song-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid var(--lo); background: var(--win); }
@@ -211,128 +211,66 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   border: 2px solid var(--lo); outline: none; background: var(--screen); color: var(--screen-text);
 }
 
-/* ============================================ */
-/* === CHAT .MENU (BARU DITAMBAHKAN) === */
-/* ============================================ */
-.screen.chat{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  max-height:240px;
-  overflow-y:auto;
-  padding:10px 12px;
-  font-size:13px;
-  line-height:1.45;
+/* === CHAT & TOMBOL COPY === */
+.screen.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 280px; /* Tinggi maksimal kotak chat */
+  overflow-y: auto;  /* Biar bisa di scroll kalau AI ngasih kode panjang */
+  padding: 12px;
+  background: #0d0d0d;
+  border: 1px solid #333;
+  border-radius: 4px 4px 0 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #ccc;
 }
 
-.screen.chat .msg{
-  max-width:85%;
-  padding:5px 9px;
-  border-radius:4px;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-
-.screen.chat .msg.bot{
-  background:rgba(125,255,168,.08);
-  border-left:2px solid var(--screen-text);
-  align-self:flex-start;
-}
-
-.screen.chat .msg.user{
-  background:rgba(242,217,78,.12);
-  border-right:2px solid var(--star);
-  align-self:flex-end;
-  text-align:right;
-}
-
-.chat-input{
-  display:flex;
-  border:2px solid;
-  border-color:var(--lo) var(--hi) var(--hi) var(--lo);
-  border-top:none;
-  background:var(--screen);
-}
-
-.chat-input input{
-  flex:1;
-  background:transparent;
-  border:none;
-  padding:9px 12px;
-  color:var(--screen-text);
-  font:400 13px "IBM Plex Mono",monospace;
-  outline:none;
-  min-width:0;
-}
-
-.chat-input input::placeholder{
-  color:var(--screen-text);
-  opacity:.4;
-}
-
-.chat-input button{
-  background:var(--star);
-  border:none;
-  padding:0 14px;
-  cursor:pointer;
-  font:700 13px "Pixelify Sans",monospace;
-  color:#14141c;
-}
-
-.chat-input button:active{
-  filter:brightness(.9);
-}
-
-/* === TAMBAHAN UNTUK API DEVELOPER === */
-#api input, #api textarea {
-  width: 100%;
-  box-sizing: border-box;
-}
-#api input:focus, #api textarea:focus {
-  border-color: var(--star);
-  outline: none;
-}
-#api .box {
-  margin-bottom: 16px;
-}
-
-/* === TAMBAHAN UNTUK TOMBOL COPY PESAN === */
 .msg-wrapper {
   display: flex;
   flex-direction: column;
-  max-width: 85%;
+  max-width: 90%;
 }
 
-.msg-wrapper.bot {
-  align-self: flex-start;
-  align-items: flex-start;
+.msg-wrapper.bot { align-self: flex-start; align-items: flex-start; }
+.msg-wrapper.user { align-self: flex-end; align-items: flex-end; }
+
+.msg {
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
-.msg-wrapper.user {
-  align-self: flex-end;
-  align-items: flex-end;
+.msg.bot {
+  background: #1a1a1a;
+  border-left: 2px solid #00ff9c;
+  color: #ccc;
 }
 
-.msg-wrapper .msg {
-  max-width: 100% !important; /* Biar ngikutin wrapper */
+.msg.user {
+  background: #003322;
+  color: #fff;
 }
 
 .btn-copy-msg {
   background: transparent;
-  border: 1px solid var(--screen-text);
-  color: var(--screen-text);
+  border: 1px solid #00ff9c;
+  color: #00ff9c;
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
-  padding: 4px 8px;
+  padding: 3px 8px;
   margin-top: 4px;
   cursor: pointer;
   border-radius: 4px;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: all 0.2s;
 }
 
 .btn-copy-msg:hover {
   opacity: 1;
-  background: var(--screen-text);
+  background: #00ff9c;
   color: #000;
 }
