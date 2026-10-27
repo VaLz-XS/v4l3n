@@ -941,7 +941,6 @@
 
   if(!btnGenerate) return;
 
-  // 1. Logika Generate API Key
   btnGenerate.addEventListener("click", function(){
     var name = apiName.value.trim();
     if(!name){
@@ -949,27 +948,22 @@
       return;
     }
 
-    // Simulasi generate key random
     var randomStr = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     var apiKey = "valen_sk_" + randomStr;
     
-    // Simpan ke localStorage (simulasi database)
     localStorage.setItem("valen_api_key", apiKey);
     localStorage.setItem("valen_api_name", name);
 
-    // Tampilkan hasil
     generatedKey.textContent = apiKey;
     keyResult.style.display = "block";
     apiName.value = "";
     
-    // Ganti tombol jadi "Tersimpan"
     btnGenerate.textContent = "Tersimpan!";
     btnGenerate.disabled = true;
     btnGenerate.style.background = "var(--win)";
     btnGenerate.style.color = "var(--ink)";
   });
 
-  // Cek kalau user udah pernah generate key
   var existingKey = localStorage.getItem("valen_api_key");
   if(existingKey){
     generatedKey.textContent = existingKey;
@@ -978,7 +972,6 @@
     btnGenerate.disabled = true;
   }
 
-  // 2. Logika Playground (Simulasi Fetch)
   btnTest.addEventListener("click", function(){
     var key = localStorage.getItem("valen_api_key");
     
@@ -992,14 +985,11 @@
       return;
     }
 
-    // Tampilkan loading
     apiResponse.style.display = "block";
     responseText.textContent = "Mengirim request...";
     btnTest.disabled = true;
 
-    // Simulasi delay network (karena backend beneran belum ada)
     setTimeout(function(){
-      // Simulasi Respons Sukses
       var mockResponse = {
         status: "success",
         message: "Pesan berhasil masuk antrean.",
@@ -1011,14 +1001,65 @@
         }
       };
 
-      // Tampilkan respons
       responseText.textContent = JSON.stringify(mockResponse, null, 2);
       
-      // Reset form
       testNumber.value = "";
       testMessage.value = "";
       btnTest.disabled = false;
-    }, 1500); // Delay 1.5 detik
+    }, 1500); 
+  });
+})();
+
+// ============================================
+// === PAIRING BOT LOGIC (DARI WEB UTAMA) ===
+// ============================================
+(function(){
+  var btnPairing = document.getElementById("btnPairing");
+  var waNumber = document.getElementById("waNumber");
+  var resultBox = document.getElementById("pairingResult");
+  var codeDisplay = document.getElementById("pairingCodeDisplay");
+
+  if(!btnPairing) return;
+
+  // ALAMAT NGROK LU
+  var API_URL = "https://seismic-plug-striving.ngrok-free.dev/api/pairing";
+
+  btnPairing.addEventListener("click", async function(){
+    var phone = waNumber.value.trim();
+    if(!phone){
+      alert("Masukin nomor WhatsApp dulu!");
+      return;
+    }
+
+    btnPairing.disabled = true;
+    btnPairing.textContent = "Memproses...";
+    resultBox.style.display = "none";
+
+    try {
+      var response = await fetch(API_URL, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true" // WAJIB BUAT NGROK
+        },
+        body: JSON.stringify({ phoneNumber: phone })
+      });
+
+      var data = await response.json();
+
+      if (response.ok && data.status === "success") {
+        codeDisplay.textContent = data.code;
+        resultBox.style.display = "block";
+        btnPairing.textContent = "Berhasil!";
+        waNumber.value = ""; 
+      } else {
+        throw new Error(data.message || "Gagal dapet kode");
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
+      btnPairing.disabled = false;
+      btnPairing.textContent = "Minta Kode";
+    }
   });
 })();
 
@@ -1026,7 +1067,6 @@
 // === PROTEKSI ISENG (BUKAN KEAMANAN BENERAN) ===
 // ============================================
 (function(){
-  // --- 1. Blokir klik kanan & shortcut DevTools ---
   document.addEventListener("contextmenu", function(e){
     e.preventDefault();
   });
@@ -1044,7 +1084,6 @@
     }
   });
 
-  // --- 2. Deteksi DevTools kebuka → overlay ---
   var overlay = document.createElement("div");
   overlay.id = "devtoolsGuard";
   overlay.innerHTML = "<div>Tutup DevTools dulu ya 🙏<br><small>Website ini nggak bisa dilihat selama DevTools kebuka.</small></div>";
@@ -1069,7 +1108,6 @@
   }
   setInterval(checkDevTools, 800);
 
-  // --- 3. Text freezer ringan ---
   var frozen = new WeakMap();
   function freezeNode(node){
     if(node.nodeType === 3 && !frozen.has(node)){
