@@ -282,3 +282,16 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .chat-input button:active{
   filter:brightness(.9);
 }
+
+/* === TAMBAHAN UNTUK API DEVELOPER === */
+#api input, #api textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+#api input:focus, #api textarea:focus {
+  border-color: var(--star);
+  outline: none;
+}
+#api .box {
+  margin-bottom: 16px;
+}
