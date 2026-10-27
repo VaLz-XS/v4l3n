@@ -211,66 +211,72 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   border: 2px solid var(--lo); outline: none; background: var(--screen); color: var(--screen-text);
 }
 
-/* === CHAT & TOMBOL COPY === */
+/* ============================================ */
+/* === CHAT & TOMBOL COPY (GENTLE DARK THEME) === */
+/* ============================================ */
 .screen.chat {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-height: 280px; /* Tinggi maksimal kotak chat */
-  overflow-y: auto;  /* Biar bisa di scroll kalau AI ngasih kode panjang */
-  padding: 12px;
-  background: #0d0d0d;
-  border: 1px solid #333;
+  gap: 12px;
+  max-height: 300px; 
+  overflow-y: auto;  
+  padding: 16px;
+  background: #1e1f22; /* Warna abu gelap ala Discord */
+  border: 2px solid var(--lo);
   border-radius: 4px 4px 0 0;
   font-family: "IBM Plex Mono", monospace;
   font-size: 13px;
   line-height: 1.5;
-  color: #ccc;
+  color: #dbdee1;
 }
 
+/* Wrapper pesan */
 .msg-wrapper {
   display: flex;
   flex-direction: column;
-  max-width: 90%;
+  max-width: 85%;
 }
 
 .msg-wrapper.bot { align-self: flex-start; align-items: flex-start; }
 .msg-wrapper.user { align-self: flex-end; align-items: flex-end; }
 
+/* Balon chat */
 .msg {
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+/* Pesan Bot (Warna gelap kebiruan, teks terang) */
 .msg.bot {
-  background: #1a1a1a;
-  border-left: 2px solid #00ff9c;
-  color: #ccc;
+  background: #2b2d31;
+  color: #f2f3f5;
+  border-left: 3px solid var(--screen-text); /* Aksen hijau tipis */
 }
 
+/* Pesan User (Warna biru gelap elegan, biar beda dari bot) */
 .msg.user {
-  background: #003322;
-  color: #fff;
+  background: #3b5078; 
+  color: #ffffff;
 }
 
+/* Tombol Copy */
 .btn-copy-msg {
   background: transparent;
-  border: 1px solid #00ff9c;
-  color: #00ff9c;
+  border: 1px solid #4e5058;
+  color: #949ba4;
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
-  padding: 3px 8px;
-  margin-top: 4px;
+  padding: 4px 8px;
+  margin-top: 6px;
   cursor: pointer;
   border-radius: 4px;
-  opacity: 0.8;
   transition: all 0.2s;
 }
 
 .btn-copy-msg:hover {
-  opacity: 1;
-  background: #00ff9c;
-  color: #000;
+  background: #4e5058;
+  color: #ffffff;
+  border-color: #4e5058;
 }
