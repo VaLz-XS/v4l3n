@@ -43,6 +43,7 @@
       <a href="#game">Game</a>
       <a href="#tentang">Tentang</a>
       <a href="#api">API Developer</a>
+      <a href="#pairing">Pairing Bot</a> <!-- MENU BARU -->
       <a href="#kontak">Kontak</a>
     </nav>
   </header>
@@ -260,6 +261,29 @@
           <p style="font-size: 12px; color: #55535c; margin-bottom: 4px;">Response:</p>
           <pre id="responseText" style="background: #000; padding: 10px; border: 1px solid var(--lo); color: #7dffa8; font-size: 12px; overflow-x: auto;"></pre>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION PAIRING BOT (BARU) -->
+  <section class="win" data-view="pairing" aria-label="Pairing Bot">
+    <div class="bar"><span>pairing.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body">
+      <h2>SORA MD Pairing</h2>
+      <p class="musik-sub" style="margin-bottom: 16px;">Hubungkan nomor WhatsApp Anda ke bot SORA MD. Masukkan nomor di bawah untuk mendapatkan kode pairing.</p>
+
+      <div class="box" style="margin-bottom: 20px;">
+        <span class="title">Input Nomor</span>
+        <div style="display: flex; gap: 8px;">
+          <input type="tel" id="waNumber" placeholder="Contoh: 6285143200550" style="flex: 1; padding: 8px; font-family: 'IBM Plex Mono', monospace; background: var(--screen); color: var(--screen-text); border: 2px solid var(--lo); outline: none;">
+          <button type="button" id="btnPairing" style="padding: 8px 16px; font-family: 'Pixelify Sans', monospace; font-weight: bold; cursor: pointer; background: var(--star); color: #14141c; border: 2px solid var(--ink);">Minta Kode</button>
+        </div>
+      </div>
+
+      <div class="box" id="pairingResult" style="display: none;">
+        <span class="title" style="color: var(--star);">Kode Pairing Anda</span>
+        <p style="font-size: 13px; margin-bottom: 10px;">Buka WhatsApp > Perangkat Tertaut > Tautkan dengan nomor telepon, lalu masukkan kode ini:</p>
+        <div id="pairingCodeDisplay" style="font-size: 28px; font-weight: bold; text-align: center; letter-spacing: 4px; color: #fff; background: #000; padding: 12px; border: 1px dashed var(--screen-text); font-family: 'Pixelify Sans', monospace;">----</div>
       </div>
     </div>
   </section>
