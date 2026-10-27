@@ -221,7 +221,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   max-height: 300px; 
   overflow-y: auto;  
   padding: 16px;
-  background: #1e1f22; /* Warna abu gelap ala Discord */
+  background: #1e1f22; 
   border: 2px solid var(--lo);
   border-radius: 4px 4px 0 0;
   font-family: "IBM Plex Mono", monospace;
@@ -230,7 +230,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   color: #dbdee1;
 }
 
-/* Wrapper pesan */
 .msg-wrapper {
   display: flex;
   flex-direction: column;
@@ -240,7 +239,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 .msg-wrapper.bot { align-self: flex-start; align-items: flex-start; }
 .msg-wrapper.user { align-self: flex-end; align-items: flex-end; }
 
-/* Balon chat */
 .msg {
   padding: 10px 14px;
   border-radius: 8px;
@@ -248,20 +246,17 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   word-break: break-word;
 }
 
-/* Pesan Bot (Warna gelap kebiruan, teks terang) */
 .msg.bot {
   background: #2b2d31;
   color: #f2f3f5;
-  border-left: 3px solid var(--screen-text); /* Aksen hijau tipis */
+  border-left: 3px solid var(--screen-text);
 }
 
-/* Pesan User (Warna biru gelap elegan, biar beda dari bot) */
 .msg.user {
   background: #3b5078; 
   color: #ffffff;
 }
 
-/* Tombol Copy */
 .btn-copy-msg {
   background: transparent;
   border: 1px solid #4e5058;
@@ -279,4 +274,68 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   background: #4e5058;
   color: #ffffff;
   border-color: #4e5058;
+}
+
+/* === GAYA INPUT TERMINAL CYBERPUNK === */
+.chat-input {
+  display: flex;
+  border: 2px solid #333;
+  border-top: none;
+  background: #0d0d0d;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+  align-items: center;
+  padding-left: 12px;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus-within {
+  border-color: var(--screen-text);
+  box-shadow: 0 0 10px rgba(125, 255, 168, 0.2);
+}
+
+.chat-input .prompt {
+  color: var(--screen-text);
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 6px;
+}
+
+.chat-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 14px 10px;
+  color: #f2f3f5;
+  font: 400 14px "IBM Plex Mono", monospace;
+  outline: none;
+  min-width: 0;
+}
+
+.chat-input input::placeholder {
+  color: #555;
+}
+
+.chat-input button {
+  background: var(--screen-text);
+  border: none;
+  padding: 0 20px;
+  height: 100%;
+  min-height: 46px;
+  cursor: pointer;
+  font: 700 14px "Pixelify Sans", monospace;
+  color: #000;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.chat-input button:hover {
+  background: #fff;
+  box-shadow: 0 0 15px var(--screen-text);
+}
+
+.chat-input button:active {
+  transform: scale(0.95);
 }
