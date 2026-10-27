@@ -496,90 +496,11 @@
       [218.23, "The one that got away"]
     ],
     "Tarot": [
-      [32.53, "Nama yang sama bertahan"],
-      [37.18, "Dalam ruangan hening"],
-      [40.99, "Tanpa suara, bertahan"],
-      [45.10, "Tak bergeming"],
-      [49.23, "Terlalu lama bercanda"],
-      [53.86, "Kita tak terbiasa"],
-      [57.76, "Dengan celaka yang nyata"],
-      [62.29, "Diam, tak berdaya"],
-      [66.52, "Namun, aku bingung kenapa ku tak pergi"],
-      [71.48, "Aku bingung kalian masih di sini"],
-      [75.58, "Apa mungkin kar'na terlalu lama?"],
-      [79.86, "Apa benar 'tuk berbagi derita?"],
-      [83.93, "Mungkin nanti semua justru memburuk"],
-      [88.03, "Hati-hati, namun terjatuh lagi"],
-      [92.34, "Tapi luka adalah niscaya"],
-      [96.47, "Kutanggung denganmu s'lama ku mampu"],
-      [103.55, "S'lama ku mampu"],
-      [117.59, "Di kehidupan kedua (di kehidupan kedua)"],
-      [120.58, "S'moga kau tak terlalu keras kepala"],
-      [124.93, "Atau mungkin ini bukan yang pertama (ini bukan yang pertama)"],
-      [129.16, "Dan kita dib'ri kesempatan berubah"],
-      [133.20, "Ku yakin nyawa kita bertautan"],
-      [138.37, "Khatam berbagai cobaan"],
-      [141.58, "Selalu menertawakan ramalan bintang, kartu tarot"],
-      [147.01, "Orang pintar pembaca nasib"],
-      [150.07, "Namun, aku bingung kenapa ku tak pergi"],
-      [154.91, "Aku bingung kalian masih di sini"],
-      [159.05, "Apa mungkin kar'na terlalu lama?"],
-      [163.14, "Apa benar 'tuk berbagi derita?"],
-      [167.35, "Mungkin nanti semua justru memburuk"],
-      [171.57, "Hati-hati, namun terjatuh lagi"],
-      [175.77, "Tapi luka adalah niscaya"],
-      [179.84, "Kutanggung denganmu s'lama ku mampu"],
-      [186.77, "(S'lama ku mampu)"],
-      [191.57, "Selalu menertawakan ramalan bintang, kartu tarot"],
-      [197.08, "Orang pintar pembaca nasib"],
-      [200.03, "Namun, padamu ku percaya"],
-      [210.93, "Tak masuk logika"],
-      [219.28, "Padamu ku percaya"],
-      [227.66, "Tak masuk logika (tak masuk logika)"],
-      [236.02, "Padamu ku percaya (padamu ku percaya)"],
-      [244.47, "Tak masuk logika (tak masuk logika)"],
-      [252.72, "Padamu ku percaya (padamu ku percaya)"],
-      [260.96, "Tak masuk logika (tak masuk logika)"],
-      [269.40, "Padamu ku percaya, oh"],
-      [277.87, "Tak masuk logika"]
+      [32.53, "Nama yang sama bertahan"], [37.18, "Dalam ruangan hening"], [40.99, "Tanpa suara, bertahan"], [45.10, "Tak bergeming"], [49.23, "Terlalu lama bercanda"], [53.86, "Kita tak terbiasa"], [57.76, "Dengan celaka yang nyata"], [62.29, "Diam, tak berdaya"], [66.52, "Namun, aku bingung kenapa ku tak pergi"], [71.48, "Aku bingung kalian masih di sini"], [75.58, "Apa mungkin kar'na terlalu lama?"], [79.86, "Apa benar 'tuk berbagi derita?"], [83.93, "Mungkin nanti semua justru memburuk"], [88.03, "Hati-hati, namun terjatuh lagi"], [92.34, "Tapi luka adalah niscaya"], [96.47, "Kutanggung denganmu s'lama ku mampu"], [103.55, "S'lama ku mampu"], [117.59, "Di kehidupan kedua (di kehidupan kedua)"], [120.58, "S'moga kau tak terlalu keras kepala"], [124.93, "Atau mungkin ini bukan yang pertama (ini bukan yang pertama)"], [129.16, "Dan kita dib'ri kesempatan berubah"], [133.20, "Ku yakin nyawa kita bertautan"], [138.37, "Khatam berbagai cobaan"], [141.58, "Selalu menertawakan ramalan bintang, kartu tarot"], [147.01, "Orang pintar pembaca nasib"], [150.07, "Namun, aku bingung kenapa ku tak pergi"], [154.91, "Aku bingung kalian masih di sini"], [159.05, "Apa mungkin kar'na terlalu lama?"], [163.14, "Apa benar 'tuk berbagi derita?"], [167.35, "Mungkin nanti semua justru memburuk"], [171.57, "Hati-hati, namun terjatuh lagi"], [175.77, "Tapi luka adalah niscaya"], [179.84, "Kutanggung denganmu s'lama ku mampu"], [186.77, "(S'lama ku mampu)"], [191.57, "Selalu menertawakan ramalan bintang, kartu tarot"], [197.08, "Orang pintar pembaca nasib"], [200.03, "Namun, padamu ku percaya"], [210.93, "Tak masuk logika"], [219.28, "Padamu ku percaya"], [227.66, "Tak masuk logika (tak masuk logika)"], [236.02, "Padamu ku percaya (padamu ku percaya)"], [244.47, "Tak masuk logika (tak masuk logika)"], [252.72, "Padamu ku percaya (padamu ku percaya)"], [260.96, "Tak masuk logika (tak masuk logika)"], [269.40, "Padamu ku percaya, oh"], [277.87, "Tak masuk logika"]
     ],
     "Let Down": [
-  [21.83, "Transport, motorways and tramlines"],
-  [28.87, "Starting and then stopping"],
-  [33.57, "Taking off and landing"],
-  [38.25, "The emptiest of feelings"],
-  [42.96, "Disappointed people"],
-  [47.66, "Clinging onto bottles"],
-  [52.35, "When it comes, it's so, so disappointing"],
-  [59.56, "Let down and hanging around"],
-  [66.52, "Crushed like a bug in the ground"],
-  [73.69, "Let down and hanging around"],
-  [90.13, "Shell smashed, juices flowing"],
-  [94.75, "Wings twitch, legs are going"],
-  [99.44, "Don't get sentimental"],
-  [104.08, "It always ends up drivel"],
-  [108.83, "One day, I am gonna grow wings"],
-  [115.72, "A chemical reaction"],
-  [120.34, "Hysterical and useless"],
-  [125.00, "Hysterical and"],
-  [127.48, "Let down and hanging around"],
-  [134.48, "Crushed like a bug in the ground"],
-  [141.62, "Let down and hanging around"],
-  [186.33, "Let down and hang"],
-  [195.72, "Let down and hang"],
-  [205.31, "Let down and hang"],
-  [221.29, "You know, you know where you are with"],
-  [227.91, "You know where you are with"],
-  [232.53, "Floor collapses, floating"],
-  [237.27, "Bouncing back"],
-  [238.95, "And one day, I am gonna grow wings"],
-  [246.42, "A chemical reaction (you'll know where you are)"],
-  [250.92, "Hysterical and useless (you'll know where you are)"],
-  [255.68, "Hysterical and (you'll know where you are)"],
-  [258.49, "Let down, and hanging around"],
-  [265.00, "Crushed like a bug in the ground"],
-  [272.03, "Let down and hanging around"]
-],
+      [21.83, "Transport, motorways and tramlines"], [28.87, "Starting and then stopping"], [33.57, "Taking off and landing"], [38.25, "The emptiest of feelings"], [42.96, "Disappointed people"], [47.66, "Clinging onto bottles"], [52.35, "When it comes, it's so, so disappointing"], [59.56, "Let down and hanging around"], [66.52, "Crushed like a bug in the ground"], [73.69, "Let down and hanging around"], [90.13, "Shell smashed, juices flowing"], [94.75, "Wings twitch, legs are going"], [99.44, "Don't get sentimental"], [104.08, "It always ends up drivel"], [108.83, "One day, I am gonna grow wings"], [115.72, "A chemical reaction"], [120.34, "Hysterical and useless"], [125.00, "Hysterical and"], [127.48, "Let down and hanging around"], [134.48, "Crushed like a bug in the ground"], [141.62, "Let down and hanging around"], [186.33, "Let down and hang"], [195.72, "Let down and hang"], [205.31, "Let down and hang"], [221.29, "You know, you know where you are with"], [227.91, "You know where you are with"], [232.53, "Floor collapses, floating"], [237.27, "Bouncing back"], [238.95, "And one day, I am gonna grow wings"], [246.42, "A chemical reaction (you'll know where you are)"], [250.92, "Hysterical and useless (you'll know where you are)"], [255.68, "Hysterical and (you'll know where you are)"], [258.49, "Let down, and hanging around"], [265.00, "Crushed like a bug in the ground"], [272.03, "Let down and hanging around"]
+    ]
   };
   var currentLyrics = [];
 
@@ -1004,9 +925,108 @@
 })();
 
 // ============================================
+// === API DEVELOPER LOGIC ===
+// ============================================
+(function(){
+  var btnGenerate = document.getElementById("btnGenerateKey");
+  var apiName = document.getElementById("apiName");
+  var keyResult = document.getElementById("keyResult");
+  var generatedKey = document.getElementById("generatedKey");
+  
+  var btnTest = document.getElementById("btnTestApi");
+  var testNumber = document.getElementById("testNumber");
+  var testMessage = document.getElementById("testMessage");
+  var apiResponse = document.getElementById("apiResponse");
+  var responseText = document.getElementById("responseText");
+
+  if(!btnGenerate) return;
+
+  // 1. Logika Generate API Key
+  btnGenerate.addEventListener("click", function(){
+    var name = apiName.value.trim();
+    if(!name){
+      alert("Isi nama aplikasi/bot dulu ya!");
+      return;
+    }
+
+    // Simulasi generate key random
+    var randomStr = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    var apiKey = "valen_sk_" + randomStr;
+    
+    // Simpan ke localStorage (simulasi database)
+    localStorage.setItem("valen_api_key", apiKey);
+    localStorage.setItem("valen_api_name", name);
+
+    // Tampilkan hasil
+    generatedKey.textContent = apiKey;
+    keyResult.style.display = "block";
+    apiName.value = "";
+    
+    // Ganti tombol jadi "Tersimpan"
+    btnGenerate.textContent = "Tersimpan!";
+    btnGenerate.disabled = true;
+    btnGenerate.style.background = "var(--win)";
+    btnGenerate.style.color = "var(--ink)";
+  });
+
+  // Cek kalau user udah pernah generate key
+  var existingKey = localStorage.getItem("valen_api_key");
+  if(existingKey){
+    generatedKey.textContent = existingKey;
+    keyResult.style.display = "block";
+    btnGenerate.textContent = "Sudah Tergenerate";
+    btnGenerate.disabled = true;
+  }
+
+  // 2. Logika Playground (Simulasi Fetch)
+  btnTest.addEventListener("click", function(){
+    var key = localStorage.getItem("valen_api_key");
+    
+    if(!key){
+      alert("Generate API Key dulu di bagian atas!");
+      return;
+    }
+    
+    if(!testNumber.value || !testMessage.value){
+      alert("Nomor dan pesan tidak boleh kosong!");
+      return;
+    }
+
+    // Tampilkan loading
+    apiResponse.style.display = "block";
+    responseText.textContent = "Mengirim request...";
+    btnTest.disabled = true;
+
+    // Simulasi delay network (karena backend beneran belum ada)
+    setTimeout(function(){
+      // Simulasi Respons Sukses
+      var mockResponse = {
+        status: "success",
+        message: "Pesan berhasil masuk antrean.",
+        data: {
+          to: testNumber.value,
+          body: testMessage.value,
+          timestamp: new Date().toISOString(),
+          api_key_used: key.substring(0, 12) + "..."
+        }
+      };
+
+      // Tampilkan respons
+      responseText.textContent = JSON.stringify(mockResponse, null, 2);
+      
+      // Reset form
+      testNumber.value = "";
+      testMessage.value = "";
+      btnTest.disabled = false;
+    }, 1500); // Delay 1.5 detik
+  });
+})();
+
+// ============================================
 // === PROTEKSI ISENG (BUKAN KEAMANAN BENERAN) ===
 // ============================================
 (function(){
+  // --- 1. Blokir klik kanan & shortcut DevTools ---
   document.addEventListener("contextmenu", function(e){
     e.preventDefault();
   });
@@ -1024,6 +1044,7 @@
     }
   });
 
+  // --- 2. Deteksi DevTools kebuka → overlay ---
   var overlay = document.createElement("div");
   overlay.id = "devtoolsGuard";
   overlay.innerHTML = "<div>Tutup DevTools dulu ya 🙏<br><small>Website ini nggak bisa dilihat selama DevTools kebuka.</small></div>";
@@ -1048,6 +1069,7 @@
   }
   setInterval(checkDevTools, 800);
 
+  // --- 3. Text freezer ringan ---
   var frozen = new WeakMap();
   function freezeNode(node){
     if(node.nodeType === 3 && !frozen.has(node)){
