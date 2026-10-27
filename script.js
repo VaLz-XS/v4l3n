@@ -866,17 +866,48 @@
     ".menu": "Kurumi MD: halo! ada 1500+ fitur di sini.\nKurumi MD: ketik nama fitur untuk mulai.\n\nFitur tersedia:\n- .menu      → tampilkan menu ini\n- .ping      → cek latensi bot\n- .sticker   → buat stiker dari gambar\n- .ai        → tanya AI\n- .about     → info bot",
     ".ping": "Kurumi MD: 🏓 Pong! Latensi 42ms.",
     ".sticker": "Kurumi MD: kirim gambar dengan caption .sticker untuk dijadikan stiker.",
-    ".ai": "Kurumi MD: fitur AI sedang dalam pengembangan.",
+    ".ai": "Kurumi MD: ketik perintah nya aja tanpa .ai, contoh: halo.",
     ".about": "Kurumi MD: Kurumi MD v0.1 — bot WhatsApp multi device dengan 1500+ fitur."
   };
 
-  function addMsg(text, who){
+  function addMsg(text, who, isCopyable){
+    var wrapper = document.createElement("div");
+    wrapper.className = "msg-wrapper " + who; // wrapper buat nampung pesan + tombol
+
     var d = document.createElement("div");
     d.className = "msg " + who;
     d.textContent = text;
-    box.appendChild(d);
+    
+    wrapper.appendChild(d);
+
+    // Kalau pesannya dari bot, tambahin tombol Copy
+    if (who === "bot") {
+      var btnCopy = document.createElement("button");
+      btnCopy.className = "btn-copy-msg";
+      btnCopy.innerHTML = "📋 Copy";
+      btnCopy.onclick = function() {
+        // Trik copy ke clipboard
+        navigator.clipboard.writeText(text).then(function() {
+          btnCopy.innerHTML = "✅ Tercopy!";
+          setTimeout(function() { btnCopy.innerHTML = "📋 Copy"; }, 2000);
+        }).catch(function() {
+          // Fallback kalau clipboard API gagal (biasanya karena bukan HTTPS)
+          var textArea = document.createElement("textarea");
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+          btnCopy.innerHTML = "✅ Tercopy!";
+          setTimeout(function() { btnCopy.innerHTML = "📋 Copy"; }, 2000);
+        });
+      };
+      wrapper.appendChild(btnCopy);
+    }
+
+    box.appendChild(wrapper);
     box.scrollTop = box.scrollHeight;
-    return d;
+    return wrapper;
   }
 
   function botReply(cmd){
@@ -923,6 +954,7 @@
     }
   });
 })();
+
 
 // ============================================
 // === API DEVELOPER LOGIC ===
