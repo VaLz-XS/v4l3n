@@ -295,3 +295,44 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
 #api .box {
   margin-bottom: 16px;
 }
+
+/* === TAMBAHAN UNTUK TOMBOL COPY PESAN === */
+.msg-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.msg-wrapper.bot {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.msg-wrapper.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.msg-wrapper .msg {
+  max-width: 100% !important; /* Biar ngikutin wrapper */
+}
+
+.btn-copy-msg {
+  background: transparent;
+  border: 1px solid var(--screen-text);
+  color: var(--screen-text);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  margin-top: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.btn-copy-msg:hover {
+  opacity: 1;
+  background: var(--screen-text);
+  color: #000;
+}
