@@ -42,6 +42,7 @@
       <a href="#musik">Musik</a>
       <a href="#game">Game</a>
       <a href="#tentang">Tentang</a>
+      <a href="#api">API Developer</a>
       <a href="#kontak">Kontak</a>
     </nav>
   </header>
@@ -208,6 +209,58 @@
     <div class="body">
       <p>Saya VaLen. Saya suka membuat bot yang benar-benar dipakai orang di WhatsApp dan lain lain, dari yang sederhana sampai yang kompleks.</p>
       <p>Setiap bot punya rilis sendiri, jadi kamu bisa pilih yang sesuai kebutuhan.</p>
+    </div>
+  </section>
+
+  <section class="win" data-view="api" aria-label="API Developer">
+    <div class="bar"><span>api_dev.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body">
+      <h2>VaLen API</h2>
+      <p class="musik-sub" style="margin-bottom: 16px;">Integrasikan bot WhatsApp buatanmu dengan API VaLen. Kirim pesan secara otomatis dari aplikasi web atau servermu.</p>
+
+      <div class="box" style="margin-bottom: 20px;">
+        <span class="title">1. Generate API Key</span>
+        <p style="font-size: 13px; margin-bottom: 10px;">Dapatkan API Key unik untuk mengakses endpoint kami.</p>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="apiName" placeholder="Nama aplikasi/bot kamu..." style="flex: 1; padding: 8px; font-family: 'IBM Plex Mono', monospace; background: var(--screen); color: var(--screen-text); border: 2px solid var(--lo);">
+          <button type="button" id="btnGenerateKey" style="padding: 8px 16px; font-family: 'Pixelify Sans', monospace; font-weight: bold; cursor: pointer; background: var(--star); color: #14141c; border: 2px solid var(--ink);">Generate</button>
+        </div>
+        <div id="keyResult" style="margin-top: 12px; display: none;">
+          <p style="color: var(--screen-text); font-size: 13px;">API Key kamu (Simpan baik-baik!):</p>
+          <code id="generatedKey" style="display: block; padding: 8px; background: #000; color: #7dffa8; border: 1px dashed #7dffa8; margin-top: 4px; word-break: break-all;"></code>
+        </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 20px;">
+        <span class="title">2. Dokumentasi Endpoint</span>
+        <p style="font-size: 13px; margin-bottom: 10px;">Gunakan API Key di atas pada header <code style="color: var(--star);">x-api-key</code>.</p>
+        <div style="background: #000; padding: 12px; border: 1px solid var(--lo); font-size: 12px; line-height: 1.6;">
+          <span style="color: #ff5a5a;">POST</span> <span style="color: #fff;">https://api.v4l3n.web.id/send</span><br><br>
+          <span style="color: #55535c;">// Headers</span><br>
+          {<br>
+          &nbsp;&nbsp;"Content-Type": "application/json",<br>
+          &nbsp;&nbsp;"x-api-key": <span style="color: #7dffa8;">"valen_sk_xxx..."</span><br>
+          }<br><br>
+          <span style="color: #55535c;">// Body</span><br>
+          {<br>
+          &nbsp;&nbsp;"number": <span style="color: #7dffa8;">"628123456789"</span>,<br>
+          &nbsp;&nbsp;"message": <span style="color: #7dffa8;">"Halo dari API VaLen!"</span><br>
+          }
+        </div>
+      </div>
+
+      <div class="box">
+        <span class="title">3. Playground (Simulasi)</span>
+        <p style="font-size: 13px; margin-bottom: 10px;">Tes API secara langsung (hanya simulasi karena backend belum terhubung).</p>
+        <input type="text" id="testNumber" placeholder="Nomor WA (cth: 628123...)" style="width: 100%; padding: 8px; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; background: var(--screen); color: var(--screen-text); border: 2px solid var(--lo);">
+        <textarea id="testMessage" placeholder="Pesan yang mau dikirim..." rows="3" style="width: 100%; padding: 8px; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; background: var(--screen); color: var(--screen-text); border: 2px solid var(--lo); resize: vertical;"></textarea>
+        <button type="button" id="btnTestApi" style="width: 100%; padding: 10px; font-family: 'Pixelify Sans', monospace; font-weight: bold; cursor: pointer; background: var(--bar); color: #fff; border: 2px solid var(--ink);">Kirim Request</button>
+        
+        <div id="apiResponse" style="margin-top: 12px; display: none;">
+          <p style="font-size: 12px; color: #55535c; margin-bottom: 4px;">Response:</p>
+          <pre id="responseText" style="background: #000; padding: 10px; border: 1px solid var(--lo); color: #7dffa8; font-size: 12px; overflow-x: auto;"></pre>
+        </div>
+      </div>
     </div>
   </section>
 
