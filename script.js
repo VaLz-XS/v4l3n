@@ -1108,18 +1108,27 @@
   }
   setInterval(checkDevTools, 800);
 
+  // --- 3. Text freezer ringan (DIMODIFIKASI AGAR CHAT BISA DI-COPY) ---
   var frozen = new WeakMap();
+  
   function freezeNode(node){
     if(node.nodeType === 3 && !frozen.has(node)){
+      // Cek apakah node ini ada di dalam #chatBox. Kalau iya, jangan di-freeze!
+      if (node.parentNode && node.parentNode.closest('#chatBox')) return;
+      
       frozen.set(node, node.nodeValue);
     }
   }
+  
   var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   var n;
   while(n = walker.nextNode()) freezeNode(n);
 
   var mo = new MutationObserver(function(muts){
     muts.forEach(function(m){
+      // Kalau yang diedit adalah teks di dalam chat, biarin aja (jangan di-reset)
+      if (m.target.parentNode && m.target.parentNode.closest('#chatBox')) return;
+
       if(m.type === "characterData" && frozen.has(m.target)){
         var orig = frozen.get(m.target);
         if(m.target.nodeValue !== orig){
