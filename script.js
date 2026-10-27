@@ -866,34 +866,34 @@
     ".menu": "Kurumi MD: halo! ada 1500+ fitur di sini.\nKurumi MD: ketik nama fitur untuk mulai.\n\nFitur tersedia:\n- .menu      → tampilkan menu ini\n- .ping      → cek latensi bot\n- .sticker   → buat stiker dari gambar\n- .ai        → tanya AI\n- .about     → info bot",
     ".ping": "Kurumi MD: 🏓 Pong! Latensi 42ms.",
     ".sticker": "Kurumi MD: kirim gambar dengan caption .sticker untuk dijadikan stiker.",
-    ".ai": "Kurumi MD: ketik perintah nya aja tanpa .ai, contoh: halo.",
+    ".ai": "Kurumi MD: fitur AI sedang dalam pengembangan.",
     ".about": "Kurumi MD: Kurumi MD v0.1 — bot WhatsApp multi device dengan 1500+ fitur."
   };
 
-  function addMsg(text, who, isCopyable){
+  function addMsg(text, who){
     var wrapper = document.createElement("div");
-    wrapper.className = "msg-wrapper " + who; // wrapper buat nampung pesan + tombol
+    wrapper.className = "msg-wrapper " + who;
 
     var d = document.createElement("div");
     d.className = "msg " + who;
     d.textContent = text;
-    
     wrapper.appendChild(d);
 
-    // Kalau pesannya dari bot, tambahin tombol Copy
+    // Kalau pesan dari bot, tambahin tombol copy
     if (who === "bot") {
       var btnCopy = document.createElement("button");
       btnCopy.className = "btn-copy-msg";
       btnCopy.innerHTML = "📋 Copy";
+      
       btnCopy.onclick = function() {
-        // Trik copy ke clipboard
         navigator.clipboard.writeText(text).then(function() {
           btnCopy.innerHTML = "✅ Tercopy!";
           setTimeout(function() { btnCopy.innerHTML = "📋 Copy"; }, 2000);
         }).catch(function() {
-          // Fallback kalau clipboard API gagal (biasanya karena bukan HTTPS)
+          // Fallback buat HP yang rewel
           var textArea = document.createElement("textarea");
           textArea.value = text;
+          textArea.style.position = "fixed";
           document.body.appendChild(textArea);
           textArea.select();
           document.execCommand("copy");
@@ -954,7 +954,6 @@
     }
   });
 })();
-
 
 // ============================================
 // === API DEVELOPER LOGIC ===
