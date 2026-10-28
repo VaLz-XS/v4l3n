@@ -1190,24 +1190,30 @@
   var globalBox = document.getElementById("globalChatBox");
   var globalInput = document.getElementById("globalInput");
   var globalUser = document.getElementById("globalUser");
-  
-  // OTOMATIS AMBIL NAMA DARI LOGIN
-  var savedName = localStorage.getItem('valen_name');
-  if (savedName) {
-    globalUser.value = savedName; // Ganti "Tamu" jadi nama lu
-    globalUser.readOnly = true;   // Kunci biar nggak bisa diedit orang lain
-    globalUser.style.opacity = "0.7"; // Kasih efek agak transparan biar tau kalo dikunci
-  }
   var globalSendBtn = document.getElementById("globalSendBtn");
 
   if (!globalBox || !globalInput) return;
 
+  // OTOMATIS AMBIL NAMA DARI LOGIN
+  var savedName = localStorage.getItem('valen_name');
+  if (savedName) {
+    globalUser.value = savedName; 
+    globalUser.readOnly = true;   
+    globalUser.style.opacity = "0.7"; 
+  }
+
   globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan ke server...</div>';
 
-  // Fungsi buat ngasih warna random ke nama user
-  function getRandomColor() {
+  // FUNGSI WARNA BERDASARKAN NAMA (BIAR GAK GANTI-GANTI)
+  function getColorFromName(name) {
     var colors = ["#ff5a5a", "#5aff7a", "#5a9dff", "#f2d94e", "#ff5af2", "#5afff2", "#ffa05a"];
-    return colors[Math.floor(Math.random() * colors.length)];
+    var hash = 0;
+    for (var i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    // Pake modulo biar dapet index warna yang stabil
+    var index = Math.abs(hash) % colors.length;
+    return colors[index];
   }
 
   fetch("https://sizable-phantom-rind.ngrok-free.dev/health", {
@@ -1221,7 +1227,6 @@
       reconnection: true
     });
 
-    // Nampilin pesan dengan Avatar & Nama warna-warni
     function appendGlobalMsg(user, text, time) {
       var wrapper = document.createElement("div");
       wrapper.style.display = "flex";
@@ -1229,15 +1234,15 @@
       wrapper.style.gap = "10px";
       wrapper.style.marginBottom = "12px";
       
-      // Bikin Avatar (Ambil huruf depan nama)
+      // PAKE FUNGSI WARNA STABIL
+      var userColor = getColorFromName(user);
       var initial = user.charAt(0).toUpperCase();
-      var avatarColor = getRandomColor();
       
       var avatar = document.createElement("div");
       avatar.style.width = "32px";
       avatar.style.height = "32px";
       avatar.style.borderRadius = "50%";
-      avatar.style.background = avatarColor;
+      avatar.style.background = userColor;
       avatar.style.color = "#000";
       avatar.style.fontWeight = "bold";
       avatar.style.display = "flex";
@@ -1247,21 +1252,21 @@
       avatar.style.flexShrink = "0";
       avatar.textContent = initial;
 
-      // Bikin isi pesan
       var content = document.createElement("div");
       content.style.flex = "1";
       
       var header = document.createElement("div");
       header.style.fontSize = "11px";
       header.style.marginBottom = "2px";
-      header.innerHTML = `<b style="color: ${avatarColor}; font-size: 13px;">${user}</b> <span style="color: #888;">• ${time}</span>`;
+      // PAKE WARNA YANG SAMA BUAT NAMA
+      header.innerHTML = `<b style="color: ${userColor}; font-size: 13px;">${user}</b> <span style="color: #888;">• ${time}</span>`;
       
       var body = document.createElement("div");
       body.style.color = "#f2f3f5";
       body.style.fontSize = "13px";
       body.style.lineHeight = "1.4";
       body.style.wordBreak = "break-word";
-      body.textContent = text; // Pakai textContent biar aman dari XSS
+      body.textContent = text; 
 
       content.appendChild(header);
       content.appendChild(body);
