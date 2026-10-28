@@ -1304,3 +1304,83 @@
     globalInput.addEventListener("keypress", function(e) { if (e.key === "Enter") sendGlobal(); });
   });
 })();
+
+// ============================================
+// === TIKTOK DOWNLOADER (DARI PANEL 2) ===
+// ============================================
+(function(){
+  var btn = document.getElementById("btnTiktok");
+  var input = document.getElementById("tiktokUrl");
+  var resultBox = document.getElementById("tiktokResult");
+  var titleEl = document.getElementById("tiktokTitle");
+  var authorEl = document.getElementById("tiktokAuthor");
+  var videoEl = document.getElementById("tiktokVideoPreview");
+  var photosEl = document.getElementById("tiktokPhotos");
+  var buttonsEl = document.getElementById("tiktokButtons");
+
+  if(!btn) return;
+
+  btn.addEventListener("click", async function(){
+    var url = input.value.trim();
+    if(!url) return alert("Masukin link TikTok dulu bang!");
+
+    btn.disabled = true;
+    btn.textContent = "Memproses...";
+    resultBox.style.display = "none";
+    videoEl.style.display = "none";
+    photosEl.innerHTML = "";
+    buttonsEl.innerHTML = "";
+
+    try {
+      // Nembak ke API Pterodactyl Panel 2
+      var response = await fetch("https://sizable-phantom-rind.ngrok-free.dev/api/tiktok", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true"
+        },
+        body: JSON.stringify({ url: url })
+      });
+
+      var resData = await response.json();
+
+      if (resData.status === "success") {
+        var data = resData.data;
+        
+        titleEl.textContent = data.title;
+        authorEl.textContent = "@" + data.author;
+
+        if (data.isPhoto && data.photoUrls.length > 0) {
+          // Kalo fotonya banyak
+          data.photoUrls.forEach(function(photoUrl) {
+            var img = document.createElement("img");
+            img.src = photoUrl;
+            img.style.cssText = "height: 150px; border-radius: 8px; border: 1px solid #333;";
+            photosEl.appendChild(img);
+          });
+        } else if (data.videoUrl) {
+          // Kalo video
+          videoEl.src = data.videoUrl;
+          videoEl.style.display = "block";
+
+          // Bikin tombol download video
+          var a = document.createElement("a");
+          a.href = data.videoUrl;
+          a.target = "_blank";
+          a.textContent = "⬇ Download Video (No WM)";
+          a.style.cssText = "padding: 10px 20px; background: var(--bar); color: #fff; text-decoration: none; font-weight: bold; border-radius: 4px; border: 1px solid var(--hi);";
+          buttonsEl.appendChild(a);
+        }
+
+        resultBox.style.display = "block";
+        btn.textContent = "Berhasil!";
+      } else {
+        throw new Error(resData.message || "Gagal mengambil data.");
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
+      btn.disabled = false;
+      btn.textContent = "Proses";
+    }
+  });
+})();
