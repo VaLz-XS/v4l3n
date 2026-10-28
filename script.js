@@ -1180,3 +1180,65 @@
   });
   mo.observe(document.body, {characterData:true, childList:true, subtree:true});
 })();
+
+// ============================================
+// === CHAT GLOBAL REAL-TIME (SOCKET.IO) ===
+// ============================================
+(function(){
+  // Pastiin Socket.IO udah ke-load dari CDN
+  if (typeof io === "undefined") return;
+
+  var globalBox = document.getElementById("globalChatBox");
+  var globalInput = document.getElementById("globalInput");
+  var globalUser = document.getElementById("globalUser");
+  var globalSendBtn = document.getElementById("globalSendBtn");
+
+  if (!globalBox || !globalInput) return;
+
+  // KONEK KE SERVER PTERODACTYL LU
+  // Perhatiin: pakai https:// (bukan wss://, Socket.IO otomatis ngedeteksi)
+  var socket = io("https://seismic-plug-striving.ngrok-free.dev", {
+    transports: ["websocket", "polling"],
+    extraHeaders: {
+      "ngrok-skip-browser-warning": "true"
+    }
+  });
+
+  // Fungsi nambah pesan ke kotak
+  function appendGlobalMsg(user, text, time) {
+    var div = document.createElement("div");
+    div.style.marginBottom = "8px";
+    div.style.padding = "6px 10px";
+    div.style.borderRadius = "6px";
+    div.style.background = "#2b2d31";
+    div.style.borderLeft = "3px solid #f2d94e"; // Aksen kuning
+    div.innerHTML = `<div style="font-size:10px; color:#888; margin-bottom:2px;"><b>${user}</b> • ${time}</div><div style="color:#f2f3f5; font-size:13px;">${text}</div>`;
+    
+    globalBox.appendChild(div);
+    globalBox.scrollTop = globalBox.scrollHeight;
+  }
+
+  // Nangkep pesan dari server
+  socket.on("chat message", function(data) {
+    appendGlobalMsg(data.user, data.text, data.time);
+  });
+
+  // Kirim pesan pas tombol diklik atau tekan Enter
+  function sendGlobal() {
+    var text = globalInput.value.trim();
+    var user = globalUser.value.trim() || "Anonim";
+    
+    if (!text) return;
+
+    socket.emit("chat message", { user: user, text: text });
+    globalInput.value = "";
+  }
+
+  globalSendBtn.addEventListener("click", sendGlobal);
+  globalInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendGlobal();
+  });
+
+  // Tampilkan pesan selamat datang
+  appendGlobalMsg("Sistem", "Selamat datang di Chat Global! Jaga ucapan ya.", "Info");
+})();
