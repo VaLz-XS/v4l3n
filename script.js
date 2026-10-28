@@ -744,10 +744,56 @@
     tCur.textContent = fmt(audio.currentTime);
     updateLyrics();
   });
+    // --- LOGIKA AUTOPLAY & REPEAT ---
   audio.addEventListener("ended", function(){ 
     playBtn.textContent = "▶"; 
-    audio.currentTime = 0; 
     releaseWakeLock(); 
+    
+    // Cari kartu lagu yang sekarang lagi aktif
+    var cards = Array.from(songGrid.querySelectorAll(".song-card"));
+    var currentSrc = audio.src.split('/').pop(); // Ambil nama file aja (misal: treat.mp3)
+    var currentIndex = cards.findIndex(function(c) {
+      return c.getAttribute("data-src") === currentSrc;
+    });
+
+    if (currentIndex !== -1) {
+      // Tentukan lagu selanjutnya
+      var nextIndex = currentIndex + 1;
+      
+      // Kalau udah lagu terakhir, balik ke index 0 (Repeat)
+      if (nextIndex >= cards.length) {
+        nextIndex = 0; 
+      }
+
+      // Ambil data lagu selanjutnya
+      var nextCard = cards[nextIndex];
+      var nextSrc = nextCard.getAttribute("data-src");
+      var nextTitle = nextCard.getAttribute("data-title");
+      var nextArtist = nextCard.getAttribute("data-artist");
+
+      // Update UI Player
+      nowPlayingTitle.textContent = nextTitle;
+      nowPlayingArtist.textContent = nextArtist;
+      playerTitle.textContent = nextTitle + " — " + nextArtist;
+      
+      // Ganti lirik
+      currentLyrics = SONGS_DATA[nextTitle] || [];
+      renderLyrics();
+
+      // Putar lagu selanjutnya
+      audio.src = nextSrc;
+      audio.load();
+      
+      // Kasih jeda dikit biar nggak terlalu ngebut
+      setTimeout(function() {
+        audio.play().then(function(){
+          playBtn.textContent = "❚❚";
+          requestAnimationFrame(sync);
+        }).catch(function(){});
+      }, 500); // Jeda 0.5 detik sebelum lagu baru muter
+      
+      console.log("Autoplay: Lagi muter -> " + nextTitle);
+    }
   });
   seek.addEventListener("input", function(){ if(audio.duration) audio.currentTime = (seek.value/100)*audio.duration });
   audio.addEventListener("seeked", updateLyrics);
