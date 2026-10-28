@@ -44,6 +44,7 @@
       <a href="#tentang">Tentang</a>
       <a href="#api">API Developer</a>
       <a href="#pairing">Pairing Bot</a>
+      <a href="#global">Chat Global</a>
       <a href="#kontak">Kontak</a>
     </nav>
   </header>
@@ -266,7 +267,6 @@
     </div>
   </section>
 
-  <!-- SECTION PAIRING BOT -->
   <section class="win" data-view="pairing" aria-label="Pairing Bot">
     <div class="bar"><span>pairing.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body">
@@ -285,6 +285,25 @@
         <span class="title" style="color: var(--star);">Kode Pairing Anda</span>
         <p style="font-size: 13px; margin-bottom: 10px;">Buka WhatsApp > Perangkat Tertaut > Tautkan dengan nomor telepon, lalu masukkan kode ini:</p>
         <div id="pairingCodeDisplay" style="font-size: 28px; font-weight: bold; text-align: center; letter-spacing: 4px; color: #fff; background: #000; padding: 12px; border: 1px dashed var(--screen-text); font-family: 'Pixelify Sans', monospace;">----</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION CHAT GLOBAL BARU -->
+  <section class="win" data-view="global" aria-label="Chat Global">
+    <div class="bar"><span>global_chat.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body">
+      <h2>Chat Global VaLen</h2>
+      <p class="musik-sub" style="margin-bottom: 16px;">Ngobrol bareng pengunjung lain secara real-time.</p>
+      
+      <div class="screen chat" id="globalChatBox" style="height: 300px; max-height: 300px;">
+        <!-- Pesan bakal muncul di sini -->
+      </div>
+      
+      <div class="chat-input" style="border-top: 2px solid #333;">
+        <input type="text" id="globalUser" placeholder="Nama" style="max-width: 90px; border-right: 1px solid #333;" value="Tamu">
+        <input type="text" id="globalInput" placeholder="Ketik pesan..." autocomplete="off">
+        <button type="button" id="globalSendBtn">Kirim</button>
       </div>
     </div>
   </section>
