@@ -1196,60 +1196,71 @@
 
   globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan ke server...</div>';
 
-  // KONEKSI KE NGROK PANEL 2 (CHAT GLOBAL)
-  var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
-    transports: ["polling"], // PAKSA PAKAI POLLING BIAR GAK DIPUTUS NGROK
-    extraHeaders: {
-      "ngrok-skip-browser-warning": "true"
-    },
-    reconnection: true,
-    reconnectionAttempts: 5,
-    timeout: 10000
-  });
-
-  function appendGlobalMsg(user, text, time) {
-    var div = document.createElement("div");
-    div.style.marginBottom = "8px";
-    div.style.padding = "6px 10px";
-    div.style.borderRadius = "6px";
-    div.style.background = "#2b2d31";
-    div.style.borderLeft = "3px solid #f2d94e"; // Aksen kuning
-    div.innerHTML = `<div style="font-size:10px; color:#888; margin-bottom:2px;"><b>${user}</b> • ${time}</div><div style="color:#f2f3f5; font-size:13px;">${text}</div>`;
+  // TRIK NGROK: Tembak endpoint /health dulu biar dapet "tiket masuk"
+  fetch("https://sizable-phantom-rind.ngrok-free.dev/health", {
+    headers: { "ngrok-skip-browser-warning": "true" }
+  }).then(function() {
     
-    globalBox.appendChild(div);
-    globalBox.scrollTop = globalBox.scrollHeight;
-  }
+    // Setelah dapet tiket, baru konek Socket.IO pakai polling
+    var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
+      transports: ["polling"], 
+      extraHeaders: {
+        "ngrok-skip-browser-warning": "true"
+      },
+      query: {
+        "ngrok-skip-browser-warning": "true"
+      },
+      reconnection: true
+    });
 
-  socket.on("connect", function() {
-    globalBox.innerHTML = ""; 
-    appendGlobalMsg("Sistem", "Berhasil terhubung ke Chat Global!", "Info");
-  });
+    function appendGlobalMsg(user, text, time) {
+      var div = document.createElement("div");
+      div.style.marginBottom = "8px";
+      div.style.padding = "6px 10px";
+      div.style.borderRadius = "6px";
+      div.style.background = "#2b2d31";
+      div.style.borderLeft = "3px solid #f2d94e";
+      div.innerHTML = `<div style="font-size:10px; color:#888; margin-bottom:2px;"><b>${user}</b> • ${time}</div><div style="color:#f2f3f5; font-size:13px;">${text}</div>`;
+      
+      globalBox.appendChild(div);
+      globalBox.scrollTop = globalBox.scrollHeight;
+    }
 
-  socket.on("disconnect", function() {
-    appendGlobalMsg("Sistem", "Koneksi terputus. Mencoba menyambung ulang...", "Error");
-  });
+    socket.on("connect", function() {
+      globalBox.innerHTML = ""; 
+      appendGlobalMsg("Sistem", "Berhasil terhubung ke Chat Global!", "Info");
+    });
 
-  socket.on("connect_error", function(err) {
-    console.error("Socket Error:", err);
-    globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Coba refresh halaman.</div>';
-  });
+    socket.on("disconnect", function() {
+      appendGlobalMsg("Sistem", "Koneksi terputus. Mencoba menyambung ulang...", "Error");
+    });
 
-  socket.on("chat message", function(data) {
-    appendGlobalMsg(data.user, data.text, data.time);
-  });
+    socket.on("connect_error", function(err) {
+      console.error("Socket Error:", err);
+      globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Coba refresh halaman.</div>';
+    });
 
-  function sendGlobal() {
-    var text = globalInput.value.trim();
-    var user = globalUser.value.trim() || "Anonim";
-    
-    if (!text) return;
+    socket.on("chat message", function(data) {
+      appendGlobalMsg(data.user, data.text, data.time);
+    });
 
-    socket.emit("chat message", { user: user, text: text });
-    globalInput.value = "";
-  }
+    function sendGlobal() {
+      var text = globalInput.value.trim();
+      var user = globalUser.value.trim() || "Anonim";
+      
+      if (!text) return;
 
-  globalSendBtn.addEventListener("click", sendGlobal);
-  globalInput.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendGlobal();
+      socket.emit("chat message", { user: user, text: text });
+      globalInput.value = "";
+    }
+
+    globalSendBtn.addEventListener("click", sendGlobal);
+    globalInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendGlobal();
+    });
+
+  }).catch(function(err) {
+    console.error("Gagal nembak health check:", err);
+    globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Pastikan Ngrok nyala.</div>';
   });
 })();
