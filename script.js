@@ -1198,7 +1198,7 @@
 
   // KONEKSI KE NGROK PANEL 2 (CHAT GLOBAL)
   var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
-    transports: ["websocket", "polling"],
+    transports: ["polling"], // PAKSA PAKAI POLLING BIAR GAK DIPUTUS NGROK
     extraHeaders: {
       "ngrok-skip-browser-warning": "true"
     },
