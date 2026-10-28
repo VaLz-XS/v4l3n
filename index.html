@@ -181,7 +181,14 @@
         <audio id="lagu" preload="metadata"></audio>
                 <div class="player">
           <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
-          <button type="button" id="loopBtn" class="play-btn" style="width: 35px; height: 35px; font-size: 16px; background: transparent; color: var(--star); border-color: var(--star);" aria-label="Ulangi lagu">🔁</button>
+<button type="button" id="loopBtn" class="play-btn" style="width: 35px; height: 35px; display: grid; place-items: center; background: transparent; color: var(--star); border-color: var(--star);" aria-label="Ulangi lagu">
+  <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 2.1l4 4-4 4"></path>
+    <path d="M3 12.2v-2a4 4 0 0 1 4-4h12.8"></path>
+    <path d="M7 21.9l-4-4 4-4"></path>
+    <path d="M21 11.8v2a4 4 0 0 1-4 4H4.2"></path>
+  </svg>
+</button>
           
           <div class="player-info">
             <div class="player-title" id="playerTitle">Judul Lagu — Artis</div>
