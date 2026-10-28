@@ -500,7 +500,44 @@
     ],
     "Let Down": [
       [21.83, "Transport, motorways and tramlines"], [28.87, "Starting and then stopping"], [33.57, "Taking off and landing"], [38.25, "The emptiest of feelings"], [42.96, "Disappointed people"], [47.66, "Clinging onto bottles"], [52.35, "When it comes, it's so, so disappointing"], [59.56, "Let down and hanging around"], [66.52, "Crushed like a bug in the ground"], [73.69, "Let down and hanging around"], [90.13, "Shell smashed, juices flowing"], [94.75, "Wings twitch, legs are going"], [99.44, "Don't get sentimental"], [104.08, "It always ends up drivel"], [108.83, "One day, I am gonna grow wings"], [115.72, "A chemical reaction"], [120.34, "Hysterical and useless"], [125.00, "Hysterical and"], [127.48, "Let down and hanging around"], [134.48, "Crushed like a bug in the ground"], [141.62, "Let down and hanging around"], [186.33, "Let down and hang"], [195.72, "Let down and hang"], [205.31, "Let down and hang"], [221.29, "You know, you know where you are with"], [227.91, "You know where you are with"], [232.53, "Floor collapses, floating"], [237.27, "Bouncing back"], [238.95, "And one day, I am gonna grow wings"], [246.42, "A chemical reaction (you'll know where you are)"], [250.92, "Hysterical and useless (you'll know where you are)"], [255.68, "Hysterical and (you'll know where you are)"], [258.49, "Let down, and hanging around"], [265.00, "Crushed like a bug in the ground"], [272.03, "Let down and hanging around"]
-    ]
+    ],
+"Treat You Better": [
+  [11.93, "I won't lie to you"],
+  [16.66, "I know he's just not right for you"],
+  [22.75, "And you can tell me if I'm off"],
+  [24.15, "But I see it on your face"],
+  [25.60, "When you say that he's the one that you want"],
+  [28.56, "And you're spending all your time in this wrong situation"],
+  [31.50, "And anytime you want it to stop"],
+  [33.89, "I know I can treat you better than he can"],
+  [39.47, "And any girl like you deserves a gentleman"],
+  [45.28, "Tell me, why are we wasting time on all your wasted crime"],
+  [48.47, "When you should be with me instead?"],
+  [51.52, "I know I can treat you better, better than he can"],
+  [58.02, "I'll stop time for you"],
+  [62.77, "The second you say you'd like me too"],
+  [69.06, "I just wanna give you the loving that you're missing"],
+  [72.04, "Baby, just to wake up with you"],
+  [74.56, "It'd be everything I need and this could be so different"],
+  [78.01, "Tell me what you want to do"],
+  [79.76, "'Cause I know I can treat you better than he can"],
+  [85.68, "And any girl like you deserves a gentleman"],
+  [91.36, "Tell me, why are we wasting time on all your wasted crime"],
+  [95.15, "When you should be with me instead?"],
+  [97.33, "I know I can treat you better, better than he can"],
+  [108.34, "Better than he can"],
+  [116.10, "Give me a sign, take my hand, we'll be fine"],
+  [121.08, "Promise I won't let you down"],
+  [126.54, "Just know that you don't have to do this alone"],
+  [132.69, "Promise, I'll never let you down"],
+  [138.03, "'Cause I know I can treat you better than he can"],
+  [143.68, "And any girl like you deserves a gentleman"],
+  [149.31, "Tell me, why are we wasting time on all your wasted crime"],
+  [152.96, "When you should be with me instead?"],
+  [155.35, "I know I can treat you better, better than he can, oh"],
+  [166.26, "Better than he can"],
+  [171.82, "Better than he can"]
+]
   };
   var currentLyrics = [];
 
