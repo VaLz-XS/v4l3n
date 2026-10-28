@@ -1189,89 +1189,94 @@
 
   var globalBox = document.getElementById("globalChatBox");
   var globalInput = document.getElementById("globalInput");
-  var globalUser = document.getElementById("globalUser");
   var globalSendBtn = document.getElementById("globalSendBtn");
+  var globalUser = document.getElementById("globalUser");
 
   if (!globalBox || !globalInput) return;
 
-  // OTOMATIS AMBIL NAMA DARI LOGIN
-  var savedName = localStorage.getItem('valen_name');
-  if (savedName) {
-    globalUser.value = savedName; 
-    globalUser.readOnly = true;   
-    globalUser.style.opacity = "0.7"; 
-  }
+  // Ambil data user dari localStorage
+  var savedName = localStorage.getItem('valen_name') || "Anonim";
+  var savedTitle = localStorage.getItem('valen_title') || 'USER';
+  var savedTag = localStorage.getItem('valen_tag') || '0';
 
-  globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan ke server...</div>';
+  if(globalUser) globalUser.value = savedName;
 
-  // FUNGSI WARNA BERDASARKAN NAMA (BIAR GAK GANTI-GANTI)
+  globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan...</div>';
+
+  // Warna Avatar diambil dari nama biar tetep variatif
   function getColorFromName(name) {
     var colors = ["#ff5a5a", "#5aff7a", "#5a9dff", "#f2d94e", "#ff5af2", "#5afff2", "#ffa05a"];
     var hash = 0;
-    for (var i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    for (var i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
+
+  // Warna Title sesuai permintaan lu
+  function getTitleStyle(title) {
+    switch(title) {
+      case 'DEVELOPER': return { bg: '#000', color: '#fff', border: '1px solid #ff0000', class: 'title-dev' };
+      case 'VIP': return { bg: '#333', color: '#fff', border: '1px solid #f2d94e' }; 
+      case 'USER': return { bg: '#8B4513', color: '#fff' }; // Cokelat
+      case 'NOLEP': return { bg: '#fff', color: '#000' }; // Putih
+      case 'WIBU': return { bg: '#00008B', color: '#fff' }; // Biru Tua
+      default: return { bg: '#888', color: '#fff' };
     }
-    // Pake modulo biar dapet index warna yang stabil
-    var index = Math.abs(hash) % colors.length;
-    return colors[index];
   }
 
   fetch("https://sizable-phantom-rind.ngrok-free.dev/health", {
     headers: { "ngrok-skip-browser-warning": "true" }
   }).then(function() {
-    
     var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
-      transports: ["polling"], 
-      extraHeaders: { "ngrok-skip-browser-warning": "true" },
-      query: { "ngrok-skip-browser-warning": "true" },
-      reconnection: true
+      transports: ["polling"], extraHeaders: { "ngrok-skip-browser-warning": "true" }, query: { "ngrok-skip-browser-warning": "true" }
     });
 
-    function appendGlobalMsg(user, text, time) {
+    function appendGlobalMsg(user, title, tag, text, time) {
       var wrapper = document.createElement("div");
-      wrapper.style.display = "flex";
-      wrapper.style.alignItems = "flex-start";
-      wrapper.style.gap = "10px";
-      wrapper.style.marginBottom = "12px";
+      wrapper.style.display = "flex"; 
+      wrapper.style.alignItems = "flex-start"; 
+      wrapper.style.gap = "10px"; 
+      wrapper.style.marginBottom = "16px"; // Jarak antar pesan
       
-      // PAKE FUNGSI WARNA STABIL
       var userColor = getColorFromName(user);
+      var tStyle = getTitleStyle(title);
       var initial = user.charAt(0).toUpperCase();
-      
+
+      // --- AVATAR ---
       var avatar = document.createElement("div");
-      avatar.style.width = "32px";
-      avatar.style.height = "32px";
-      avatar.style.borderRadius = "50%";
-      avatar.style.background = userColor;
-      avatar.style.color = "#000";
-      avatar.style.fontWeight = "bold";
-      avatar.style.display = "flex";
-      avatar.style.alignItems = "center";
-      avatar.style.justifyContent = "center";
-      avatar.style.fontFamily = "'Pixelify Sans', monospace";
-      avatar.style.flexShrink = "0";
+      avatar.style.cssText = "width:36px; height:36px; border-radius:50%; background:"+userColor+"; color:#000; font-weight:bold; display:flex; align-items:center; justify-content:center; font-family:'Pixelify Sans', monospace; flex-shrink:0; font-size:16px;";
       avatar.textContent = initial;
 
+      // --- KONTEN PESAN ---
       var content = document.createElement("div");
       content.style.flex = "1";
       
-      var header = document.createElement("div");
-      header.style.fontSize = "11px";
-      header.style.marginBottom = "2px";
-      // PAKE WARNA YANG SAMA BUAT NAMA
-      header.innerHTML = `<b style="color: ${userColor}; font-size: 13px;">${user}</b> <span style="color: #888;">• ${time}</span>`;
+      // --- HEADER (Nama, Title, Tag, Waktu) ---
+      var titleClass = tStyle.class ? tStyle.class : "";
+      var titleBorder = tStyle.border ? "border:"+tStyle.border+";" : "";
       
-      var body = document.createElement("div");
-      body.style.color = "#f2f3f5";
-      body.style.fontSize = "13px";
-      body.style.lineHeight = "1.4";
-      body.style.wordBreak = "break-word";
-      body.textContent = text; 
+      var header = document.createElement("div");
+      header.style.cssText = "display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:4px;";
+      
+      header.innerHTML = `
+        <b style="color: #fff; font-size: 14px;">${user}</b> 
+        <span class="${titleClass}" style="background:${tStyle.bg}; color:${tStyle.color}; ${titleBorder} font-size:9px; padding:2px 6px; border-radius:4px; font-weight:bold;">${title}</span>
+        <span style="color:#888; font-weight:bold; font-family:monospace; font-size:11px;">#${tag}</span>
+        <span style="color: #555; font-size: 10px; margin-left:auto;">${time}</span>
+      `;
+      
+      // --- BODY (Kotak Bubble Pesan) ---
+      var bodyWrapper = document.createElement("div");
+      bodyWrapper.style.cssText = "background: #1a1a1a; padding: 8px 12px; border-radius: 0 8px 8px 8px; display: inline-block; max-width: 100%; border-left: 2px solid #333;";
+      
+      var bodyText = document.createElement("div");
+      bodyText.style.cssText = "color:#e0e0e0; font-size:13px; line-height:1.5; word-break:break-word; font-family: 'IBM Plex Mono', monospace;";
+      bodyText.textContent = text; 
 
-      content.appendChild(header);
-      content.appendChild(body);
-
-      wrapper.appendChild(avatar);
+      bodyWrapper.appendChild(bodyText);
+      content.appendChild(header); 
+      content.appendChild(bodyWrapper);
+      
+      wrapper.appendChild(avatar); 
       wrapper.appendChild(content);
       
       globalBox.appendChild(wrapper);
@@ -1280,39 +1285,22 @@
 
     socket.on("connect", function() {
       globalBox.innerHTML = ""; 
-      appendGlobalMsg("Sistem", "Berhasil terhubung ke Chat Global!", "Info");
-    });
-
-    socket.on("disconnect", function() {
-      appendGlobalMsg("Sistem", "Koneksi terputus. Mencoba menyambung ulang...", "Error");
-    });
-
-    socket.on("connect_error", function(err) {
-      console.error("Socket Error:", err);
-      globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Coba refresh halaman.</div>';
+      appendGlobalMsg("Sistem", "SYSTEM", "0", "Berhasil terhubung ke Chat Global!", "Info");
     });
 
     socket.on("chat message", function(data) {
-      appendGlobalMsg(data.user, data.text, data.time);
+      appendGlobalMsg(data.user, data.title, data.tag, data.text, data.time);
     });
 
     function sendGlobal() {
       var text = globalInput.value.trim();
-      var user = globalUser.value.trim() || "Anonim";
-      
       if (!text) return;
 
-      socket.emit("chat message", { user: user, text: text });
+      socket.emit("chat message", { user: savedName, title: savedTitle, tag: savedTag, text: text });
       globalInput.value = "";
     }
 
     globalSendBtn.addEventListener("click", sendGlobal);
-    globalInput.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") sendGlobal();
-    });
-
-  }).catch(function(err) {
-    console.error("Gagal nembak health check:", err);
-    globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Pastikan Ngrok nyala.</div>';
+    globalInput.addEventListener("keypress", function(e) { if (e.key === "Enter") sendGlobal(); });
   });
 })();
