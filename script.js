@@ -1190,39 +1190,86 @@
   var globalBox = document.getElementById("globalChatBox");
   var globalInput = document.getElementById("globalInput");
   var globalUser = document.getElementById("globalUser");
+  
+  // OTOMATIS AMBIL NAMA DARI LOGIN
+  var savedName = localStorage.getItem('valen_name');
+  if (savedName) {
+    globalUser.value = savedName; // Ganti "Tamu" jadi nama lu
+    globalUser.readOnly = true;   // Kunci biar nggak bisa diedit orang lain
+    globalUser.style.opacity = "0.7"; // Kasih efek agak transparan biar tau kalo dikunci
+  }
   var globalSendBtn = document.getElementById("globalSendBtn");
 
   if (!globalBox || !globalInput) return;
 
   globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan ke server...</div>';
 
-  // TRIK NGROK: Tembak endpoint /health dulu biar dapet "tiket masuk"
+  // Fungsi buat ngasih warna random ke nama user
+  function getRandomColor() {
+    var colors = ["#ff5a5a", "#5aff7a", "#5a9dff", "#f2d94e", "#ff5af2", "#5afff2", "#ffa05a"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
   fetch("https://sizable-phantom-rind.ngrok-free.dev/health", {
     headers: { "ngrok-skip-browser-warning": "true" }
   }).then(function() {
     
-    // Setelah dapet tiket, baru konek Socket.IO pakai polling
     var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
       transports: ["polling"], 
-      extraHeaders: {
-        "ngrok-skip-browser-warning": "true"
-      },
-      query: {
-        "ngrok-skip-browser-warning": "true"
-      },
+      extraHeaders: { "ngrok-skip-browser-warning": "true" },
+      query: { "ngrok-skip-browser-warning": "true" },
       reconnection: true
     });
 
+    // Nampilin pesan dengan Avatar & Nama warna-warni
     function appendGlobalMsg(user, text, time) {
-      var div = document.createElement("div");
-      div.style.marginBottom = "8px";
-      div.style.padding = "6px 10px";
-      div.style.borderRadius = "6px";
-      div.style.background = "#2b2d31";
-      div.style.borderLeft = "3px solid #f2d94e";
-      div.innerHTML = `<div style="font-size:10px; color:#888; margin-bottom:2px;"><b>${user}</b> • ${time}</div><div style="color:#f2f3f5; font-size:13px;">${text}</div>`;
+      var wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.alignItems = "flex-start";
+      wrapper.style.gap = "10px";
+      wrapper.style.marginBottom = "12px";
       
-      globalBox.appendChild(div);
+      // Bikin Avatar (Ambil huruf depan nama)
+      var initial = user.charAt(0).toUpperCase();
+      var avatarColor = getRandomColor();
+      
+      var avatar = document.createElement("div");
+      avatar.style.width = "32px";
+      avatar.style.height = "32px";
+      avatar.style.borderRadius = "50%";
+      avatar.style.background = avatarColor;
+      avatar.style.color = "#000";
+      avatar.style.fontWeight = "bold";
+      avatar.style.display = "flex";
+      avatar.style.alignItems = "center";
+      avatar.style.justifyContent = "center";
+      avatar.style.fontFamily = "'Pixelify Sans', monospace";
+      avatar.style.flexShrink = "0";
+      avatar.textContent = initial;
+
+      // Bikin isi pesan
+      var content = document.createElement("div");
+      content.style.flex = "1";
+      
+      var header = document.createElement("div");
+      header.style.fontSize = "11px";
+      header.style.marginBottom = "2px";
+      header.innerHTML = `<b style="color: ${avatarColor}; font-size: 13px;">${user}</b> <span style="color: #888;">• ${time}</span>`;
+      
+      var body = document.createElement("div");
+      body.style.color = "#f2f3f5";
+      body.style.fontSize = "13px";
+      body.style.lineHeight = "1.4";
+      body.style.wordBreak = "break-word";
+      body.textContent = text; // Pakai textContent biar aman dari XSS
+
+      content.appendChild(header);
+      content.appendChild(body);
+
+      wrapper.appendChild(avatar);
+      wrapper.appendChild(content);
+      
+      globalBox.appendChild(wrapper);
       globalBox.scrollTop = globalBox.scrollHeight;
     }
 
