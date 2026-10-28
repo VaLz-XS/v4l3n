@@ -538,7 +538,7 @@
   [166.26, "Better than he can"],
   [171.82, "Better than he can"]
 ],
-"Beauty and a Beat": [
+ "Beauty and a Beat": [
   [3.58, "Yeah"],
   [6.67, "Young Money"],
   [9.39, "Nicki Minaj"],
