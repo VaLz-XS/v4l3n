@@ -213,7 +213,8 @@
   var nowPlayingArtist = document.getElementById("nowPlayingArtist");
   var playerTitle = document.getElementById("playerTitle");
   var keepAwakeBtn = document.getElementById("keepAwakeBtn");
-
+  var loopBtn = document.getElementById("loopBtn"); // TAMBAHAN
+  var isLooping = false; // Status tombol loop
   var SONGS_DATA = {
     "Bye": [
       [11.12, "Bye-bye"], [12.83, "Yeah, boy, bye"], [14.68, "It's over, it's over, oh, yeah"], [17.53, "This ain't the first time I've been hostage to these tears"], [21.60, "I can't believe I'm finally movin' through my fears"], [26.12, "At least I know how hard we tried, both you and me"], [30.43, "Didn't we? Didn't we?"], [33.99, "So I grab my stuff"], [36.17, "Courtney just pulled up in the driveway"], [41.15, "It's time"], [44.09, "Bye-bye"], [46.23, "Boy, bye"], [48.57, "Bye-bye"], [49.86, "It's over, it's over, oh, yeah"], [52.75, "Bye-bye"], [54.03, "I'm taking what's mine, yeah"], [57.15, "Bye-bye"], [58.54, "It's over, it's over, oh, yeah"], [61.30, "You know, I'm stronger than I think"], [65.57, "Usually, I'd join you on the floor, but this dance ain't for me"], [69.97, "Boy, just turn the music up"], [71.91, "Maybe someday, we'll look back with love"], [74.39, "Didn't think you'd lose me"], [76.25, "Now it's just too late to choose me"], [78.02, "So I grab my stuff"], [79.73, "Courtney just pulled up in the driveway"], [84.01, "It's time (it's time)"], [87.77, "Bye-bye"], [89.79, "Boy, bye"], [92.19, "Bye-bye"], [93.39, "It's over, it's over, oh, yeah"], [96.12, "Bye-bye"], [97.73, "I'm taking what's mine, yeah (taking what's mine)"], [100.78, "Bye-bye"], [101.95, "It's over, it's over, oh, yeah"], [105.94, "Now, it's certainly bittersweet"], [110.50, "This hook feels too hard to sing"], [115.89, "But it's better than repeat"], [122.42, "Bye-bye"], [124.78, "Boy, bye"], [126.95, "Bye-bye"], [128.32, "It's over, it's over, oh, yeah"], [131.61, "Bye-bye"], [132.62, "I'm taking what's mine, yeah"], [135.59, "Bye-bye"], [137.07, "It's over, it's over, oh, yeah"], [139.96, "Bye-bye"], [142.04, "Boy, bye"], [144.31, "Bye-bye"], [145.75, "It's over, it's over, oh, yeah"], [148.80, "Bye-bye"], [150.18, "I'm taking what's mine, yeah (taking what's mine)"], [152.97, "Bye-bye"], [154.38, "It's over, it's over, oh, yeah"]
@@ -744,17 +745,69 @@
     tCur.textContent = fmt(audio.currentTime);
     updateLyrics();
   });
-    // --- LOGIKA AUTOPLAY & REPEAT ---
+      // --- LOGIKA AUTOPLAY & REPEAT ---
   audio.addEventListener("ended", function(){ 
     playBtn.textContent = "▶"; 
     releaseWakeLock(); 
     
-    // Cari kartu lagu yang sekarang lagi aktif
+    // KALAU TOMBOL LOOP NYALA, ULANGI LAGU INI
+    if (isLooping) {
+      audio.currentTime = 0;
+      audio.play().then(function() {
+        playBtn.textContent = "❚❚";
+        requestAnimationFrame(sync);
+      });
+      return; 
+    }
+
+    // KALAU LOOP MATI, JALANIN AUTOPLAY
     var cards = Array.from(songGrid.querySelectorAll(".song-card"));
-    var currentSrc = audio.src.split('/').pop(); // Ambil nama file aja (misal: treat.mp3)
+    var currentSrc = audio.src.split('/').pop();
     var currentIndex = cards.findIndex(function(c) {
       return c.getAttribute("data-src") === currentSrc;
     });
+
+    if (currentIndex !== -1) {
+      var nextIndex = currentIndex + 1;
+      if (nextIndex >= cards.length) nextIndex = 0; 
+
+      var nextCard = cards[nextIndex];
+      var nextSrc = nextCard.getAttribute("data-src");
+      var nextTitle = nextCard.getAttribute("data-title");
+      var nextArtist = nextCard.getAttribute("data-artist");
+
+      nowPlayingTitle.textContent = nextTitle;
+      nowPlayingArtist.textContent = nextArtist;
+      playerTitle.textContent = nextTitle + " — " + nextArtist;
+      
+      currentLyrics = SONGS_DATA[nextTitle] || [];
+      renderLyrics();
+
+      audio.src = nextSrc;
+      audio.load();
+      
+      setTimeout(function() {
+        audio.play().then(function(){
+          playBtn.textContent = "❚❚";
+          requestAnimationFrame(sync);
+        }).catch(function(){});
+      }, 500);
+    }
+  });
+
+  // --- LOGIKA TOMBOL LOOP ---
+  if (loopBtn) {
+    loopBtn.addEventListener("click", function() {
+      isLooping = !isLooping; 
+      if (isLooping) {
+        loopBtn.style.background = "var(--star)";
+        loopBtn.style.color = "#000";
+      } else {
+        loopBtn.style.background = "transparent";
+        loopBtn.style.color = "var(--star)";
+      }
+    });
+  }
 
     if (currentIndex !== -1) {
       // Tentukan lagu selanjutnya
