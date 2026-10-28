@@ -1185,7 +1185,6 @@
 // === CHAT GLOBAL REAL-TIME (SOCKET.IO) ===
 // ============================================
 (function(){
-  // Pastiin Socket.IO udah ke-load dari CDN
   if (typeof io === "undefined") return;
 
   var globalBox = document.getElementById("globalChatBox");
@@ -1195,16 +1194,19 @@
 
   if (!globalBox || !globalInput) return;
 
-  // KONEK KE SERVER PTERODACTYL LU
-  // Perhatiin: pakai https:// (bukan wss://, Socket.IO otomatis ngedeteksi)
-  var socket = io("https://seismic-plug-striving.ngrok-free.dev", {
+  globalBox.innerHTML = '<div style="color:#888; font-size:12px; text-align:center;">Menghubungkan ke server...</div>';
+
+  // KONEKSI KE NGROK PANEL 2 (CHAT GLOBAL)
+  var socket = io("https://sizable-phantom-rind.ngrok-free.dev", {
     transports: ["websocket", "polling"],
     extraHeaders: {
       "ngrok-skip-browser-warning": "true"
-    }
+    },
+    reconnection: true,
+    reconnectionAttempts: 5,
+    timeout: 10000
   });
 
-  // Fungsi nambah pesan ke kotak
   function appendGlobalMsg(user, text, time) {
     var div = document.createElement("div");
     div.style.marginBottom = "8px";
@@ -1218,12 +1220,24 @@
     globalBox.scrollTop = globalBox.scrollHeight;
   }
 
-  // Nangkep pesan dari server
+  socket.on("connect", function() {
+    globalBox.innerHTML = ""; 
+    appendGlobalMsg("Sistem", "Berhasil terhubung ke Chat Global!", "Info");
+  });
+
+  socket.on("disconnect", function() {
+    appendGlobalMsg("Sistem", "Koneksi terputus. Mencoba menyambung ulang...", "Error");
+  });
+
+  socket.on("connect_error", function(err) {
+    console.error("Socket Error:", err);
+    globalBox.innerHTML = '<div style="color:#ff5a5a; font-size:12px; text-align:center;">Gagal konek ke server. Coba refresh halaman.</div>';
+  });
+
   socket.on("chat message", function(data) {
     appendGlobalMsg(data.user, data.text, data.time);
   });
 
-  // Kirim pesan pas tombol diklik atau tekan Enter
   function sendGlobal() {
     var text = globalInput.value.trim();
     var user = globalUser.value.trim() || "Anonim";
@@ -1238,7 +1252,4 @@
   globalInput.addEventListener("keypress", function(e) {
     if (e.key === "Enter") sendGlobal();
   });
-
-  // Tampilkan pesan selamat datang
-  appendGlobalMsg("Sistem", "Selamat datang di Chat Global! Jaga ucapan ya.", "Info");
 })();
