@@ -107,7 +107,7 @@
     </article>
   </section>
 
-  <section class="win" data-view="musik" aria-label="Musik">
+    <section class="win" data-view="musik" aria-label="Musik">
     <div class="bar"><span>musik.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body musik">
       <div id="libraryView">
@@ -115,7 +115,9 @@
           <h2>Pustaka Lagu</h2>
           <input type="text" id="searchBox" class="search-box" placeholder="Cari lagu..." autocomplete="off">
         </div>
+        
         <div class="song-grid" id="songGrid">
+          <!-- LAGU-LAGU LAMA LU -->
           <div class="song-card" data-src="bye.mp3" data-title="Bye" data-artist="Ariana Grande">
             <img src="bye.jpg" alt="Cover Bye"><div class="card-title">Bye</div>
           </div>
@@ -152,16 +154,20 @@
           <div class="song-card" data-src="letdown.mp3" data-title="Let Down" data-artist="Radiohead">
             <img src="letdown.jpg" alt="Cover Let Down"><div class="card-title">Let Down</div>
           </div>
+
+          <!-- LAGU BARU LU (TAMBAHIN DI SINI) -->
           <div class="song-card" data-src="treat.mp3" data-title="Treat You Better" data-artist="Shawn Mendes">
             <img src="treat.jpg" alt="Cover Treat You Better"><div class="card-title">Treat You Better</div>
           </div>
           <div class="song-card" data-src="beauty.mp3" data-title="Beauty and a Beat" data-artist="Justin Bieber ft. Nicki Minaj">
             <img src="beauty.jpg" alt="Cover Beauty and a Beat"><div class="card-title">Beauty and a Beat</div>
-           </div>
           </div>
-        </div>
-      </div>
-      
+          <!-- BATAS LAGU BARU -->
+          
+        </div> <!-- INI TUTUP SONG-GRID -->
+      </div> <!-- INI TUTUP LIBRARYVIEW -->
+
+      <!-- INI PLAYER NYA (JANGAN DIHAPUS) -->
       <div id="playerView" hidden>
         <div class="player-header">
           <button type="button" class="back-btn" id="backBtn">← Kembali</button>
@@ -198,8 +204,9 @@
             Selesai & Copy
           </button>
         </div>
-      </div>
-    </div>
+      </div> <!-- TUTUP PLAYER VIEW -->
+
+    </div> <!-- TUTUP BODY MUSIK -->
   </section>
 
   <section class="win" data-view="game" aria-label="Game">
