@@ -45,11 +45,11 @@
       <a href="#api">API Developer</a>
       <a href="#pairing">Pairing Bot</a>
       <a href="#global">Chat Global</a>
+      <a href="#downloader">Downloader</a> <!-- MENU BARU -->
       <a href="#kontak">Kontak</a>
     </nav>
   </header>
 
-  <!-- PROFIL USER (TITLE & TAG DITAMBAHIN DI SINI) -->
   <div class="profile-bar" id="profileBar" hidden>
     <img src="logo.png" id="userAvatar" alt="Avatar">
     <span id="userName">User</span>
@@ -292,7 +292,6 @@
     </div>
   </section>
 
-  <!-- CHAT GLOBAL -->
   <section class="win" data-view="global" aria-label="Chat Global">
     <div class="bar"><span>global_chat.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body">
@@ -303,11 +302,41 @@
         <!-- Pesan bakal muncul di sini -->
       </div>
       
-      <!-- INPUT CHAT GLOBAL (TANPA INPUT TITLE KARENA UDAH OTOMATIS) -->
       <div class="chat-input" style="border-top: 2px solid #333;">
         <input type="text" id="globalUser" placeholder="Nama" style="display:none;" readonly>
         <input type="text" id="globalInput" placeholder="Ketik pesan..." autocomplete="off">
         <button type="button" id="globalSendBtn">Kirim</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION DOWNLOADER BARU -->
+  <section class="win" data-view="downloader" aria-label="Downloader">
+    <div class="bar"><span>downloader.exe</span><i class="btn"></i><i class="btn"></i></div>
+    <div class="body">
+      <h2>TikTok Downloader</h2>
+      <p class="musik-sub" style="margin-bottom: 16px;">Download video, foto, atau audio TikTok tanpa watermark.</p>
+
+      <div class="box" style="margin-bottom: 20px;">
+        <span class="title">Input Link</span>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="tiktokUrl" placeholder="https://vt.tiktok.com/..." style="flex: 1; padding: 8px; font-family: 'IBM Plex Mono', monospace; background: var(--screen); color: var(--screen-text); border: 2px solid var(--lo); outline: none;">
+          <button type="button" id="btnTiktok" style="padding: 8px 16px; font-family: 'Pixelify Sans', monospace; font-weight: bold; cursor: pointer; background: var(--star); color: #14141c; border: 2px solid var(--ink);">Proses</button>
+        </div>
+      </div>
+
+      <div class="box" id="tiktokResult" style="display: none;">
+        <span class="title" style="color: var(--star);">Hasil Download</span>
+        <div style="text-align: center;">
+          <p id="tiktokTitle" style="font-size: 13px; margin-bottom: 8px; color: #fff; font-weight: bold;"></p>
+          <p id="tiktokAuthor" style="font-size: 12px; margin-bottom: 12px; color: #888;"></p>
+          
+          <video id="tiktokVideoPreview" controls style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 12px; display: none;"></video>
+          
+          <div id="tiktokPhotos" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 12px;"></div>
+
+          <div id="tiktokButtons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -328,7 +357,6 @@
   <img src="tenka.webp" alt="" draggable="false" width="187" height="340">
 </div>
 
-<!-- MODAL LOGIN (TAMBAH PILIHAN TITLE) -->
 <div id="loginModal" hidden>
   <div class="win">
     <div class="bar"><span>login.exe</span></div>
@@ -336,7 +364,6 @@
       <h3 style="margin-bottom:8px">Siapa Namamu?</h3>
       <input type="text" id="inputName" placeholder="Masukkan nama..." autocomplete="off" style="width:100%; padding:8px; margin-bottom:8px; font-family:monospace;">
       
-      <!-- PILIHAN TITLE -->
       <select id="inputTitle" style="width:100%; padding:8px; margin-bottom:8px; font-family:monospace; background:#0d0d0d; color:#ccc; border:1px solid #555;">
         <option value="USER">USER</option>
         <option value="NOLEP">NOLEP</option>
