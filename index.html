@@ -179,8 +179,10 @@
         <h2 id="nowPlayingTitle">Judul Lagu</h2>
         <p class="musik-sub" id="nowPlayingArtist">Artis</p>
         <audio id="lagu" preload="metadata"></audio>
-        <div class="player">
+                <div class="player">
           <button type="button" id="playBtn" class="play-btn" aria-label="Putar lagu">▶</button>
+          <button type="button" id="loopBtn" class="play-btn" style="width: 35px; height: 35px; font-size: 16px; background: transparent; color: var(--star); border-color: var(--star);" aria-label="Ulangi lagu">🔁</button>
+          
           <div class="player-info">
             <div class="player-title" id="playerTitle">Judul Lagu — Artis</div>
             <input type="range" id="seek" min="0" max="100" value="0" step="0.1" aria-label="Geser lagu">
