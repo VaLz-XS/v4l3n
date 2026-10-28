@@ -49,9 +49,12 @@
     </nav>
   </header>
 
+  <!-- PROFIL USER (TITLE & TAG DITAMBAHIN DI SINI) -->
   <div class="profile-bar" id="profileBar" hidden>
     <img src="logo.png" id="userAvatar" alt="Avatar">
     <span id="userName">User</span>
+    <span id="userTitleDisplay" style="font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin: 0 6px; display: none;"></span>
+    <span id="userTagDisplay" style="font-family: monospace; color: #888; font-weight: bold; display: none;">#0</span>
     <button type="button" id="logoutBtn">Logout</button>
   </div>
 
@@ -289,19 +292,20 @@
     </div>
   </section>
 
-  <!-- SECTION CHAT GLOBAL BARU -->
+  <!-- CHAT GLOBAL -->
   <section class="win" data-view="global" aria-label="Chat Global">
     <div class="bar"><span>global_chat.exe</span><i class="btn"></i><i class="btn"></i></div>
     <div class="body">
       <h2>Chat Global VaLen</h2>
       <p class="musik-sub" style="margin-bottom: 16px;">Ngobrol bareng pengunjung lain secara real-time.</p>
       
-      <div class="screen chat" id="globalChatBox" style="height: 300px; max-height: 300px;">
+      <div class="screen chat" id="globalChatBox" style="height: 350px; max-height: 350px; background: #0a0a0a; border: 1px solid #333;">
         <!-- Pesan bakal muncul di sini -->
       </div>
       
+      <!-- INPUT CHAT GLOBAL (TANPA INPUT TITLE KARENA UDAH OTOMATIS) -->
       <div class="chat-input" style="border-top: 2px solid #333;">
-        <input type="text" id="globalUser" placeholder="Nama" style="max-width: 90px; border-right: 1px solid #333;" value="Tamu">
+        <input type="text" id="globalUser" placeholder="Nama" style="display:none;" readonly>
         <input type="text" id="globalInput" placeholder="Ketik pesan..." autocomplete="off">
         <button type="button" id="globalSendBtn">Kirim</button>
       </div>
@@ -324,13 +328,22 @@
   <img src="tenka.webp" alt="" draggable="false" width="187" height="340">
 </div>
 
+<!-- MODAL LOGIN (TAMBAH PILIHAN TITLE) -->
 <div id="loginModal" hidden>
   <div class="win">
     <div class="bar"><span>login.exe</span></div>
     <div class="body">
       <h3 style="margin-bottom:8px">Siapa Namamu?</h3>
-      <input type="text" id="inputName" placeholder="Masukkan nama..." autocomplete="off">
-      <input type="file" id="inputFile" accept="image/*" style="font-size:12px; border:none; padding:0; margin-top:8px;">
+      <input type="text" id="inputName" placeholder="Masukkan nama..." autocomplete="off" style="width:100%; padding:8px; margin-bottom:8px; font-family:monospace;">
+      
+      <!-- PILIHAN TITLE -->
+      <select id="inputTitle" style="width:100%; padding:8px; margin-bottom:8px; font-family:monospace; background:#0d0d0d; color:#ccc; border:1px solid #555;">
+        <option value="USER">USER</option>
+        <option value="NOLEP">NOLEP</option>
+        <option value="WIBU">WIBU</option>
+      </select>
+
+      <input type="file" id="inputFile" accept="image/*" style="font-size:12px; border:none; padding:0; margin-top:8px; width:100%;">
       <button type="button" id="btnLogin" class="halo-btn" style="width:100%; margin-top:12px; animation:none;">Masuk</button>
     </div>
   </div>
