@@ -362,3 +362,22 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--star);outline-offse
   border: 1px solid #333 !important;
   padding: 16px;
 }
+
+/* === STYLE VIDEO BERANDA === */
+.video-container {
+  width: 100%;
+  border: 2px solid var(--lo);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+  box-shadow: 0 0 15px rgba(125, 255, 168, 0.15);
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 350px;
+  object-fit: cover;
+}
