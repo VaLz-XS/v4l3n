@@ -1193,3 +1193,29 @@
   });
   mo.observe(document.body, {characterData:true, childList:true, subtree:true});
 })();
+
+// === LOGIKA VIDEO HERO & VOLUME ===
+(function(){
+  var video = document.getElementById("bgVideo");
+  var volBtn = document.getElementById("volBtn");
+  
+  if (!video || !volBtn) return;
+
+  volBtn.addEventListener("click", function() {
+    if (video.muted) {
+      video.muted = false;
+      video.volume = 1.0;
+      volBtn.innerHTML = "🔊"; // Ikon suara nyala
+    } else {
+      video.muted = true;
+      volBtn.innerHTML = "🔇"; // Ikon suara mati
+    }
+  });
+
+  // Pastiin video play pas loading screen ilang (event 'masuk' dari script lu)
+  document.addEventListener("masuk", function() {
+    video.play().catch(function(e){ 
+      console.log("Autoplay diblokir browser, user harus klik layar."); 
+    });
+  });
+})();
